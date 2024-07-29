@@ -2,57 +2,67 @@
     <h2>Cheques</h2>
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link" [class.active]="selectedTab === 'Outgoing'" (click)="onTabChange('Outgoing')">Outgoing</a>
+        <a class="nav-link" [class.active]="selectedTab === 'Outgoing'" (click)="onTabChange('Outgoing')">
+            <i class="fas fa-share"></i> Outgoing
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [class.active]="selectedTab === 'Incoming'" (click)="onTabChange('Incoming')">Incoming</a>
+        <a class="nav-link" [class.active]="selectedTab === 'Incoming'" (click)="onTabChange('Incoming')">
+            <i class="fas fa-download"></i> Incoming
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="selectedTab === 'None'" (click)="onTabChange('None')">
+            <i class="fas fa-th-large"></i> All
+        </a>
       </li>
     </ul>
+    <br>
   
     <form (ngSubmit)="applyFilters()">
-      <div class="form-row">
-        <div class="form-group col-md-3">
-          <label for="status">Status</label>
-          <input type="text" id="status" class="form-control" [ngModel]="filters.Status" (ngModelChange)="updateFilter('Status', $event)" name="status">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="status">Status</label>
+            <input type="text" id="status" class="form-control" [(ngModel)]="filters.Status" (ngModelChange)="updateFilter('Status', $event)" name="status">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="issueDateFrom">Issue Date From</label>
+            <input type="date" id="issueDateFrom" class="form-control" [ngModel]="formatDate(filters.IssueDateFrom)" (ngModelChange)="updateFilter('IssueDateFrom', $event)" name="issueDateFrom">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="issueDateTo">Issue Date To</label>
+            <input type="date" id="issueDateTo" class="form-control" [ngModel]="formatDate(filters.IssueDateTo)" (ngModelChange)="updateFilter('IssueDateTo', $event)" name="issueDateTo">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="dueDateFrom">Due Date From</label>
+            <input type="date" id="dueDateFrom" class="form-control" [ngModel]="formatDate(filters.DueDateFrom)" (ngModelChange)="updateFilter('DueDateFrom', $event)" name="dueDateFrom">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="dueDateTo">Due Date To</label>
+            <input type="date" id="dueDateTo" class="form-control" [ngModel]="formatDate(filters.DueDateTo)" (ngModelChange)="updateFilter('DueDateTo', $event)" name="dueDateTo">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="amountFrom">Amount From</label>
+            <input type="number" id="amountFrom" class="form-control" [(ngModel)]="filters.AmountFrom" (ngModelChange)="updateFilter('AmountFrom', $event)" name="amountFrom">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="amountTo">Amount To</label>
+            <input type="number" id="amountTo" class="form-control" [(ngModel)]="filters.AmountTo" (ngModelChange)="updateFilter('AmountTo', $event)" name="amountTo">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="currency">Currency</label>
+            <input type="text" id="currency" class="form-control" [(ngModel)]="filters.Currency" (ngModelChange)="updateFilter('Currency', $event)" name="currency">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="bankName">Bank Name</label>
+            <input type="text" id="bankName" class="form-control" [(ngModel)]="filters.BankName" (ngModelChange)="updateFilter('BankName', $event)" name="bankName">
+          </div>
         </div>
-        <div class="form-group col-md-3">
-          <label for="issueDateFrom">Issue Date From</label>
-          <input type="date" id="issueDateFrom" class="form-control" [ngModel]="filters.IssueDateFrom" (ngModelChange)="updateFilter('IssueDateFrom', $event)" name="issueDateFrom">
+        <div class="row">
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Apply Filters</button>
+          </div>
         </div>
-        <div class="form-group col-md-3">
-          <label for="issueDateTo">Issue Date To</label>
-          <input type="date" id="issueDateTo" class="form-control" [ngModel]="filters.IssueDateTo" (ngModelChange)="updateFilter('IssueDateTo', $event)" name="issueDateTo">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="dueDateFrom">Due Date From</label>
-          <input type="date" id="dueDateFrom" class="form-control" [ngModel]="filters.DueDateFrom" (ngModelChange)="updateFilter('DueDateFrom', $event)" name="dueDateFrom">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="dueDateTo">Due Date To</label>
-          <input type="date" id="dueDateTo" class="form-control" [ngModel]="filters.DueDateTo" (ngModelChange)="updateFilter('DueDateTo', $event)" name="dueDateTo">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="amountFrom">Amount From</label>
-          <input type="number" id="amountFrom" class="form-control" [ngModel]="filters.AmountFrom" (ngModelChange)="updateFilter('AmountFrom', $event)" name="amountFrom">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="amountTo">Amount To</label>
-          <input type="number" id="amountTo" class="form-control" [ngModel]="filters.AmountTo" (ngModelChange)="updateFilter('AmountTo', $event)" name="amountTo">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="currency">Currency</label>
-          <input type="text" id="currency" class="form-control" [ngModel]="filters.Currency" (ngModelChange)="updateFilter('Currency', $event)" name="currency">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="chequeHolderName">Cheque Holder Name</label>
-          <input type="text" id="chequeHolderName" class="form-control" [ngModel]="filters.ChequeHolderName" (ngModelChange)="updateFilter('ChequeHolderName', $event)" name="chequeHolderName">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="bankName">Bank Name</label>
-          <input type="text" id="bankName" class="form-control" [ngModel]="filters.BankName" (ngModelChange)="updateFilter('BankName', $event)" name="bankName">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Apply Filters</button>
     </form>
   
     <table class="table table-striped mt-4">
@@ -67,7 +77,9 @@
           <th>Account Number</th>
           <th>Amount</th>
           <th>Currency</th>
+          <th>Bank Name</th>
           <th>Status</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -81,7 +93,16 @@
           <td>{{ cheque.accountNumber }}</td>
           <td>{{ cheque.amount }}</td>
           <td>{{ cheque.currency }}</td>
+          <td>{{ cheque.bankName }}</td>
           <td>{{ cheque.status }}</td>
+          <td>
+            <button class="btn btn-info btn-sm mb-2" (click)="viewTransactions(cheque.chequeId)">
+              <i class="fas fa-exchange-alt"></i> View Transactions
+            </button>
+            <button class="btn btn-secondary btn-sm">
+              <i class="fas fa-image"></i> View Img
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -101,3 +122,29 @@
     </nav>
   </div>
   
+  <div class="modal" tabindex="-1" role="dialog" [ngClass]="{ 'd-block': showModal }">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cheque Transactions</h5>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="transactions$ | async as transactions">
+            <div *ngFor="let transaction of transactions">
+              <p><strong>Transaction ID:</strong> {{ transaction.transactionId }}</p>
+              <p><strong>Invoice Number:</strong> {{ transaction.invoiceNumber }}</p>
+              <p><strong>Transaction Date:</strong> {{ transaction.transactionDate | date }}</p>
+              <p><strong>Amount:</strong> {{ transaction.amount }}</p>
+              <p><strong>Details:</strong> {{ transaction.details }}</p>
+              <p><strong>Cheque Receiver Name:</strong> {{ transaction.chequeReceiverName }}</p>
+              <p><strong>Payment Method:</strong> {{ transaction.paymentMethod }}</p>
+              <hr>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,34 +1,38 @@
 <div class="container">
     <h2>Suppliers View</h2>
+    <br>
     <form (ngSubmit)="applyFilters()">
-      <div class="form-row">
-        <div class="form-group col-md-3">
-          <label for="name">Name</label>
-          <input type="text" id="name" class="form-control" [ngModel]="filters.name" (ngModelChange)="updateFilter('name', $event)" name="name">
-        </div>
-        <div class="form-group col-md-3">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" [ngModel]="filters.name" (ngModelChange)="updateFilter('name', $event)" name="name">
+          </div>
+          <div class="col-md-4 mb-3">
             <label for="userName">UserName</label>
             <input type="text" id="userName" class="form-control" [ngModel]="filters.userName" (ngModelChange)="updateFilter('userName', $event)" name="userName">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="email">Email</label>
-          <input type="text" id="email" class="form-control" [ngModel]="filters.email" (ngModelChange)="updateFilter('email', $event)" name="email">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="phone">Phone</label>
-          <input type="text" id="phone" class="form-control" [ngModel]="filters.phone" (ngModelChange)="updateFilter('phone', $event)" name="phone">
-        </div>
-        <div class="form-group col-md-3">
-          <label for="address">Address</label>
-          <input type="text" id="address" class="form-control" [ngModel]="filters.address" (ngModelChange)="updateFilter('address', $event)" name="address">
-        </div>
-        <div class="form-group col-md-3">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="email">Email</label>
+            <input type="text" id="email" class="form-control" [ngModel]="filters.email" (ngModelChange)="updateFilter('email', $event)" name="email">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" class="form-control" [ngModel]="filters.phone" (ngModelChange)="updateFilter('phone', $event)" name="phone">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="address">Address</label>
+            <input type="text" id="address" class="form-control" [ngModel]="filters.address" (ngModelChange)="updateFilter('address', $event)" name="address">
+          </div>
+          <div class="col-md-4 mb-3">
             <label for="identity">Identity</label>
             <input type="text" id="identity" class="form-control" [ngModel]="filters.identity" (ngModelChange)="updateFilter('identity', $event)" name="identity">
+          </div>
         </div>
-      </div>
-      <br>
-      <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <div class="row">
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+          </div>
+        </div>
     </form>
   
     <table class="table table-striped mt-4">

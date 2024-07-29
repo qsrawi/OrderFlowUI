@@ -10,14 +10,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { NumberRangePipe } from './helpers/number-range.pipe';
 import { suppliersReducer } from './store/reducers/suppliers.reducer';
 import { SuppliersEffects } from './store/effects/suppliers.effects';
+import { ChequesEffects } from './store/effects/cheques.effects';
+import { chequesReducer } from './store/reducers/cheques.reducer';
+import { transactionsReducer } from './store/reducers/transactions.reducer';
 
 export const appConfig: ApplicationConfig = {
-providers: [
-  provideRouter(routes), 
-  provideStore({ auth: authReducer, suppliers: suppliersReducer}), 
-  provideEffects([AuthEffects, SuppliersEffects]),
-  provideStoreDevtools({ maxAge: 25, logOnly: false }),
-  provideHttpClient(),
-  NumberRangePipe
- ]
+  providers: [
+      provideRouter(routes), 
+      provideStore({ auth: authReducer, suppliers: suppliersReducer, cheques: chequesReducer, transactions: transactionsReducer}), 
+      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects]),
+      provideStoreDevtools({ maxAge: 25, logOnly: false }),
+      provideHttpClient(),
+      NumberRangePipe
+  ]
  };

@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { User } from '../models/user'
 import { ChequeFilterParams, ChequesResponse } from '../models/cheques';
 import { SuppliersResponse } from '../models/supplier';
+import { ChequeTransaction } from '../models/cheque_transaction';
 @Injectable({
   providedIn: 'root'
 })
@@ -44,17 +45,19 @@ export class HttpReqService {
             .set('chequeType', chequeType);
 
         if (filters.Status) params = params.set('Status', filters.Status);
-        if (filters.IssueDateFrom) params = params.set('IssueDateFrom', filters.IssueDateFrom.toISOString());
-        if (filters.IssueDateTo) params = params.set('IssueDateTo', filters.IssueDateTo.toISOString());
-        if (filters.DueDateFrom) params = params.set('DueDateFrom', filters.DueDateFrom.toISOString());
-        if (filters.DueDateTo) params = params.set('DueDateTo', filters.DueDateTo.toISOString());
+        if (filters.IssueDateFrom) params = params.set('IssueDateFrom', new Date(filters.IssueDateFrom).toISOString());
+        if (filters.IssueDateTo) params = params.set('IssueDateTo', new Date(filters.IssueDateTo).toISOString());
+        if (filters.DueDateFrom) params = params.set('DueDateFrom', new Date(filters.DueDateFrom).toISOString());
+        if (filters.DueDateTo) params = params.set('DueDateTo', new Date(filters.DueDateTo).toISOString());
         if (filters.AmountFrom) params = params.set('AmountFrom', filters.AmountFrom.toString());
         if (filters.AmountTo) params = params.set('AmountTo', filters.AmountTo.toString());
         if (filters.Currency) params = params.set('Currency', filters.Currency);
-        if (filters.ChequeHolderName) params = params.set('ChequeHolderName', filters.ChequeHolderName);
         if (filters.BankName) params = params.set('BankName', filters.BankName);
 
         return this.http.get<ChequesResponse>(`${this.adminApiUrl}/GetCheques/${chequeType}`, { params });
     }
-    
+
+    getChequeTransactions(chequeId: number): Observable<ChequeTransaction[]> {
+        return this.http.get<ChequeTransaction[]>(`${this.adminApiUrl}/GetChequeTransactions/${chequeId}`);
+      }
 }
