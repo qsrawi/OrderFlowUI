@@ -1,0 +1,75 @@
+<div class="container">
+    <h2>Suppliers View</h2>
+    <form (ngSubmit)="applyFilters()">
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="name">Name</label>
+          <input type="text" id="name" class="form-control" [ngModel]="filters.name" (ngModelChange)="updateFilter('name', $event)" name="name">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="userName">UserName</label>
+            <input type="text" id="userName" class="form-control" [ngModel]="filters.userName" (ngModelChange)="updateFilter('userName', $event)" name="userName">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="email">Email</label>
+          <input type="text" id="email" class="form-control" [ngModel]="filters.email" (ngModelChange)="updateFilter('email', $event)" name="email">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" class="form-control" [ngModel]="filters.phone" (ngModelChange)="updateFilter('phone', $event)" name="phone">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="address">Address</label>
+          <input type="text" id="address" class="form-control" [ngModel]="filters.address" (ngModelChange)="updateFilter('address', $event)" name="address">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="identity">Identity</label>
+            <input type="text" id="identity" class="form-control" [ngModel]="filters.identity" (ngModelChange)="updateFilter('identity', $event)" name="identity">
+        </div>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </form>
+  
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>UserName</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Identity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let supplier of suppliers$ | async">
+          <td>{{ supplier.supplierId }}</td>
+          <td>{{ supplier.userName }}</td>
+          <td>{{ supplier.name }}</td>
+          <td>{{ supplier.email }}</td>
+          <td>{{ supplier.phone }}</td>
+          <td>{{ supplier.name }}</td>
+          <td>{{ supplier.address }}</td>
+          <td>{{ supplier.identity }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="pageNumber === 1">
+          <button class="page-link" (click)="onPageChange(pageNumber - 1)" [disabled]="pageNumber === 1">Previous</button>
+        </li>
+        <li class="page-item" *ngFor="let page of (totalPages | async)?? 0 | numberRange: 1">
+          <button class="page-link" (click)="onPageChange(page)" [class.active]="pageNumber === page">{{ page }}</button>
+        </li>
+        <li class="page-item" [class.disabled]="pageNumber === (totalPages | async)">
+          <button class="page-link" (click)="onPageChange(pageNumber + 1)" [disabled]="pageNumber === (totalPages | async)">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
