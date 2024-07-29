@@ -6,6 +6,7 @@ import { User } from '../models/user'
 import { ChequeFilterParams, ChequesResponse } from '../models/cheques';
 import { SuppliersResponse } from '../models/supplier';
 import { ChequeTransaction } from '../models/cheque_transaction';
+import { OrderFilterParams, OrderResponse } from '../models/orders';
 @Injectable({
   providedIn: 'root'
 })
@@ -59,5 +60,29 @@ export class HttpReqService {
 
     getChequeTransactions(chequeId: number): Observable<ChequeTransaction[]> {
         return this.http.get<ChequeTransaction[]>(`${this.adminApiUrl}/GetChequeTransactions/${chequeId}`);
+      }
+
+      getOrders(filters: OrderFilterParams): Observable<OrderResponse> {
+        let params = new HttpParams();
+        
+        if (filters.OrderDateFrom) {
+          params = params.set('OrderDateFrom', filters.OrderDateFrom.toISOString());
+        }
+        if (filters.OrderDateTo) {
+          params = params.set('OrderDateTo', filters.OrderDateTo.toISOString());
+        }
+        if (filters.MinTotalAmount !== undefined && filters.MinTotalAmount !== null) {
+          params = params.set('MinTotalAmount', filters.MinTotalAmount.toString());
+        }
+        if (filters.MaxTotalAmount !== undefined && filters.MaxTotalAmount !== null) {
+          params = params.set('MaxTotalAmount', filters.MaxTotalAmount.toString());
+        }
+        if (filters.Status) {
+          params = params.set('Status', filters.Status);
+        }
+        params = params.set('PageNumber', filters.PageNumber.toString());
+        params = params.set('PageSize', filters.PageSize.toString());
+        
+        return this.http.get<OrderResponse>(`${this.adminApiUrl}/GetOrders`, { params });
       }
 }

@@ -6,9 +6,9 @@ import { CustomerHomeComponent } from './Customer/customer-home/customer-home.co
 import { AuthGuard } from './auth.guard';
 import { SuppliersViewComponent } from './Admin/suppliers-view/suppliers-view.component';
 import { ChequesComponent } from './Admin/cheques/cheques.component';
-import { SearchChequesComponent } from './Admin/search-cheques/search-cheques.component';
-import { ItemsOrdersComponent } from './Admin/items-orders/items-orders.component';
 import { AddSupplierComponent } from './Admin/add-supplier/add-supplier.component';
+import { ItemsComponent } from './Admin/items/items.component';
+import { OrderComponent } from './Admin/orders/orders.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -18,8 +18,8 @@ export const routes: Routes = [
       { path: 'add-supplier', component: AddSupplierComponent },
       { path: 'suppliers-view', component: SuppliersViewComponent },
       { path: 'cheques', component: ChequesComponent },
-      { path: 'search-cheques', component: SearchChequesComponent },
-      { path: 'items-orders', component: ItemsOrdersComponent },
+      { path: 'orders', component: OrderComponent },
+      { path: 'items', component: ItemsComponent },
     ]
   },
   { path: 'customer', component: CustomerHomeComponent, canActivate: [AuthGuard], data: { role: 'Customer' } }
