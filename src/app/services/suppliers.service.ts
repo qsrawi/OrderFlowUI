@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as SuppliersActions from '../store/actions/suppliers.actions';
-import { selectAllSuppliers, selectTotalCount, selectPageNumber, selectPageSize, selectFilters, selectLoading, selectError } from '../store/selectors/suppliers.selectors';
-import { Supplier } from '../models/supplier';
+import { selectAllSuppliers, selectTotalCount, selectPageNumber, selectPageSize, selectFilters, selectLoading, selectError, selectSupplier } from '../store/selectors/suppliers.selectors';
+import { CreateSupplierDto, Supplier } from '../models/supplier';
 import { SuppliersState } from '../store/reducers/suppliers.reducer';
 
 @Injectable({
@@ -42,5 +42,18 @@ export class SuppliersService {
 
   loadSuppliers(pageNumber: number, pageSize: number, filters: any): void {
     this.store.dispatch(SuppliersActions.loadSuppliers({ pageNumber, pageSize, filters }));
+  }
+
+  loadSupplier(id: number): Observable<CreateSupplierDto | null> {
+    this.store.dispatch(SuppliersActions.loadSupplier({ id }));
+    return this.store.select(selectSupplier);
+  }
+
+  saveSupplierWithDispatch(id: number | undefined, supplier: CreateSupplierDto): void {
+    this.store.dispatch(SuppliersActions.saveSupplier({ id, supplier }));
+  }
+
+  deleteSupplier(id: number): void {
+    this.store.dispatch(SuppliersActions.deleteSupplier({ id }));
   }
 }

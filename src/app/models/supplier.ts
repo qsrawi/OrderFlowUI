@@ -17,3 +17,15 @@ export interface SuppliersResponse {
     pageNumber: number;
     pageSize: number;
 }
+
+export interface CreateSupplierDto {
+  userName?: string;
+  password?: string;
+  email?: string;
+  phone?: string;
+  name?: string;
+  identity?: string;
+  details?: string;
+  address?: string;
+  image?: string;
+}

@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import * as OrdersActions from '../actions/orders.actions';
+import * as ItemsActions from '../../store/actions/items.actions';
 import { AdminHttpReqService } from '../../services/httpReq.service';
 
 @Injectable()
-export class OrdersEffects {
-  loadOrders$ = createEffect(() =>
+export class ItemsEffects {
+  loadItems$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(OrdersActions.loadOrders),
+      ofType(ItemsActions.loadItems),
       mergeMap(action =>
-        this.adminHttpReqService.getOrders(action.filters).pipe(
-          map(response => OrdersActions.loadOrdersSuccess({ response })),
-          catchError(error => of(OrdersActions.loadOrdersFailure({ error })))
+        this.adminHttpReqService.getItems(action.filters).pipe(
+          map(response => ItemsActions.loadItemsSuccess({ response })),
+          catchError(error => of(ItemsActions.loadItemsFailure({ error })))
         )
       )
     )

@@ -15,12 +15,23 @@ import { chequesReducer } from './store/reducers/cheques.reducer';
 import { transactionsReducer } from './store/reducers/transactions.reducer';
 import { OrdersEffects } from './store/effects/orders.effects';
 import { ordersReducer } from './store/reducers/orders.reducer';
+import { itemsReducer } from './store/reducers/items.reducer';
+import { ItemsEffects } from './store/effects/items.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
       provideRouter(routes), 
-      provideStore({ auth: authReducer, suppliers: suppliersReducer, cheques: chequesReducer, transactions: transactionsReducer, orders: ordersReducer}), 
-      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects]),
+      provideStore(
+        { 
+          auth: authReducer,
+          suppliers: suppliersReducer,
+          cheques: chequesReducer,
+          transactions: transactionsReducer, 
+          orders: ordersReducer,
+          items: itemsReducer
+        }
+      ), 
+      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects]),
       provideStoreDevtools({ maxAge: 25, logOnly: false }),
       provideHttpClient(),
       NumberRangePipe

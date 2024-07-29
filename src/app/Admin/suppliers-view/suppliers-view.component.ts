@@ -6,6 +6,7 @@ import { SuppliersService } from '../../services/suppliers.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-suppliers-view',
@@ -31,7 +32,7 @@ export class SuppliersViewComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 10;
 
-  constructor(private suppliersService: SuppliersService) {
+  constructor(private suppliersService: SuppliersService, private router: Router) {
     this.suppliers$ = this.suppliersService.getSuppliers();
     this.totalCount$ = this.suppliersService.getTotalCount();
     this.loading$ = this.suppliersService.getLoading();
@@ -58,6 +59,14 @@ export class SuppliersViewComponent implements OnInit {
 
   updateFilter(field: string, value: string): void {
     this.filters = { ...this.filters, [field]: value };
+  }
+
+  editSupplier(supplierId: number): void {
+    this.router.navigate(['admin/update-supplier', supplierId]);
+  }
+
+  deleteSupplier(supplierId: number): void {
+    this.suppliersService.deleteSupplier(supplierId)
   }
 
   get totalPages(): Observable<number> {

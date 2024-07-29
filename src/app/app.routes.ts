@@ -9,6 +9,7 @@ import { ChequesComponent } from './Admin/cheques/cheques.component';
 import { AddSupplierComponent } from './Admin/add-supplier/add-supplier.component';
 import { ItemsComponent } from './Admin/items/items.component';
 import { OrderComponent } from './Admin/orders/orders.component';
+import { UpdateSupplierComponent } from './Admin/update-supplier/update-supplier.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -20,6 +21,8 @@ export const routes: Routes = [
       { path: 'cheques', component: ChequesComponent },
       { path: 'orders', component: OrderComponent },
       { path: 'items', component: ItemsComponent },
+      { path: 'add-supplier', component: AddSupplierComponent },
+      { path: 'update-supplier/:id', component: UpdateSupplierComponent },
     ]
   },
   { path: 'customer', component: CustomerHomeComponent, canActivate: [AuthGuard], data: { role: 'Customer' } }

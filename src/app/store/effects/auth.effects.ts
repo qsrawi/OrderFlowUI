@@ -5,14 +5,14 @@ import { of } from 'rxjs';
 import * as AuthActions from '../actions/auth.actions';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
-import { HttpReqService } from '../../services/httpReq.service';
+import { AdminHttpReqService } from '../../services/httpReq.service';
 
 @Injectable()
 export class AuthEffects {
 
   constructor(
     private actions$: Actions,
-    private httpReqService: HttpReqService,
+    private adminHttpReqService: AdminHttpReqService,
     private router: Router
   ) {}
 
@@ -20,10 +20,9 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.login),
       mergeMap(action =>
-        this.httpReqService.login(action.username, action.password).pipe(
+        this.adminHttpReqService.login(action.username, action.password).pipe(
           map((user: User) => {
             if (user) {
-              // Navigate based on the user's role
               switch (user.role) {
                 case 'Supplier':
                   this.router.navigate(['/supplier']);
@@ -37,7 +36,6 @@ export class AuthEffects {
                 default:
                   return AuthActions.loginFailure();
               }
-              // Dispatch loginSuccess and loadUserSuccess actions
               return AuthActions.loginSuccess({ user });
             } else {
               return AuthActions.loginFailure();

@@ -1,0 +1,62 @@
+<form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="userName">Username</label>
+      <input id="userName" formControlName="userName" class="form-control" />
+      <div *ngIf="supplierForm.get('userName')!.invalid && supplierForm.get('userName')!.touched" class="text-danger">
+        Username is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" formControlName="password" type="password" class="form-control" />
+      <div *ngIf="supplierForm.get('password')!.invalid && supplierForm.get('password')!.touched" class="text-danger">
+        Password is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" class="form-control" />
+      <div *ngIf="supplierForm.get('email')!.invalid && supplierForm.get('email')!.touched" class="text-danger">
+        Enter a valid email.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input id="phone" formControlName="phone" class="form-control" />
+      <div *ngIf="supplierForm.get('phone')!.invalid && supplierForm.get('phone')!.touched" class="text-danger">
+        Phone is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" formControlName="name" class="form-control" />
+      <div *ngIf="supplierForm.get('name')!.invalid && supplierForm.get('name')!.touched" class="text-danger">
+        Name is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="identity">Identity</label>
+      <input id="identity" formControlName="identity" class="form-control" />
+      <div *ngIf="supplierForm.get('identity')!.invalid && supplierForm.get('identity')!.touched" class="text-danger">
+        Identity is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="details">Details</label>
+      <input id="details" formControlName="details" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input id="address" formControlName="address" class="form-control" />
+      <div *ngIf="supplierForm.get('address')!.invalid && supplierForm.get('address')!.touched" class="text-danger">
+        Address is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="image">Image</label>
+      <input id="image" formControlName="image" class="form-control" />
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Save Supplier</button>
+  </form>
+  

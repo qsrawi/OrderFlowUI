@@ -37,3 +37,9 @@ export const selectError = createSelector(
   selectSuppliersState,
   (state: SuppliersState) => state.error
 );
+
+export const selectSupplier = createSelector(
+  selectSuppliersState,
+  (state: SuppliersState) => state.supplier
+);
+

@@ -7,3 +7,8 @@ export const selectUserRole = createSelector(
   selectAuthState,
   (state: AuthState) => state.user?.role
 );
+
+export const selectUserId = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.user?.userId
+);
