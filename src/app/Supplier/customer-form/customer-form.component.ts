@@ -2,6 +2,9 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CustomerBaseDto } from '../../models/customer';
+import { Observable, take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectUserId } from '../../store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-customer-form',
@@ -16,7 +19,7 @@ export class CustomerFormComponent implements OnInit {
 
   customerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private store: Store) {
     this.customerForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
@@ -28,7 +31,6 @@ export class CustomerFormComponent implements OnInit {
       address: ['', Validators.required],
       image: [''],
       balance: ['', Validators.required],
-      supplierId: [1, Validators.required]
     });
   }
 

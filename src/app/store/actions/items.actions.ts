@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ItemFilterParams, ItemResponse } from '../../models/item';
+import { CreateItemDto } from '../../models/items';
 
 export const loadItems = createAction(
   '[Items] Load Items',
@@ -18,5 +19,19 @@ export const loadItemsSuccess = createAction(
 
 export const loadItemsFailure = createAction(
   '[Items] Load Items Failure',
+  props<{ error: any }>()
+);
+
+export const addItem = createAction(
+  '[Item] Add Item',
+  props<{ item: CreateItemDto }>()
+);
+
+export const addItemSuccess = createAction(
+  '[Item] Add Item Success'
+);
+
+export const addItemFailure = createAction(
+  '[Item] Add Item Failure',
   props<{ error: any }>()
 );

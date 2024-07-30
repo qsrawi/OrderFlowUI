@@ -1,1 +1,53 @@
-<p>add-receipt works!</p>
+<div class="container mt-3">
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="selectedTab === 'Cash'" (click)="selectTab('Cash')">
+          <i class="fas fa-money-bill-alt"></i> Cash
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="selectedTab === 'Cheque'" (click)="selectTab('Cheque')">
+          <i class="fas fa-money-check-alt"></i> Cheque
+        </a>
+      </li>
+    </ul>
+  
+    <div *ngIf="selectedTab === 'Cash'" class="mb-3">
+      <ul class="nav nav-pills mb-3">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="selectedSubTab === 'CashReceipt'" (click)="selectSubTab('CashReceipt')">
+            <i class="fas fa-receipt"></i> Receipt
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="selectedSubTab === 'CashVoucher'" (click)="selectSubTab('CashVoucher')">
+            <i class="fas fa-voucher"></i> Voucher
+          </a>
+        </li>
+      </ul>
+      <div *ngIf="selectedSubTab === 'CashReceipt'">
+      </div>
+      <div *ngIf="selectedSubTab === 'CashVoucher'">
+      </div>
+    </div>
+  
+    <div *ngIf="selectedTab === 'Cheque'" class="mb-3">
+      <ul class="nav nav-pills mb-3">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="selectedSubTab === 'ChequeReceipt'" (click)="selectSubTab('ChequeReceipt')">
+            <i class="fas fa-receipt"></i> Receipt
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="selectedSubTab === 'ChequeVoucher'" (click)="selectSubTab('ChequeVoucher')">
+            <i class="fas fa-voucher"></i> Voucher
+          </a>
+        </li>
+      </ul>
+      <div *ngIf="selectedSubTab === 'ChequeReceipt'">
+      </div>
+      <div *ngIf="selectedSubTab === 'ChequeVoucher'">
+      </div>
+    </div>
+  </div>
+  

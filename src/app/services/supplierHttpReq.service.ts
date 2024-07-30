@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { ChequeFilterParams, ChequesResponse } from '../models/cheques';
 import { OrderFilterParams, OrderResponse } from '../models/orders';
 import { ItemFilterParams, ItemResponse } from '../models/item';
-import { CustomerBaseDto } from '../models/customer';
+import { CustomerBaseDto, CustomersResponse } from '../models/customer';
+import { CreateItemDto } from '../models/items';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,21 @@ export class SupplierHttpReqService {
     private supplierApiUrl = `${this.apiUrl}/Supplier`;
 
     constructor(private http: HttpClient) {}
+
+    getSuppliers(id: number | undefined, pageNumber: number, pageSize: number, filters: any): Observable<CustomersResponse> {
+      let params = new HttpParams()
+          .set('PageNumber', pageNumber.toString())
+          .set('PageSize', pageSize.toString());
+
+      if (filters.name) params = params.set('Name', filters.name);
+      if (filters.userName) params = params.set('UserName', filters.userName);
+      if (filters.email) params = params.set('Email', filters.email);
+      if (filters.phone) params = params.set('Phone', filters.phone);
+      if (filters.address) params = params.set('Address', filters.address);
+      if (filters.identity) params = params.set('Identity', filters.identity);
+
+      return this.http.get<CustomersResponse>(`${this.supplierApiUrl}/GetCustomersBySupplier/${id}`, { params });
+    }
 
     getChequesBySupplier(supplierId: number | undefined, filters: ChequeFilterParams): Observable<ChequesResponse> {
         let params = new HttpParams()
@@ -81,8 +97,13 @@ export class SupplierHttpReqService {
 
       return this.http.get<ItemResponse>(`${this.supplierApiUrl}/GetItems/${supplierId}`, { params });
     }
+  
+    saveCustomer(id: number | undefined, customer: CustomerBaseDto): Observable<void> {
+      const url = id ? `${this.supplierApiUrl}/SaveCustomer/${id}` : `${this.supplierApiUrl}/SaveCustomer`;
+      return this.http.post<void>(url, customer);
+    }
 
-    addCustomer(customer: CustomerBaseDto): Observable<void> {
-      return this.http.post<void>(`${this.supplierApiUrl}/AddCustomer`, customer);
+    addItem(item: CreateItemDto): Observable<void> {
+      return this.http.post<void>(`${this.supplierApiUrl}/AddItem`, item);
     }
 }

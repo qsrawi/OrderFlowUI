@@ -12,7 +12,7 @@ import { OrderComponent } from './Admin/orders/orders.component';
 import { UpdateSupplierComponent } from './Admin/update-supplier/update-supplier.component';
 import { EndorsementChequeComponent } from './Supplier/endorsement-cheque/endorsement-cheque.component';
 import { AddReceiptComponent } from './Supplier/add-receipt/add-receipt.component';
-import { CustomersViewComponent } from './Supplier/customers-view/customers-view.component';
+import { CustomersViewComponent } from './generic/customers-view/customers-view.component';
 import { AddCustomerComponent } from './Supplier/add-customer/add-customer.component';
 import { ItemsViewComponent } from './Supplier/items-view/items-view.component';
 import { AddItemComponent } from './Supplier/add-item/add-item.component';

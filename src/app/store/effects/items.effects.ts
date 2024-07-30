@@ -32,6 +32,18 @@ export class ItemsEffects {
     )
   );
 
+  addItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ItemsActions.addItem),
+      mergeMap(action =>
+        this.supplierHttpReqService.addItem(action.item).pipe(
+          map(item => ItemsActions.addItemSuccess()),
+          catchError(error => of(ItemsActions.addItemFailure({ error })))
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private adminHttpReqService: AdminHttpReqService,
