@@ -37,7 +37,6 @@ export class SupplierFormComponent {
   }
 
   onSubmit(): void {
-    debugger
     if (this.supplierForm.valid) {
       this.submitForm.emit(this.supplierForm.value);
     } else {

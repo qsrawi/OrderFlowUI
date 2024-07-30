@@ -6,6 +6,11 @@ export const loadItems = createAction(
   props<{ filters: ItemFilterParams }>()
 );
 
+export const loadItemsBySupplier = createAction(
+  '[Items] Load Items By Supplier',
+  props<{ supplierId: number | undefined, filters: ItemFilterParams }>()
+);
+
 export const loadItemsSuccess = createAction(
   '[Items] Load Items Success',
   props<{ response: ItemResponse }>()

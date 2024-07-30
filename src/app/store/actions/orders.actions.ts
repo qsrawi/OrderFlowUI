@@ -6,6 +6,11 @@ export const loadOrders = createAction(
   props<{ filters: OrderFilterParams }>()
 );
 
+export const loadOrdersBySupplier = createAction(
+  '[Orders] Load Orders By Supplier',
+  props<{ supplierId: number | undefined, filters: OrderFilterParams }>()
+);
+
 export const loadOrdersSuccess = createAction(
   '[Orders] Load Orders Success',
   props<{ response: OrderResponse }>()

@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as ChequesActions from '../actions/cheques.actions';
 import { AdminHttpReqService } from '../../services/httpReq.service';
+import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
 
 @Injectable()
 export class ChequesEffects {
@@ -15,6 +16,18 @@ export class ChequesEffects {
             tap(x => console.log(x)),
           map(response => ChequesActions.loadChequesSuccess({ cheques: response.items, totalCount: response.totalCount })),
           catchError(error => of(ChequesActions.loadChequesFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+
+  loadChequesBySupplier$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChequesActions.loadChequesBySupplier),
+      mergeMap(action =>
+        this.supplierHttpReq.getChequesBySupplier(action.supplierId, action.filters).pipe(
+          map(response => ChequesActions.loadChequesSuccess({ cheques: response.items, totalCount: response.totalCount })),
+          catchError(error => of(ChequesActions.loadChequesFailure({ error })))
         )
       )
     )
@@ -34,6 +47,7 @@ export class ChequesEffects {
 
   constructor(
     private actions$: Actions,
-    private adminHttpReqService: AdminHttpReqService
+    private adminHttpReqService: AdminHttpReqService,
+    private supplierHttpReq: SupplierHttpReqService
   ) {}
 }

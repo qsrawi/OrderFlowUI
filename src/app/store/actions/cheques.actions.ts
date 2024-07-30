@@ -12,6 +12,11 @@ export const loadChequesSuccess = createAction(
   props<{ cheques: Cheque[], totalCount: number }>()
 );
 
+export const loadChequesBySupplier = createAction(
+  '[Cheques] Load Cheques By Supplier',
+  props<{ supplierId: number| undefined, filters: ChequeFilterParams }>()
+);
+
 export const loadChequesFailure = createAction(
   '[Cheques] Load Cheques Failure',
   props<{ error: string }>()

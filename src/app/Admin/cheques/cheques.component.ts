@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import * as ChequesActions from '../../store/actions/cheques.actions';
 import { selectAllCheques, selectTotalCount, selectLoading, selectError } from '../../store/selectors/cheques.selectors';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Cheque, ChequeFilterParams } from '../../models/cheques';
 import { ChequeTransaction } from '../../models/cheque_transaction';
 import { selectTransactions } from '../../store/selectors/transactions.selectors';
+import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-cheques',
@@ -22,6 +23,8 @@ export class ChequesComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
   transactions$: Observable<ChequeTransaction[]>;
+  userRole$: Observable<string| undefined>;
+  userId$: Observable<number| undefined>;
 
   filters: ChequeFilterParams = {
     Status: '',
@@ -39,6 +42,8 @@ export class ChequesComponent implements OnInit {
 
   selectedTab: string = 'Outgoing';
   showModal: boolean = false;
+  isSupplier: boolean = false;
+  supplierId: number | undefined;
 
   constructor(private store: Store) {
     this.cheques$ = this.store.select(selectAllCheques);
@@ -46,14 +51,28 @@ export class ChequesComponent implements OnInit {
     this.loading$ = this.store.select(selectLoading);
     this.error$ = this.store.select(selectError);
     this.transactions$ = this.store.select(selectTransactions);
+    this.userRole$ = this.store.select(selectUserRole).pipe(take(1));
+    this.userId$ = this.store.select(selectUserId).pipe(take(1));
   }
 
   ngOnInit(): void {
-    this.loadCheques();
+    this.userRole$.subscribe(role => {
+      this.isSupplier = role === 'Supplier';
+      if (this.isSupplier) {
+        this.loadChequesBySupplier();
+      } else {
+        this.loadCheques();
+      }
+    });
   }
 
   loadCheques(): void {
     this.store.dispatch(ChequesActions.loadCheques({ chequeType: this.selectedTab, filters: this.filters }));
+  }
+
+  loadChequesBySupplier(): void {
+    this.userId$.subscribe(id => this.supplierId = id);
+    this.store.dispatch(ChequesActions.loadChequesBySupplier({ supplierId: this.supplierId, filters: this.filters }));
   }
 
   applyFilters(): void {

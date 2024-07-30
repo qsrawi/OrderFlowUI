@@ -1,0 +1,78 @@
+<form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="userName">User Name</label>
+      <input id="userName" formControlName="userName" class="form-control" />
+      <div *ngIf="customerForm.get('userName')?.touched && customerForm.get('userName')?.invalid">
+        <small class="text-danger">User Name is required</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" formControlName="password" type="password" class="form-control" />
+      <div *ngIf="customerForm.get('password')?.touched && customerForm.get('password')?.invalid">
+        <small class="text-danger">Password is required</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" class="form-control" />
+      <div *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid">
+        <small class="text-danger">Valid email is required</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input id="phone" formControlName="phone" class="form-control" />
+      <div *ngIf="customerForm.get('phone')?.touched && customerForm.get('phone')?.invalid">
+        <small class="text-danger">Phone is required</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" formControlName="name" class="form-control" />
+      <div *ngIf="customerForm.get('name')?.touched && customerForm.get('name')?.invalid">
+        <small class="text-danger">Name is required</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="identity">Identity</label>
+      <input id="identity" formControlName="identity" class="form-control" />
+      <div *ngIf="customerForm.get('identity')?.touched && customerForm.get('identity')?.invalid">
+        <small class="text-danger">Identity is required</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="details">Details</label>
+      <input id="details" formControlName="details" class="form-control" />
+    </div>
+  
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input id="address" formControlName="address" class="form-control" />
+      <div *ngIf="customerForm.get('address')?.touched && customerForm.get('address')?.invalid">
+        <small class="text-danger">Address is required</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="image">Image</label>
+      <input id="image" formControlName="image" class="form-control" />
+    </div>
+  
+    <div class="form-group">
+      <label for="balance">Balance</label>
+      <input id="balance" formControlName="balance" type="number" class="form-control" />
+      <div *ngIf="customerForm.get('balance')?.touched && customerForm.get('balance')?.invalid">
+        <small class="text-danger">Balance is required</small>
+      </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  

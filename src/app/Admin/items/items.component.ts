@@ -5,9 +5,10 @@ import * as ItemsActions from '../../store/actions/items.actions';
 import { selectAllItems, selectTotalCount, selectError } from '../../store/selectors/items.selectors';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { map, defaultIfEmpty } from 'rxjs/operators';
+import { map, defaultIfEmpty, take } from 'rxjs/operators';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Item, ItemFilterParams } from '../../models/item';
+import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-items',
@@ -19,6 +20,8 @@ export class ItemsComponent implements OnInit {
   items$: Observable<Item[]>;
   totalCount$: Observable<number>;
   error$: Observable<string | null>;
+  userRole$: Observable<string | undefined>;
+  userId$: Observable<number| undefined>;
 
   filters: ItemFilterParams = {
     SupplierName: '',
@@ -31,18 +34,33 @@ export class ItemsComponent implements OnInit {
     PageSize: 10
   };
 
+  supplierId: number | undefined;
+
   constructor(private store: Store) {
     this.items$ = this.store.select(selectAllItems);
     this.totalCount$ = this.store.select(selectTotalCount);
     this.error$ = this.store.select(selectError);
+    this.userRole$ = this.store.select(selectUserRole).pipe(take(1));
+    this.userId$ = this.store.select(selectUserId).pipe(take(1));
   }
 
   ngOnInit(): void {
-    this.loadItems();
+    this.userRole$.subscribe(role => {
+      if (role === 'Supplier') {
+        this.loadItemsBySupplier();
+      } else {
+        this.loadItems();
+      }
+    });
   }
 
   loadItems(): void {
     this.store.dispatch(ItemsActions.loadItems({ filters: this.filters }));
+  }
+
+  loadItemsBySupplier(): void {
+    this.userId$.subscribe(id => this.supplierId = id);
+    this.store.dispatch(ItemsActions.loadItemsBySupplier({ supplierId: this.supplierId,  filters: this.filters }));
   }
 
   applyFilters(): void {

@@ -11,7 +11,7 @@
             <i class="fas fa-download"></i> Incoming
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!isSupplier">
         <a class="nav-link" [class.active]="selectedTab === 'None'" (click)="onTabChange('None')">
             <i class="fas fa-th-large"></i> All
         </a>

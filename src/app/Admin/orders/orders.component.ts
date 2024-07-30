@@ -5,9 +5,10 @@ import * as OrdersActions from '../../store/actions/orders.actions';
 import { selectAllOrders, selectTotalCount, selectError } from '../../store/selectors/orders.selectors';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { map} from 'rxjs/operators';
+import { map, take} from 'rxjs/operators';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Order, OrderFilterParams } from '../../models/orders';
+import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-orders',
@@ -19,6 +20,8 @@ export class OrderComponent implements OnInit {
   orders$: Observable<Order[]>;
   totalCount$: Observable<number>;
   error$: Observable<string | null>;
+  userRole$: Observable<string | undefined>;
+  userId$: Observable<number| undefined>;
 
   filters: OrderFilterParams = {
     OrderDateFrom: undefined,
@@ -30,18 +33,33 @@ export class OrderComponent implements OnInit {
     PageSize: 10
   };
 
+  supplierId: number | undefined;
+
   constructor(private store: Store) {
     this.orders$ = this.store.select(selectAllOrders);
     this.totalCount$ = this.store.select(selectTotalCount);
     this.error$ = this.store.select(selectError);
+    this.userRole$ = this.store.select(selectUserRole).pipe(take(1));
+    this.userId$ = this.store.select(selectUserId).pipe(take(1));
   }
 
   ngOnInit(): void {
-    this.loadOrders();
+    this.userRole$.subscribe(role => {
+      if (role === 'Supplier') {
+        this.loadOrdersBySupplier();
+      } else {
+        this.loadOrders();
+      }
+    });
   }
 
   loadOrders(): void {
     this.store.dispatch(OrdersActions.loadOrders({ filters: this.filters }));
+  }
+
+  loadOrdersBySupplier(): void {
+    this.userId$.subscribe(id => this.supplierId = id);
+    this.store.dispatch(OrdersActions.loadOrdersBySupplier({ supplierId: this.supplierId, filters: this.filters }));
   }
 
   applyFilters(): void {
