@@ -15,7 +15,33 @@ export class CustomerHttpReqService {
 
     constructor(private http: HttpClient) {}
 
-    loadCustomer(id: number): Observable<CustomerBaseDto> {
-      return this.http.get<CustomerBaseDto>(`${this.customerApiUrl}/${id}`);
+    loadCustomer(customerId: number | undefined): Observable<CustomerBaseDto> {
+      return this.http.get<CustomerBaseDto>(`${this.customerApiUrl}/GetCustomer/${customerId}`);
+    }
+
+    getItemsForCustomer(supplierId: number | undefined, filters: ItemFilterParams): Observable<ItemResponse> {
+      let params = new HttpParams();
+        if (filters.SupplierName) {
+          params = params.set('SupplierName', filters.SupplierName);
+        }
+        if (filters.ItemName) {
+          params = params.set('ItemName', filters.ItemName);
+        }
+        if (filters.MinPrice !== undefined && filters.MinPrice !== null) {
+          params = params.set('MinPrice', filters.MinPrice.toString());
+        }
+        if (filters.MaxPrice !== undefined && filters.MaxPrice !== null) {
+          params = params.set('MaxPrice', filters.MaxPrice.toString());
+        }
+        if (filters.CreatedDateFrom) {
+          params = params.set('CreatedDateFrom', filters.CreatedDateFrom.toISOString());
+        }
+        if (filters.CreatedDateTo) {
+          params = params.set('CreatedDateTo', filters.CreatedDateTo.toISOString());
+        }
+        params = params.set('PageNumber', filters.PageNumber.toString());
+        params = params.set('PageSize', filters.PageSize.toString());
+  
+      return this.http.get<ItemResponse>(`${this.customerApiUrl}/GetItemsBySupplier/${supplierId}`, { params });
     }
 }

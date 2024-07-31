@@ -22,8 +22,8 @@
 
       <div class="form-group">
         <label for="images">Images</label>
-        <input id="images" formControlName="images" class="form-control" />
+        <input id="images" type="file" (change)="onFileChange($event)" class="form-control" />
       </div>
-
+      <br>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>

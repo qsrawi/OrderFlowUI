@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import * as ChequesActions from '../actions/cheques.actions';
-import { ChequeTransaction } from '../../models/cheque_transaction';
+import { Transaction } from '../../models/cheque_transaction';
 
 export interface State {
-  transactions: ChequeTransaction[];
+  transactions: Transaction[];
   error: any;
 }
 
@@ -23,5 +23,8 @@ export const transactionsReducer = createReducer(
     ...state,
     transactions: [],
     error,
-  }))
+  })),
+  on(ChequesActions.loadTransactions, state => ({ ...state, loading: true, error: null })),
+  on(ChequesActions.loadTransactionsSuccess, (state, { transactions }) => ({ ...state, transactions, loading: false })),
+  on(ChequesActions.loadTransactionsFailure, (state, { error }) => ({ ...state, error, loading: false }))
 );

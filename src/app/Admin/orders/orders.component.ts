@@ -34,6 +34,8 @@ export class OrderComponent implements OnInit {
   };
 
   supplierId: number | undefined;
+  pageSize: number = 10;
+  userRole: string | undefined;
 
   constructor(private store: Store) {
     this.orders$ = this.store.select(selectAllOrders);
@@ -44,17 +46,15 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userRole$.subscribe(role => {
-      if (role === 'Supplier') {
-        this.loadOrdersBySupplier();
-      } else {
-        this.loadOrders();
-      }
-    });
+    this.userRole$.subscribe(role => this.userRole = role);
+    this.loadOrders();
   }
 
   loadOrders(): void {
-    this.store.dispatch(OrdersActions.loadOrders({ filters: this.filters }));
+    if (this.userRole === 'Supplier') {
+      this.loadOrdersBySupplier();
+    } else
+      this.store.dispatch(OrdersActions.loadOrders({ filters: this.filters }));
   }
 
   loadOrdersBySupplier(): void {
@@ -69,6 +69,13 @@ export class OrderComponent implements OnInit {
 
   onPageChange(page: number): void {
     this.filters = { ...this.filters, PageNumber: page };
+    this.loadOrders();
+  }
+
+  onPageSizeChange(event: Event): void {
+    const newSize = (event.target as HTMLSelectElement).value;
+    this.pageSize = parseInt(newSize, 10);
+    this.filters = { ...this.filters, PageSize: this.pageSize, PageNumber: 1 };
     this.loadOrders();
   }
 

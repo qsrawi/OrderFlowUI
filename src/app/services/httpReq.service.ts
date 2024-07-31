@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { User } from '../models/user'
 import { ChequeFilterParams, ChequesResponse } from '../models/cheques';
 import { CreateSupplierDto, SuppliersResponse } from '../models/supplier';
-import { ChequeTransaction } from '../models/cheque_transaction';
+import { Transaction } from '../models/cheque_transaction';
 import { OrderFilterParams, OrderResponse } from '../models/orders';
 import { ItemFilterParams, ItemResponse } from '../models/item';
 @Injectable({
@@ -62,66 +62,66 @@ export class AdminHttpReqService {
         return this.http.get<CreateSupplierDto>(`${this.adminApiUrl}/GetSupplier/${id}`);
       }
 
-    getChequeTransactions(chequeId: number): Observable<ChequeTransaction[]> {
-        return this.http.get<ChequeTransaction[]>(`${this.adminApiUrl}/GetChequeTransactions/${chequeId}`);
-      }
+    getChequeTransactions(chequeId: number): Observable<Transaction[]> {
+      return this.http.get<Transaction[]>(`${this.adminApiUrl}/GetChequeTransactions/${chequeId}`);
+    }
 
-      getOrders(filters: OrderFilterParams): Observable<OrderResponse> {
-        let params = new HttpParams();
-        
-        if (filters.OrderDateFrom) {
-          params = params.set('OrderDateFrom', filters.OrderDateFrom.toISOString());
-        }
-        if (filters.OrderDateTo) {
-          params = params.set('OrderDateTo', filters.OrderDateTo.toISOString());
-        }
-        if (filters.MinTotalAmount !== undefined && filters.MinTotalAmount !== null) {
-          params = params.set('MinTotalAmount', filters.MinTotalAmount.toString());
-        }
-        if (filters.MaxTotalAmount !== undefined && filters.MaxTotalAmount !== null) {
-          params = params.set('MaxTotalAmount', filters.MaxTotalAmount.toString());
-        }
-        if (filters.Status) {
-          params = params.set('Status', filters.Status);
-        }
-        params = params.set('PageNumber', filters.PageNumber.toString());
-        params = params.set('PageSize', filters.PageSize.toString());
-        
-        return this.http.get<OrderResponse>(`${this.adminApiUrl}/GetOrders`, { params });
+    getOrders(filters: OrderFilterParams): Observable<OrderResponse> {
+      let params = new HttpParams();
+      
+      if (filters.OrderDateFrom) {
+        params = params.set('OrderDateFrom', filters.OrderDateFrom.toISOString());
+      }
+      if (filters.OrderDateTo) {
+        params = params.set('OrderDateTo', filters.OrderDateTo.toISOString());
+      }
+      if (filters.MinTotalAmount !== undefined && filters.MinTotalAmount !== null) {
+        params = params.set('MinTotalAmount', filters.MinTotalAmount.toString());
+      }
+      if (filters.MaxTotalAmount !== undefined && filters.MaxTotalAmount !== null) {
+        params = params.set('MaxTotalAmount', filters.MaxTotalAmount.toString());
+      }
+      if (filters.Status) {
+        params = params.set('Status', filters.Status);
+      }
+      params = params.set('PageNumber', filters.PageNumber.toString());
+      params = params.set('PageSize', filters.PageSize.toString());
+      
+      return this.http.get<OrderResponse>(`${this.adminApiUrl}/GetOrders`, { params });
     }
 
     getItems(filters: ItemFilterParams): Observable<ItemResponse> {
-        let params = new HttpParams();
-        if (filters.SupplierName) {
-          params = params.set('SupplierName', filters.SupplierName);
-        }
-        if (filters.ItemName) {
-          params = params.set('ItemName', filters.ItemName);
-        }
-        if (filters.MinPrice !== undefined && filters.MinPrice !== null) {
-          params = params.set('MinPrice', filters.MinPrice.toString());
-        }
-        if (filters.MaxPrice !== undefined && filters.MaxPrice !== null) {
-          params = params.set('MaxPrice', filters.MaxPrice.toString());
-        }
-        if (filters.CreatedDateFrom) {
-          params = params.set('CreatedDateFrom', filters.CreatedDateFrom.toISOString());
-        }
-        if (filters.CreatedDateTo) {
-          params = params.set('CreatedDateTo', filters.CreatedDateTo.toISOString());
-        }
-        params = params.set('PageNumber', filters.PageNumber.toString());
-        params = params.set('PageSize', filters.PageSize.toString());
-    
-        return this.http.get<ItemResponse>(`${this.adminApiUrl}/GetItems`, { params });
+      let params = new HttpParams();
+      if (filters.SupplierName) {
+        params = params.set('SupplierName', filters.SupplierName);
+      }
+      if (filters.ItemName) {
+        params = params.set('ItemName', filters.ItemName);
+      }
+      if (filters.MinPrice !== undefined && filters.MinPrice !== null) {
+        params = params.set('MinPrice', filters.MinPrice.toString());
+      }
+      if (filters.MaxPrice !== undefined && filters.MaxPrice !== null) {
+        params = params.set('MaxPrice', filters.MaxPrice.toString());
+      }
+      if (filters.CreatedDateFrom) {
+        params = params.set('CreatedDateFrom', filters.CreatedDateFrom.toISOString());
+      }
+      if (filters.CreatedDateTo) {
+        params = params.set('CreatedDateTo', filters.CreatedDateTo.toISOString());
+      }
+      params = params.set('PageNumber', filters.PageNumber.toString());
+      params = params.set('PageSize', filters.PageSize.toString());
+  
+      return this.http.get<ItemResponse>(`${this.adminApiUrl}/GetItems`, { params });
     }
 
     saveSupplier(id: number | undefined, supplier: CreateSupplierDto): Observable<void> {
-        const url = id ? `${this.adminApiUrl}/SaveSupplier?id=${id}` : `${this.adminApiUrl}/SaveSupplier`;
-        return this.http.post<void>(url, supplier);
+      const url = id ? `${this.adminApiUrl}/SaveSupplier?id=${id}` : `${this.adminApiUrl}/SaveSupplier`;
+      return this.http.post<void>(url, supplier);
     }
 
     deleteSupplier(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.adminApiUrl}/DeleteSupplier/${id}`);
+      return this.http.delete<void>(`${this.adminApiUrl}/DeleteSupplier/${id}`);
     }
 }

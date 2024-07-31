@@ -19,6 +19,10 @@ import { itemsReducer } from './store/reducers/items.reducer';
 import { ItemsEffects } from './store/effects/items.effects';
 import { customerReducer } from './store/reducers/customer.reducer';
 import { CustomerEffects } from './store/effects/customer.effects';
+import { cashReducer } from './store/reducers/cash.reducer';
+import { CashEffects } from './store/effects/cash.effects';
+import { receiptReducer } from './store/reducers/receipt.reducer';
+import { ReceiptEffects } from './store/effects/receipt.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,9 +36,11 @@ export const appConfig: ApplicationConfig = {
           orders: ordersReducer,
           items: itemsReducer,
           customers: customerReducer,
+          cashs: cashReducer,
+          receipt: receiptReducer
         }
       ), 
-      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects]),
+      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects]),
       provideStoreDevtools({ maxAge: 25, logOnly: false }),
       provideHttpClient(),
       NumberRangePipe

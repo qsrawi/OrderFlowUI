@@ -118,6 +118,11 @@
         <li class="page-item" [class.disabled]="filters.PageNumber === (totalPages | async)">
           <button class="page-link" (click)="onPageChange(filters.PageNumber + 1)" [disabled]="filters.PageNumber === (totalPages | async)">Next</button>
         </li>
+        <li class="page-item">
+          <select class="form-control" (change)="onPageSizeChange($event)" style="display:inline-block; width:auto; margin-left: 10px;">
+            <option *ngFor="let size of [5, 10, 20, 50]" [value]="size" [selected]="size === pageSize">{{ size }} per page</option>
+          </select>
+        </li>
       </ul>
     </nav>
   </div>
@@ -135,8 +140,8 @@
               <p><strong>Invoice Number:</strong> {{ transaction.invoiceNumber }}</p>
               <p><strong>Transaction Date:</strong> {{ transaction.transactionDate | date }}</p>
               <p><strong>Amount:</strong> {{ transaction.amount }}</p>
-              <p><strong>Details:</strong> {{ transaction.details }}</p>
-              <p><strong>Cheque Receiver Name:</strong> {{ transaction.chequeReceiverName }}</p>
+              <p><strong>Cheque Receiver Name:</strong> {{ transaction.receiverName }}</p>
+              <p><strong>Cheque Issuer Name:</strong> {{ transaction.issuerName }}</p>
               <p><strong>Payment Method:</strong> {{ transaction.paymentMethod }}</p>
               <hr>
             </div>

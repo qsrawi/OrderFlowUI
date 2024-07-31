@@ -73,6 +73,11 @@
         <li class="page-item" [class.disabled]="filters.PageNumber === (totalPages | async)">
           <button class="page-link" (click)="onPageChange(filters.PageNumber + 1)" [disabled]="filters.PageNumber === (totalPages | async)">Next</button>
         </li>
+        <li class="page-item">
+          <select class="form-control" (change)="onPageSizeChange($event)" style="display:inline-block; width:auto; margin-left: 10px;">
+            <option *ngFor="let size of [5, 10, 20, 50]" [value]="size" [selected]="size === pageSize">{{ size }} per page</option>
+          </select>
+        </li>
       </ul>
     </nav>
   </div>

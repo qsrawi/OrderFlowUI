@@ -1,0 +1,24 @@
+<div class="container mt-3">
+    <div *ngIf="loading$ | async" class="text-center">Loading...</div>
+    <div *ngIf="error$ | async as error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="!(loading$ | async)">
+      <div class="row">
+        <div *ngFor="let transaction of transactions$ | async" class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Transaction #{{ transaction.transactionId }}</h5>
+              <p class="card-text">
+                <strong>Invoice Number:</strong> {{ transaction.invoiceNumber }}<br>
+                <strong>Date:</strong> {{ transaction.transactionDate | date }}<br>
+                <strong>Amount:</strong> {{ transaction.amount | currency }}<br>
+                <strong>Receiver Name:</strong> {{ transaction.receiverName }}<br>
+                <strong>Issuer Name:</strong> {{ transaction.issuerName }}<br>
+                <strong>Payment Method:</strong> {{ transaction.paymentMethod }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

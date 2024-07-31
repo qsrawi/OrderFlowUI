@@ -17,6 +17,9 @@ import { AddCustomerComponent } from './Supplier/add-customer/add-customer.compo
 import { ItemsViewComponent } from './Supplier/items-view/items-view.component';
 import { AddItemComponent } from './Supplier/add-item/add-item.component';
 import { OrdersComponent } from './Supplier/orders/orders.component';
+import { AccountStatementComponent } from './Supplier/account-statement/account-statement.component';
+import { CartComponent } from './Customer/cart/cart.component';
+import { ReceiptComponent } from './Customer/receipt/receipt.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -29,7 +32,17 @@ export const routes: Routes = [
       { path: 'add-receipt', component: AddReceiptComponent },
       { path: 'orders', component: OrderComponent },
       { path: 'cheques', component: ChequesComponent },
-      { path: 'endorsement-cheque', component: EndorsementChequeComponent },
+      { path: 'suppliers-view', component: SuppliersViewComponent },
+      { path: 'account-statement', component: AccountStatementComponent },
+    ]
+  },
+  { path: 'customer', component: CustomerHomeComponent, canActivate: [AuthGuard], data: { role: 'Customer' },
+    children: [
+      { path: 'cart', component: CartComponent },
+      { path: 'orders', component: OrderComponent },
+      { path: 'items', component: ItemsComponent },
+      { path: 'receipt', component: ReceiptComponent },
+      { path: 'account-statement', component: AccountStatementComponent },
     ]
   },
   { path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuard], data: { role: 'Admin' },

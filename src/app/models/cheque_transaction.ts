@@ -1,9 +1,9 @@
-export interface ChequeTransaction {
+export interface Transaction {
     transactionId: number;
     invoiceNumber: number;
     transactionDate: string;
     amount: number;
-    details: string | null;
-    chequeReceiverName: string;
+    receiverName: string;
+    issuerName: string;
     paymentMethod: string;
   } 

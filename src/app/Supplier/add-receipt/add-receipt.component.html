@@ -19,15 +19,19 @@
             <i class="fas fa-receipt"></i> Receipt
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [class.active]="selectedSubTab === 'CashVoucher'" (click)="selectSubTab('CashVoucher')">
-            <i class="fas fa-voucher"></i> Voucher
-          </a>
-        </li>
       </ul>
       <div *ngIf="selectedSubTab === 'CashReceipt'">
-      </div>
-      <div *ngIf="selectedSubTab === 'CashVoucher'">
+        <div *ngIf="loading$ | async">Loading...</div>
+        <div *ngIf="error$ | async as error" class="text-danger">{{ error }}</div>
+        <div *ngIf="!(loading$ | async)">
+          <label for="cashDetail">Select Cash Detail:</label>
+          <select id="cashDetail" class="form-control" [(ngModel)]="selectedCashDetail" (ngModelChange)="onCashDetailSelect($event)">
+            <option *ngFor="let cashDetail of cashDetails$ | async" [ngValue]="cashDetail">
+              {{ cashDetail.number }} - {{ cashDetail.amount }} {{ cashDetail.currency }} - ({{ cashDetail.customerName }})
+            </option>
+          </select>
+          <button class="btn btn-primary mt-3" (click)="onSubmit()">Add Receipt</button>
+        </div>
       </div>
     </div>
   
@@ -45,8 +49,23 @@
         </li>
       </ul>
       <div *ngIf="selectedSubTab === 'ChequeReceipt'">
+        <!-- Add your Cheque Receipt form here -->
       </div>
       <div *ngIf="selectedSubTab === 'ChequeVoucher'">
+        <!-- Add your Cheque Voucher form here -->
+      </div>
+    </div>
+  
+    <div *ngIf="receiptResponse$ | async as receipt">
+      <div class="alert alert-success mt-3">
+        <strong>Receipt Created:</strong>
+        <p>Receipt ID: {{ receipt.receiptId }}</p>
+        <p>Issuer: {{ receipt.issuer }}</p>
+        <p>Receiver: {{ receipt.reciver }}</p>
+        <p>Invoice Number: {{ receipt.invoiceNumber }}</p>
+        <p>Amount: {{ receipt.amount }}</p>
+        <p>Currency: {{ receipt.currency }}</p>
+        <p>Receipt Date: {{ receipt.receiptDate | date }}</p>
       </div>
     </div>
   </div>

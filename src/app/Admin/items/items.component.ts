@@ -35,6 +35,9 @@ export class ItemsComponent implements OnInit {
   };
 
   supplierId: number | undefined;
+  customerId: number | undefined;
+  userRole: string | undefined;
+  pageSize: number = 10;
 
   constructor(private store: Store) {
     this.items$ = this.store.select(selectAllItems);
@@ -45,22 +48,27 @@ export class ItemsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userRole$.subscribe(role => {
-      if (role === 'Supplier') {
-        this.loadItemsBySupplier();
-      } else {
-        this.loadItems();
-      }
-    });
+    this.userRole$.subscribe(role => this.userRole = role);
+    this.loadItems();
   }
 
   loadItems(): void {
-    this.store.dispatch(ItemsActions.loadItems({ filters: this.filters }));
+    if (this.userRole === 'Supplier') {
+      this.loadItemsBySupplier();
+    } else if (this.userRole === 'Customer'){
+      this.loadItemsByCustomer();
+    } else 
+      this.store.dispatch(ItemsActions.loadItems({ filters: this.filters }));
   }
 
   loadItemsBySupplier(): void {
     this.userId$.subscribe(id => this.supplierId = id);
     this.store.dispatch(ItemsActions.loadItemsBySupplier({ supplierId: this.supplierId,  filters: this.filters }));
+  }
+
+  loadItemsByCustomer(): void {
+    this.userId$.subscribe(id => this.customerId = id);
+    this.store.dispatch(ItemsActions.loadItemsForCustomer({ customerId: this.customerId,  filters: this.filters }));
   }
 
   applyFilters(): void {
@@ -73,10 +81,17 @@ export class ItemsComponent implements OnInit {
     this.loadItems();
   }
 
+
+  onPageSizeChange(event: Event): void {
+    const newSize = (event.target as HTMLSelectElement).value;
+    this.pageSize = parseInt(newSize, 10);
+    this.filters = { ...this.filters, PageSize: this.pageSize, PageNumber: 1 };
+    this.loadItems();
+  }
+
   get totalPages(): Observable<number> {
     return this.totalCount$.pipe(
-      map(totalCount => Math.ceil(totalCount / this.filters.PageSize)),
-      defaultIfEmpty(0)
+      map(totalCount => Math.ceil(totalCount / this.filters.PageSize))
     );
   }
 

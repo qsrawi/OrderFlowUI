@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Cheque, ChequeFilterParams } from '../../models/cheques';
-import { ChequeTransaction } from '../../models/cheque_transaction';
+import { Transaction } from '../../models/cheque_transaction';
 
 export const loadCheques = createAction(
   '[Cheques] Load Cheques',
@@ -29,10 +29,25 @@ export const loadChequeTransactions = createAction(
 
 export const loadChequeTransactionsSuccess = createAction(
   '[Cheques] Load Cheque Transactions Success',
-  props<{ transactions: ChequeTransaction[] }>()
+  props<{ transactions: Transaction[] }>()
 );
 
 export const loadChequeTransactionsFailure = createAction(
   '[Cheques] Load Cheque Transactions Failure',
+  props<{ error: any }>()
+);
+
+export const loadTransactions = createAction(
+  '[Account Statement] Load Transactions',
+  props<{ supplierId: number | undefined }>()
+);
+
+export const loadTransactionsSuccess = createAction(
+  '[Account Statement] Load Transactions Success',
+  props<{ transactions: Transaction[] }>()
+);
+
+export const loadTransactionsFailure = createAction(
+  '[Account Statement] Load Transactions Failure',
   props<{ error: any }>()
 );

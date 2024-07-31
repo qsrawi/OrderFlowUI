@@ -7,9 +7,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Cheque, ChequeFilterParams } from '../../models/cheques';
-import { ChequeTransaction } from '../../models/cheque_transaction';
 import { selectTransactions } from '../../store/selectors/transactions.selectors';
 import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
+import { Transaction } from '../../models/cheque_transaction';
 
 @Component({
   selector: 'app-cheques',
@@ -22,7 +22,7 @@ export class ChequesComponent implements OnInit {
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
-  transactions$: Observable<ChequeTransaction[]>;
+  transactions$: Observable<Transaction[]>;
   userRole$: Observable<string| undefined>;
   userId$: Observable<number| undefined>;
 
@@ -44,6 +44,8 @@ export class ChequesComponent implements OnInit {
   showModal: boolean = false;
   isSupplier: boolean = false;
   supplierId: number | undefined;
+  userRole: string | undefined;
+  pageSize: number = 10;
 
   constructor(private store: Store) {
     this.cheques$ = this.store.select(selectAllCheques);
@@ -56,18 +58,17 @@ export class ChequesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userRole$.subscribe(role => {
-      this.isSupplier = role === 'Supplier';
-      if (this.isSupplier) {
-        this.loadChequesBySupplier();
-      } else {
-        this.loadCheques();
-      }
-    });
+    this.userRole$.subscribe(role => this.userRole = role);
+    this.loadCheques();
   }
 
   loadCheques(): void {
-    this.store.dispatch(ChequesActions.loadCheques({ chequeType: this.selectedTab, filters: this.filters }));
+      this.isSupplier = this.userRole === 'Supplier';
+      if (this.isSupplier) {
+        this.loadChequesBySupplier();
+      } else 
+        this.store.dispatch(ChequesActions.loadCheques({ chequeType: this.selectedTab, filters: this.filters }));
+
   }
 
   loadChequesBySupplier(): void {
@@ -82,6 +83,13 @@ export class ChequesComponent implements OnInit {
 
   onPageChange(page: number): void {
     this.filters = { ...this.filters, PageNumber: page };
+    this.loadCheques();
+  }
+
+  onPageSizeChange(event: Event): void {
+    const newSize = (event.target as HTMLSelectElement).value;
+    this.pageSize = parseInt(newSize, 10);
+    this.filters = { ...this.filters, PageSize: this.pageSize, PageNumber: 1 };
     this.loadCheques();
   }
 

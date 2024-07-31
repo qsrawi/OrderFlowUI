@@ -20,6 +20,7 @@ export class AddItemComponent {
   userId$: Observable<number| undefined>;
 
   supplierId: number | undefined;
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -48,6 +49,13 @@ export class AddItemComponent {
       this.router.navigate(['supplier/items']);
     } else {
       this.itemForm.markAllAsTouched();
+    }
+  }
+
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
     }
   }
 }
