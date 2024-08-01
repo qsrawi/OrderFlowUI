@@ -1,9 +1,9 @@
 export interface Item {
     itemId: number;
-    itemName: string;
-    supplierName: string;
+    name: string;
     price: number;
     createdDate: string;
+    image: string;
   }
   
   export interface ItemFilterParams {

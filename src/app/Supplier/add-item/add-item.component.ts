@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,9 +15,9 @@ import { selectUserId } from '../../store/selectors/auth.selectors';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class AddItemComponent {
+export class AddItemComponent implements OnInit {
   itemForm: FormGroup;
-  userId$: Observable<number| undefined>;
+  userId$: Observable<number | undefined>;
 
   supplierId: number | undefined;
   selectedFile: File | null = null;
@@ -31,22 +31,37 @@ export class AddItemComponent {
       name: ['', Validators.required],
       price: ['', Validators.required],
       description: [''],
-      images: [''],
-      supplierId: [1]
+      image: [null, Validators.required],
+      supplierId: [2]
     });
     this.userId$ = this.store.select(selectUserId).pipe(take(1));
   }
 
+  ngOnInit(): void {
+    this.userId$.subscribe(role => this.supplierId = role);
+    console.log(this.supplierId)
+  }
+
   onSubmit(): void {
     if (this.itemForm.valid) {
-      const item: CreateItemDto = this.itemForm.value;
-      this.userId$.subscribe(id => this.supplierId = id);
-      const updatedItem: CreateItemDto = {
-        ...item,
-        supplierId: this.supplierId
-      };
-      this.store.dispatch(ItemActions.addItem({ item: updatedItem }));
+      const formData = new FormData();
+      formData.append('name', this.itemForm.get('name')?.value);
+      formData.append('price', this.itemForm.get('price')?.value);
+      if (this.itemForm.get('description')?.value) {
+        formData.append('description', this.itemForm.get('description')?.value);
+      }
+
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile as File);
+      }
+
+      if (this.supplierId) {
+        formData.append('supplierId', this.supplierId.toString());
+      }
+
+      this.store.dispatch(ItemActions.addItem({ item: formData }));
       this.router.navigate(['supplier/items']);
+
     } else {
       this.itemForm.markAllAsTouched();
     }
@@ -56,6 +71,10 @@ export class AddItemComponent {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
+      this.itemForm.patchValue({
+        image: file
+      });
+      this.itemForm.get('image')?.updateValueAndValidity();
     }
   }
 }

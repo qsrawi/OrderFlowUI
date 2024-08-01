@@ -9,6 +9,10 @@ import { map, defaultIfEmpty, take } from 'rxjs/operators';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Item, ItemFilterParams } from '../../models/item';
 import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
+import { HttpClient } from '@angular/common/http';
+import { selectItemImage } from '../../store/selectors/image.selectors';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-items',
@@ -38,8 +42,10 @@ export class ItemsComponent implements OnInit {
   customerId: number | undefined;
   userRole: string | undefined;
   pageSize: number = 10;
+  selectedImage: string | null = null;
+  showModal: boolean = false;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private http: HttpClient) {
     this.items$ = this.store.select(selectAllItems);
     this.totalCount$ = this.store.select(selectTotalCount);
     this.error$ = this.store.select(selectError);
@@ -49,6 +55,7 @@ export class ItemsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole$.subscribe(role => this.userRole = role);
+    this.items$.subscribe(role => console.log(role));
     this.loadItems();
   }
 
@@ -71,6 +78,31 @@ export class ItemsComponent implements OnInit {
     this.store.dispatch(ItemsActions.loadItemsForCustomer({ customerId: this.customerId,  filters: this.filters }));
   }
 
+  viewImage(itemId: number): void {
+    this.store.dispatch(ItemsActions.loadItemImage({ itemId }));
+    this.store
+      .select(state => selectItemImage(state, { itemId }))
+      .subscribe(image => {
+        if (image) {
+          this.selectedImage = image;
+          this.showModal = true;
+        }
+      });
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedImage = null;
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImage = URL.createObjectURL(file);
+      this.showModal = true;
+    }
+  }
+
   applyFilters(): void {
     this.filters = { ...this.filters, PageNumber: 1 };
     this.loadItems();
@@ -80,7 +112,6 @@ export class ItemsComponent implements OnInit {
     this.filters = { ...this.filters, PageNumber: page };
     this.loadItems();
   }
-
 
   onPageSizeChange(event: Event): void {
     const newSize = (event.target as HTMLSelectElement).value;

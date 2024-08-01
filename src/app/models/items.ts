@@ -2,6 +2,6 @@ export interface CreateItemDto {
     name: string;
     price: number;
     description?: string;
-    images?: string;
+    image?: File;
     supplierId?: number;
   }

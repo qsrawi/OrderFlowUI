@@ -23,6 +23,7 @@ import { cashReducer } from './store/reducers/cash.reducer';
 import { CashEffects } from './store/effects/cash.effects';
 import { receiptReducer } from './store/reducers/receipt.reducer';
 import { ReceiptEffects } from './store/effects/receipt.effects';
+import { imageReducer } from './store/reducers/image.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,7 +38,8 @@ export const appConfig: ApplicationConfig = {
           items: itemsReducer,
           customers: customerReducer,
           cashs: cashReducer,
-          receipt: receiptReducer
+          receipt: receiptReducer,
+          images: imageReducer
         }
       ), 
       provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects]),

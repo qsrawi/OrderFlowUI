@@ -106,7 +106,7 @@ export class SupplierHttpReqService {
     return this.http.post<void>(url, customer);
   }
 
-  addItem(item: CreateItemDto): Observable<void> {
+  addItem(item: FormData): Observable<void> {
     return this.http.post<void>(`${this.supplierApiUrl}/AddItem`, item);
   }
 
@@ -120,5 +120,9 @@ export class SupplierHttpReqService {
 
   getTransactions(supplierId: number | undefined): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.supplierApiUrl}/GetTransactions/${supplierId}`);
+  }
+
+  getItemImage(itemId: number): Observable<Blob> {
+    return this.http.get(`${this.supplierApiUrl}/GetItemImage/${itemId}`, { responseType: 'blob' });
   }
 }

@@ -40,24 +40,42 @@
         <tr>
           <th>Item ID</th>
           <th>Item Name</th>
-          <th>Supplier Name</th>
           <th>Price</th>
-          <th>Created Date</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of items$ | async">
           <td>{{ item.itemId }}</td>
-          <td>{{ item.itemName }}</td>
-          <td>{{ item.supplierName }}</td>
+          <td>{{ item.name }}</td>
           <td>{{ item.price }}</td>
-          <td>{{ item.createdDate | date }}</td>
+          <td>
+            <button class="btn btn-secondary btn-sm" (click)="viewImage(item.itemId)">
+              <i class="fas fa-image"></i> View Img
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   
+    <div class="modal fade" [ngClass]="{'show d-block': showModal}" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="!showModal" [attr.aria-hidden]="!showModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="imageModalLabel">Item Image</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img [src]="selectedImage" class="img-fluid" alt="Item Image">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <nav>
-      
       <ul class="pagination">
         <li class="page-item" [class.disabled]="filters.PageNumber === 1">
           <button class="page-link" (click)="onPageChange(filters.PageNumber - 1)" [disabled]="filters.PageNumber === 1">Previous</button>
@@ -75,4 +93,21 @@
         </li>
       </ul>
     </nav>
+
+    <div class="modal fade" [ngClass]="{'show d-block': showModal}" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="!showModal" [attr.aria-hidden]="!showModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="imageModalLabel">Item Image</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img [src]="selectedImage" class="img-fluid" alt="Item Image">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>

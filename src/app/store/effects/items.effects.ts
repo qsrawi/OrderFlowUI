@@ -53,6 +53,28 @@ export class ItemsEffects {
     )
   );
 
+  loadItemImage$ = createEffect(() => this.actions$.pipe(
+    ofType(ItemsActions.loadItemImage),
+    mergeMap(action =>
+      this.supplierHttpReqService.getItemImage(action.itemId).pipe(
+        map(response => {
+          const reader = new FileReader();
+          return new Promise<string>((resolve) => {
+            reader.onloadend = () => {
+              resolve(reader.result as string);
+            };
+            reader.readAsDataURL(response);
+          });
+        }),
+        mergeMap(imagePromise => imagePromise.then(
+          image => ItemsActions.loadItemImageSuccess({ itemId: action.itemId, image }),
+          error => ItemsActions.loadItemImageFailure({ itemId: action.itemId, error })
+        )),
+        catchError(error => of(ItemsActions.loadItemImageFailure({ itemId: action.itemId, error })))
+      )
+    )
+  ));
+
   addItem$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ItemsActions.addItem),

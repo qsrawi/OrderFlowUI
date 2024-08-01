@@ -29,7 +29,7 @@ export const loadItemsFailure = createAction(
 
 export const addItem = createAction(
   '[Item] Add Item',
-  props<{ item: CreateItemDto }>()
+  props<{ item: FormData  }>()
 );
 
 export const addItemSuccess = createAction(
@@ -39,4 +39,19 @@ export const addItemSuccess = createAction(
 export const addItemFailure = createAction(
   '[Item] Add Item Failure',
   props<{ error: any }>()
+);
+
+export const loadItemImage = createAction(
+  '[Item Image] Load Item Image',
+  props<{ itemId: number }>()
+);
+
+export const loadItemImageSuccess = createAction(
+  '[Item Image] Load Item Image Success',
+  props<{ itemId: number, image: string }>()
+);
+
+export const loadItemImageFailure = createAction(
+  '[Item Image] Load Item Image Failure',
+  props<{ itemId: number, error: any }>()
 );

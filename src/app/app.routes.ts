@@ -14,9 +14,7 @@ import { EndorsementChequeComponent } from './Supplier/endorsement-cheque/endors
 import { AddReceiptComponent } from './Supplier/add-receipt/add-receipt.component';
 import { CustomersViewComponent } from './generic/customers-view/customers-view.component';
 import { AddCustomerComponent } from './Supplier/add-customer/add-customer.component';
-import { ItemsViewComponent } from './Supplier/items-view/items-view.component';
 import { AddItemComponent } from './Supplier/add-item/add-item.component';
-import { OrdersComponent } from './Supplier/orders/orders.component';
 import { AccountStatementComponent } from './Supplier/account-statement/account-statement.component';
 import { CartComponent } from './Customer/cart/cart.component';
 import { ReceiptComponent } from './Customer/receipt/receipt.component';
