@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { map, take} from 'rxjs/operators';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
-import { Order, OrderFilterParams } from '../../models/orders';
+import { Order, OrderFilterParams, OrderItem } from '../../models/orders';
 import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
 
 @Component({
@@ -22,6 +22,7 @@ export class OrderComponent implements OnInit {
   error$: Observable<string | null>;
   userRole$: Observable<string | undefined>;
   userId$: Observable<number| undefined>;
+  selectedOrderItems: OrderItem[] = [];
 
   filters: OrderFilterParams = {
     OrderDateFrom: undefined,
@@ -36,6 +37,7 @@ export class OrderComponent implements OnInit {
   supplierId: number | undefined;
   pageSize: number = 10;
   userRole: string | undefined;
+  showModal: boolean = false;
 
   constructor(private store: Store) {
     this.orders$ = this.store.select(selectAllOrders);
@@ -92,6 +94,16 @@ export class OrderComponent implements OnInit {
       value = undefined;
     }
     this.filters = { ...this.filters, [field]: value };
+  }
+
+  openModal(orderItems: OrderItem[]): void {
+    this.selectedOrderItems = orderItems;
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedOrderItems = [];
   }
 
   formatDate(date: any): string {

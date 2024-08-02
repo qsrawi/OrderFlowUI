@@ -52,11 +52,9 @@
           <td>{{ order.orderType }}</td>
           <td>{{ order.status }}</td>
           <td>
-            <ul>
-              <li *ngFor="let item of order.orderItems">
-                Item ID: {{ item.itemId }}, Quantity: {{ item.quantity }}, Price: {{ item.price }}
-              </li>
-            </ul>
+            <button class="btn btn-info btn-sm" (click)="openModal(order.orderItems)">
+              View Items
+            </button>
           </td>
         </tr>
       </tbody>
@@ -80,5 +78,33 @@
         </li>
       </ul>
     </nav>
+
+  <div class="modal" tabindex="-1" role="dialog" [ngClass]="{ 'd-block': showModal }">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Order Items</h5>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="selectedOrderItems.length">
+            <div *ngFor="let item of selectedOrderItems">
+              <p><strong>Item ID:</strong> {{ item.itemId }}</p>
+              <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+              <p><strong>Price:</strong> {{ item.price }}</p>
+              <p><strong>Item Name:</strong> {{ item.itemName }}</p>
+              <p><strong>Item Description:</strong> {{ item.itemDescription }}</p>
+              <hr />
+            </div>
+          </div>
+          <div *ngIf="!selectedOrderItems.length">
+            <p>No items available.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
   

@@ -28,7 +28,6 @@ export class ItemsComponent implements OnInit {
   userId$: Observable<number| undefined>;
 
   filters: ItemFilterParams = {
-    SupplierName: '',
     ItemName: '',
     MinPrice: undefined,
     MaxPrice: undefined,

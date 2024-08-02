@@ -4,10 +4,6 @@
     <form (ngSubmit)="applyFilters()">
       <div class="row">
         <div class="col-md-4 mb-3">
-          <label for="supplierName">Supplier Name</label>
-          <input type="text" id="supplierName" class="form-control" [(ngModel)]="filters.SupplierName" (ngModelChange)="updateFilter('SupplierName', $event)" name="supplierName">
-        </div>
-        <div class="col-md-4 mb-3">
           <label for="itemName">Item Name</label>
           <input type="text" id="itemName" class="form-control" [(ngModel)]="filters.ItemName" (ngModelChange)="updateFilter('ItemName', $event)" name="itemName">
         </div>

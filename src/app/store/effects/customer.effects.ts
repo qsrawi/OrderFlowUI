@@ -20,11 +20,12 @@ export class CustomerEffects {
     )
   );
 
-  loadSuppliers$ = createEffect(() =>
+  loadCustomersBySupplier$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.loadCustomers),
       mergeMap(action =>
-        this.supplierHttpReqService.getSuppliers(action.id, action.pageNumber, action.pageSize, action.filters).pipe(
+        this.supplierHttpReqService.getCustomersBySupplier(action.id, action.pageNumber, action.pageSize, action.filters).pipe(
+          tap(x => console.log('customers', x)),
           map(response => CustomerActions.loadCustomersSuccess({ customers: response.items, totalCount: response.totalCount })),
           catchError(error => of(CustomerActions.loadCustomersFailure({ error: error.message })))
         )
@@ -32,13 +33,11 @@ export class CustomerEffects {
     )
   );
 
-  
-
   navigateOnSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.addCustomerSuccess),
       tap(() => {
-        this.router.navigate(['/Supplier/Customer-view']);
+        this.router.navigate(['/supplier/customers-view']);
       })
     ),
     { dispatch: false }

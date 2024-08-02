@@ -59,6 +59,13 @@ export class CustomersViewComponent implements OnInit {
     this.loadCustomers();
   }
 
+  onPageSizeChange(event: Event): void {
+    const newSize = (event.target as HTMLSelectElement).value;
+    this.pageSize = parseInt(newSize, 10);
+    this.filters = { ...this.filters, PageSize: this.pageSize, PageNumber: 1 };
+    this.loadCustomers();
+  }
+
   updateFilter(field: string, value: string): void {
     this.filters = { ...this.filters, [field]: value };
   }

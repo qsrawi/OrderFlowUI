@@ -19,7 +19,7 @@ export class SupplierHttpReqService {
 
   constructor(private http: HttpClient) {}
 
-  getSuppliers(id: number | undefined, pageNumber: number, pageSize: number, filters: any): Observable<CustomersResponse> {
+  getCustomersBySupplier(id: number | undefined, pageNumber: number, pageSize: number, filters: any): Observable<CustomersResponse> {
     let params = new HttpParams()
         .set('PageNumber', pageNumber.toString())
         .set('PageSize', pageSize.toString());
@@ -77,9 +77,6 @@ export class SupplierHttpReqService {
 
   getItemsBySupplier(supplierId: number | undefined, filters: ItemFilterParams): Observable<ItemResponse> {
     let params = new HttpParams();
-      if (filters.SupplierName) {
-        params = params.set('SupplierName', filters.SupplierName);
-      }
       if (filters.ItemName) {
         params = params.set('ItemName', filters.ItemName);
       }

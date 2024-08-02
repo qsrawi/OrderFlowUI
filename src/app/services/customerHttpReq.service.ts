@@ -21,9 +21,6 @@ export class CustomerHttpReqService {
 
     getItemsForCustomer(supplierId: number | undefined, filters: ItemFilterParams): Observable<ItemResponse> {
       let params = new HttpParams();
-        if (filters.SupplierName) {
-          params = params.set('SupplierName', filters.SupplierName);
-        }
         if (filters.ItemName) {
           params = params.set('ItemName', filters.ItemName);
         }

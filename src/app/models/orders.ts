@@ -12,6 +12,8 @@ export interface Order {
     itemId: number;
     quantity: number;
     price: number;
+    itemName: number;
+    itemDescription: number;
   }
   
   export interface OrderFilterParams {

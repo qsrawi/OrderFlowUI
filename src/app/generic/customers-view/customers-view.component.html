@@ -43,7 +43,6 @@
           <th>Name</th>
           <th>Email</th>
           <th>Phone</th>
-          <th>Name</th>
           <th>Address</th>
           <th>Identity</th>
           <th>Actions</th>
@@ -56,7 +55,6 @@
           <td>{{ customer.name }}</td>
           <td>{{ customer.email }}</td>
           <td>{{ customer.phone }}</td>
-          <td>{{ customer.name }}</td>
           <td>{{ customer.address }}</td>
           <td>{{ customer.identity }}</td>
           <td>
@@ -81,6 +79,11 @@
         </li>
         <li class="page-item" [class.disabled]="pageNumber === (totalPages | async)">
           <button class="page-link" (click)="onPageChange(pageNumber + 1)" [disabled]="pageNumber === (totalPages | async)">Next</button>
+        </li>
+        <li class="page-item">
+          <select class="form-control" (change)="onPageSizeChange($event)" style="display:inline-block; width:auto; margin-left: 10px;">
+            <option *ngFor="let size of [5, 10, 20, 50]" [value]="size" [selected]="size === pageSize">{{ size }} per page</option>
+          </select>
         </li>
       </ul>
     </nav>

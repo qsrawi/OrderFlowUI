@@ -7,7 +7,6 @@ export interface Item {
   }
   
   export interface ItemFilterParams {
-    SupplierName?: string;
     ItemName?: string;
     MinPrice?: number;
     MaxPrice?: number;
