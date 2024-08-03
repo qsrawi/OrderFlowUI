@@ -1,5 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import * as ItemImageActions from '../../store/actions/items.actions';
+import * as ImageActions from '../../store/actions/cheques.actions';
 
 export interface ImageState {
   images: { [key: number]: string };
@@ -13,7 +14,7 @@ export const initialState: ImageState = {
 
 export const imageReducer = createReducer(
   initialState,
-  on(ItemImageActions.loadItemImageSuccess, (state, { itemId, image }) => ({
+  on(ItemImageActions.loadItemImageSuccess, ImageActions.loadImageSuccess, (state, { itemId, image }) => ({
     ...state,
     images: {
       ...state.images,
@@ -21,7 +22,7 @@ export const imageReducer = createReducer(
     },
     error: null,
   })),
-  on(ItemImageActions.loadItemImageFailure, (state, { error }) => ({
+  on(ItemImageActions.loadItemImageFailure, ImageActions.loadImageFailure, (state, { error }) => ({
     ...state,
     error,
   }))

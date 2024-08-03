@@ -57,6 +57,28 @@ export class ChequesEffects {
     )
   );
 
+  loadImage$ = createEffect(() => this.actions$.pipe(
+    ofType(ChequesActions.loadImage),
+    mergeMap(action =>
+      this.supplierHttpReq.getImage(action.chequeId, true).pipe(
+        map(response => {
+          const reader = new FileReader();
+          return new Promise<string>((resolve) => {
+            reader.onloadend = () => {
+              resolve(reader.result as string);
+            };
+            reader.readAsDataURL(response);
+          });
+        }),
+        mergeMap(imagePromise => imagePromise.then(
+          image => ChequesActions.loadImageSuccess({ itemId: action.chequeId, image }),
+          error => ChequesActions.loadImageFailure({ itemId: action.chequeId, error })
+        )),
+        catchError(error => of(ChequesActions.loadImageFailure({ itemId: action.chequeId, error })))
+      )
+    )
+  ));
+
   constructor(
     private actions$: Actions,
     private adminHttpReqService: AdminHttpReqService,

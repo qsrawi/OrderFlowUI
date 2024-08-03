@@ -13,3 +13,12 @@ export const selectUserId = createSelector(
   (state: AuthState) => state.user?.userId
 );
 
+export const selectforCustomer = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.forCustomer
+);
+
+export const selectforSupplier = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.forSupplier
+);

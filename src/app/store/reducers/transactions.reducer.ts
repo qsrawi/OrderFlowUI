@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as ChequesActions from '../actions/cheques.actions';
+import * as CustomerActions from '../actions/customer.actions';
 import { Transaction } from '../../models/cheque_transaction';
 
 export interface State {
@@ -24,7 +25,8 @@ export const transactionsReducer = createReducer(
     transactions: [],
     error,
   })),
-  on(ChequesActions.loadTransactions, state => ({ ...state, loading: true, error: null })),
-  on(ChequesActions.loadTransactionsSuccess, (state, { transactions }) => ({ ...state, transactions, loading: false })),
-  on(ChequesActions.loadTransactionsFailure, (state, { error }) => ({ ...state, error, loading: false }))
+  on(ChequesActions.loadTransactions, CustomerActions.loadTransactions, state => ({ ...state, loading: true, error: null })),
+  on(ChequesActions.loadTransactionsSuccess, CustomerActions.loadTransactionsSuccess, (state, { transactions }) => ({ ...state, transactions, loading: false })),
+  on(ChequesActions.loadTransactionsFailure, CustomerActions.loadTransactionsFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  on(CustomerActions.CleanTransactions, state => (initialState))
 );

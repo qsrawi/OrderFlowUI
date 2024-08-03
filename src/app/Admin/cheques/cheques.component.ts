@@ -10,6 +10,7 @@ import { Cheque, ChequeFilterParams } from '../../models/cheques';
 import { selectTransactions } from '../../store/selectors/transactions.selectors';
 import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
 import { Transaction } from '../../models/cheque_transaction';
+import { selectItemImage } from '../../store/selectors/image.selectors';
 
 @Component({
   selector: 'app-cheques',
@@ -46,6 +47,8 @@ export class ChequesComponent implements OnInit {
   supplierId: number | undefined;
   userRole: string | undefined;
   pageSize: number = 10;
+  selectedImage: string | null = null;
+  showImgModal: boolean = false;
 
   constructor(private store: Store) {
     this.cheques$ = this.store.select(selectAllCheques);
@@ -79,6 +82,24 @@ export class ChequesComponent implements OnInit {
   applyFilters(): void {
     this.filters = { ...this.filters, PageNumber: 1 };
     this.loadCheques();
+  }
+
+  viewImage(chequeId: number): void {
+    if (chequeId)
+      this.store.dispatch(ChequesActions.loadImage({ chequeId }));
+    this.store
+      .select(state => selectItemImage(state, { itemId: chequeId }))
+      .subscribe(image => {
+        if (image) {
+          this.selectedImage = image;
+          this.showImgModal = true;
+        }
+      });
+  }
+
+  closeImgModal(): void {
+    this.showImgModal = false;
+    this.selectedImage = null;
   }
 
   onPageChange(page: number): void {

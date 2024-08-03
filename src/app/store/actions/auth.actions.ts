@@ -12,3 +12,7 @@ export const loginFailure = createAction('[Auth] Login Failure');
 export const loadUser = createAction('[User] Load User');
 export const loadUserSuccess = createAction('[User] Load User Success', props<{ user: User }>());
 export const loadUserFailure = createAction('[User] Load User Failure', props<{ error: any }>());
+
+export const forCustomer = createAction('[Auth] For User', props<{customerId: number}>());
+export const forSupplier = createAction('[Auth] For User', props<{supplierId: number}>());
+export const logout = createAction('[Auth] Logout');

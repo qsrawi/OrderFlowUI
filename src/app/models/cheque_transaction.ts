@@ -6,4 +6,6 @@ export interface Transaction {
     receiverName: string;
     issuerName: string;
     paymentMethod: string;
+    currency?: string;
+    remainingDebt: number;
   } 

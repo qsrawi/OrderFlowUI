@@ -46,6 +46,8 @@
           <th>Address</th>
           <th>Identity</th>
           <th>Actions</th>
+          <th>Add Receipt</th>
+          <th>Account Statement</th>
         </tr>
       </thead>
       <tbody>
@@ -58,11 +60,21 @@
           <td>{{ customer.address }}</td>
           <td>{{ customer.identity }}</td>
           <td>
-            <button class="btn btn-info btn-sm me-2" (click)="editCustomer(customer.customerId)">
+            <button class="btn btn-info btn-sm mb-2" style="display: block;" (click)="editCustomer(customer.customerId)">
               <i class="fas fa-pencil"></i> Update
             </button>
-            <button class="btn btn-danger btn-sm" (click)="deleteCustomer(customer.customerId)">
+            <button class="btn btn-danger btn-sm" style="display: block;" (click)="deleteCustomer(customer.customerId)">
               <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm" (click)="addReceipt(customer.customerId)">
+              <i class="fas fa-receipt"></i> Add Receipt
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm" (click)="accountStatement(customer.customerId)">
+              <i class="fas fa-receipt"></i> Account Statement
             </button>
           </td>
         </tr>
@@ -87,5 +99,38 @@
         </li>
       </ul>
     </nav>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" [ngClass]="{ 'd-block': showModal }">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Account Statement</h5>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="transactions$ | async as transactions">
+            <div *ngFor="let transaction of transactions">
+              <p><strong>Transaction ID:</strong> {{ transaction.transactionId }}</p>
+              <p><strong>Invoice Number:</strong> {{ transaction.invoiceNumber }}</p>
+              <p><strong>Transaction Date:</strong> {{ transaction.transactionDate | date }}</p>
+              <p><strong>Amount:</strong> {{ transaction.amount }}</p>
+              <p><strong>Currency:</strong> {{ transaction.currency }}</p>
+              <p><strong>Cheque Receiver Name:</strong> {{ transaction.receiverName }}</p>
+              <p><strong>Cheque Issuer Name:</strong> {{ transaction.issuerName }}</p>
+              <p><strong>Payment Method:</strong> {{ transaction.paymentMethod }}</p>
+              <p>  <strong>Remaining Debt:</strong>
+                <span [ngClass]="getDebtColor(transaction.remainingDebt)">
+                  {{ transaction.remainingDebt }}
+                </span></p>
+              <hr>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="generatePDF()">Generate PDF</button>
+        </div>
+      </div>
+    </div>
   </div>
   

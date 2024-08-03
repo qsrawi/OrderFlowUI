@@ -18,6 +18,7 @@ import { AddItemComponent } from './Supplier/add-item/add-item.component';
 import { AccountStatementComponent } from './Supplier/account-statement/account-statement.component';
 import { CartComponent } from './Customer/cart/cart.component';
 import { ReceiptComponent } from './Customer/receipt/receipt.component';
+import { LogoutComponent } from './generic/logout/logout.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -32,6 +33,7 @@ export const routes: Routes = [
       { path: 'cheques', component: ChequesComponent },
       { path: 'suppliers-view', component: SuppliersViewComponent },
       { path: 'account-statement', component: AccountStatementComponent },
+      { path: 'logout', component: LogoutComponent }
     ]
   },
   { path: 'customer', component: CustomerHomeComponent, canActivate: [AuthGuard], data: { role: 'Customer' },

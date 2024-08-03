@@ -33,6 +33,18 @@ export class CustomerEffects {
     )
   );
 
+  loadTransactions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.loadTransactions),
+      mergeMap(action =>
+        this.supplierHttpReqService.getTransactionsForCustomer(action.customerId).pipe(
+          map(transactions => CustomerActions.loadTransactionsSuccess({ transactions })),
+          catchError(error => of(CustomerActions.loadTransactionsFailure({ error })))
+        )
+      )
+    )
+  );
+
   navigateOnSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.addCustomerSuccess),

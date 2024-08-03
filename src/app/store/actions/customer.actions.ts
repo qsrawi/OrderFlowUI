@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { CustomerBaseDto } from '../../models/customer';
+import { Transaction } from '../../models/cheque_transaction';
 
 export const addCustomer = createAction(
   '[Customer] Add Customer',
@@ -58,4 +59,23 @@ export const loadCustomersSuccess = createAction(
 export const loadCustomersFailure = createAction(
   '[Customer] Load Customers Failure',
   props<{ error: string }>()
+);
+
+export const loadTransactions = createAction(
+  '[Account Statement] Load Transactions For Customer',
+  props<{ customerId: number | undefined }>()
+);
+
+export const loadTransactionsSuccess = createAction(
+  '[Account Statement] Load Transactions Success For Customer',
+  props<{ transactions: Transaction[] }>()
+);
+
+export const loadTransactionsFailure = createAction(
+  '[Account Statement] Load Transactions Failure For Customer',
+  props<{ error: any }>()
+);
+
+export const CleanTransactions = createAction(
+  '[Account Statement] Clean Transactions'
 );

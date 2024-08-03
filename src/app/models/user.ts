@@ -8,5 +8,6 @@ export interface User {
     details: string;
     identity: string;
     image: string;
+    token: string;
     role: string;
 }

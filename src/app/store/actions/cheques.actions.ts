@@ -51,3 +51,18 @@ export const loadTransactionsFailure = createAction(
   '[Account Statement] Load Transactions Failure',
   props<{ error: any }>()
 );
+
+export const loadImage = createAction(
+  '[Cheques] Load Image',
+  props<{ chequeId: number }>()
+);
+
+export const loadImageSuccess = createAction(
+  '[Cheques] Load Image Success',
+  props<{ itemId: number, image: string }>()
+);
+
+export const loadImageFailure = createAction(
+  '[Cheques] Load Image Failure',
+  props<{ itemId: number, error: any }>()
+);

@@ -1,0 +1,37 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .card {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  .btn-primary, .btn-danger {
+    margin-right: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .total-amount-container {
+    display: flex;
+    justify-content: flex-end; /* Align to the right */
+    margin-top: 20px;
+  }
+  
+  .total-amount-label {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .total-amount-value {
+    font-size: 2em; /* Larger font for total amount */
+    font-weight: bold;
+    color: #007bff; /* Optional: Add some color for emphasis */
+    margin-left: 10px; /* Space between label and value */
+  }

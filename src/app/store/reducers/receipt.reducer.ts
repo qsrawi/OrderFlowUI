@@ -1,34 +1,40 @@
+// receipt.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import { addReceipt, addReceiptSuccess, addReceiptFailure } from '../actions/receipt.actions';
-import { ReceiptDto } from '../../models/receipts';
-
-export interface ReceiptState {
-  receipt: ReceiptDto | null;
-  loading: boolean;
-  error: any;
-}
+import * as ReceiptActions from '../actions/receipt.actions';
+import { ReceiptState } from '../../models/receipts';
 
 export const initialState: ReceiptState = {
-  receipt: null,
+  receipts: [],
+  totalAmount: 0,
+  remainingDebt: 0,
   loading: false,
   error: null
 };
 
 export const receiptReducer = createReducer(
   initialState,
-  on(addReceipt, state => ({
+  on(ReceiptActions.addReceipt, (state) => ({
     ...state,
     loading: true,
     error: null
   })),
-  on(addReceiptSuccess, (state, { receipt }) => ({
+  on(ReceiptActions.addReceiptSuccess, (state) => ({
     ...state,
-    receipt,
     loading: false
   })),
-  on(addReceiptFailure, (state, { error }) => ({
+  on(ReceiptActions.addReceiptFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error
+  })),
+  on(ReceiptActions.calculateTotal, (state) => ({
+    ...state,
+    totalAmount: state.receipts.reduce(
+      (total, receipt) =>
+        total +
+        receipt.cheques.reduce((sum, cheque) => sum + cheque.amount, 0) +
+        receipt.cashDetails.reduce((sum, cash) => sum + cash.amount, 0),
+      0
+    )
   }))
 );

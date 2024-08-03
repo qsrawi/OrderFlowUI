@@ -1,17 +1,18 @@
 import { createAction, props } from '@ngrx/store';
-import { CreateReceiptDto, ReceiptDto } from '../../models/receipts';
+import { Receipt } from '../../models/receipts';
 
 export const addReceipt = createAction(
   '[Receipt] Add Receipt',
-  props<{ receipt: CreateReceiptDto }>()
+  props<{ receipt: FormData }>()
 );
 
 export const addReceiptSuccess = createAction(
   '[Receipt] Add Receipt Success',
-  props<{ receipt: ReceiptDto }>()
 );
 
 export const addReceiptFailure = createAction(
   '[Receipt] Add Receipt Failure',
-  props<{ error: any }>()
+  props<{ error: string }>()
 );
+
+export const calculateTotal = createAction('[Receipt] Calculate Total');

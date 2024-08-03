@@ -1,72 +1,100 @@
-<div class="container mt-3">
-    <ul class="nav nav-tabs mb-3">
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="selectedTab === 'Cash'" (click)="selectTab('Cash')">
-          <i class="fas fa-money-bill-alt"></i> Cash
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="selectedTab === 'Cheque'" (click)="selectTab('Cheque')">
-          <i class="fas fa-money-check-alt"></i> Cheque
-        </a>
-      </li>
-    </ul>
-  
-    <div *ngIf="selectedTab === 'Cash'" class="mb-3">
-      <ul class="nav nav-pills mb-3">
-        <li class="nav-item">
-          <a class="nav-link" [class.active]="selectedSubTab === 'CashReceipt'" (click)="selectSubTab('CashReceipt')">
-            <i class="fas fa-receipt"></i> Receipt
-          </a>
-        </li>
-      </ul>
-      <div *ngIf="selectedSubTab === 'CashReceipt'">
-        <div *ngIf="loading$ | async">Loading...</div>
-        <div *ngIf="error$ | async as error" class="text-danger">{{ error }}</div>
-        <div *ngIf="!(loading$ | async)">
-          <label for="cashDetail">Select Cash Detail:</label>
-          <select id="cashDetail" class="form-control" [(ngModel)]="selectedCashDetail" (ngModelChange)="onCashDetailSelect($event)">
-            <option *ngFor="let cashDetail of cashDetails$ | async" [ngValue]="cashDetail">
-              {{ cashDetail.number }} - {{ cashDetail.amount }} {{ cashDetail.currency }} - ({{ cashDetail.customerName }})
-            </option>
-          </select>
-          <button class="btn btn-primary mt-3" (click)="onSubmit()">Add Receipt</button>
+<div class="container">
+  <h2>Add Receipt</h2>
+
+  <form [formGroup]="receiptForm" (ngSubmit)="submit()">
+    <h4>Cheques</h4>
+    <div formArrayName="cheques">
+      <div *ngFor="let cheque of cheques.controls; let i = index" [formGroupName]="i" class="card mt-2">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="chequeNumber">Cheque Number</label>
+            <input type="number" formControlName="chequeNumber" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="issueDate">Issue Date</label>
+            <input type="date" formControlName="issueDate" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input type="date" formControlName="dueDate" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" formControlName="amount" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="accountNumber">Account Number</label>
+            <input type="text" formControlName="accountNumber" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="bankName">Bank Name</label>
+            <select formControlName="bankName" class="form-control">
+              <option value="Ibn Sina">Ibn Sina</option>
+              <option value="Thabet Thabet">Thabet Thabet</option>
+              <option value="Istishari">Istishari</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" formControlName="currency" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="frontImage">Front Image</label>
+            <input type="file" (change)="onFileChange($event, i, 'frontImage')" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="backImage">Back Image</label>
+            <input type="file" (change)="onFileChange($event, i, 'backImage')" class="form-control">
+          </div>
+
+          <button type="button" class="btn btn-danger" (click)="removeCheque(i)">Remove Cheque</button>
         </div>
       </div>
+      <button type="button" class="btn btn-primary mt-2" (click)="addCheque()">Add Cheque</button>
     </div>
-  
-    <div *ngIf="selectedTab === 'Cheque'" class="mb-3">
-      <ul class="nav nav-pills mb-3">
-        <li class="nav-item">
-          <a class="nav-link" [class.active]="selectedSubTab === 'ChequeReceipt'" (click)="selectSubTab('ChequeReceipt')">
-            <i class="fas fa-receipt"></i> Receipt
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [class.active]="selectedSubTab === 'ChequeVoucher'" (click)="selectSubTab('ChequeVoucher')">
-            <i class="fas fa-voucher"></i> Voucher
-          </a>
-        </li>
-      </ul>
-      <div *ngIf="selectedSubTab === 'ChequeReceipt'">
-        <!-- Add your Cheque Receipt form here -->
+
+    <h4>Cash Details</h4>
+    <div formArrayName="cashDetails">
+      <div *ngFor="let cash of cashDetails.controls; let i = index" [formGroupName]="i" class="card mt-2">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="number">Number</label>
+            <input type="number" formControlName="number" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" formControlName="amount" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" formControlName="date" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" formControlName="currency" class="form-control">
+          </div>
+
+          <button type="button" class="btn btn-danger" (click)="removeCashDetail(i)">Remove Cash Detail</button>
+        </div>
       </div>
-      <div *ngIf="selectedSubTab === 'ChequeVoucher'">
-        <!-- Add your Cheque Voucher form here -->
-      </div>
+      <button type="button" class="btn btn-primary mt-2" (click)="addCashDetail()">Add Cash Detail</button>
     </div>
-  
-    <div *ngIf="receiptResponse$ | async as receipt">
-      <div class="alert alert-success mt-3">
-        <strong>Receipt Created:</strong>
-        <p>Receipt ID: {{ receipt.receiptId }}</p>
-        <p>Issuer: {{ receipt.issuer }}</p>
-        <p>Receiver: {{ receipt.reciver }}</p>
-        <p>Invoice Number: {{ receipt.invoiceNumber }}</p>
-        <p>Amount: {{ receipt.amount }}</p>
-        <p>Currency: {{ receipt.currency }}</p>
-        <p>Receipt Date: {{ receipt.receiptDate | date }}</p>
-      </div>
+
+    <div class="total-amount-container">
+      <strong class="total-amount-label">Total Amount:</strong> <span class="total-amount-value">{{ totalAmount | currency }}</span>
     </div>
-  </div>
-  
+
+    <button type="submit" class="btn btn-success mt-3">Submit Receipt</button>
+  </form>
+</div>

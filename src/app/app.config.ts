@@ -6,7 +6,7 @@ import { authReducer } from './store/reducers/auth.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { AuthEffects } from './store/effects/auth.effects';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { NumberRangePipe } from './helpers/number-range.pipe';
 import { suppliersReducer } from './store/reducers/suppliers.reducer';
 import { SuppliersEffects } from './store/effects/suppliers.effects';
@@ -24,10 +24,17 @@ import { CashEffects } from './store/effects/cash.effects';
 import { receiptReducer } from './store/reducers/receipt.reducer';
 import { ReceiptEffects } from './store/effects/receipt.effects';
 import { imageReducer } from './store/reducers/image.reducer';
+import { AuthInterceptor } from './services/auth-interceptor.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+      provideHttpClient(),
       provideRouter(routes), 
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true
+      },
       provideStore(
         { 
           auth: authReducer,
@@ -44,7 +51,6 @@ export const appConfig: ApplicationConfig = {
       ), 
       provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects]),
       provideStoreDevtools({ maxAge: 25, logOnly: false }),
-      provideHttpClient(),
       NumberRangePipe
   ]
  };

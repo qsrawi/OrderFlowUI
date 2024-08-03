@@ -15,6 +15,8 @@ export interface Cheque {
     bankName: string | null;
     chequeImages: string;
     status: string;
+    frontImagePath?: string;
+    backImagePath?: string;
   }
   
 export interface ChequeFilterParams {
