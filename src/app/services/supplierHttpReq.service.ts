@@ -7,6 +7,7 @@ import { ItemFilterParams, ItemResponse } from '../models/item';
 import { CustomerBaseDto, CustomersResponse } from '../models/customer';
 import { CashDto } from '../models/cash';
 import { Transaction } from '../models/cheque_transaction';
+import { SuppliersResponse } from '../models/supplier';
 
 @Injectable({
   providedIn: 'root'
@@ -174,5 +175,29 @@ export class SupplierHttpReqService {
   getImage(chequeId: number, isFront: boolean): Observable<Blob> {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.supplierApiUrl}/GetChequeImage/${chequeId}/${isFront}`, { headers, responseType: 'blob' });
+  }
+
+  getSuppliers(pageNumber: number, pageSize: number, filters: any, supplierId: number | undefined): Observable<SuppliersResponse> {
+    let params = new HttpParams()
+      .set('PageNumber', pageNumber.toString())
+      .set('PageSize', pageSize.toString());
+
+    if (filters.name) params = params.set('Name', filters.name);
+    if (filters.userName) params = params.set('UserName', filters.userName);
+    if (filters.email) params = params.set('Email', filters.email);
+    if (filters.phone) params = params.set('Phone', filters.phone);
+    if (filters.address) params = params.set('Address', filters.address);
+    if (filters.identity) params = params.set('Identity', filters.identity);
+
+    if (supplierId !== undefined) params = params.set('SupplierId', supplierId.toString());
+
+    const headers = this.getAuthHeaders();
+    return this.http.get<SuppliersResponse>(`${this.supplierApiUrl}/GetSuppliers`, { headers, params });
+  }
+
+  endorseCheques(chequesIds: number[], supplierId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    const url = `${this.supplierApiUrl}/EndorsementCheque?supplierId=${supplierId}`;
+    return this.http.put<void>(url, chequesIds, {headers});
   }
 }

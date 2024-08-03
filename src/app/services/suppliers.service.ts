@@ -40,8 +40,8 @@ export class SuppliersService {
     return this.store.select(selectError);
   }
 
-  loadSuppliers(pageNumber: number, pageSize: number, filters: any): void {
-    this.store.dispatch(SuppliersActions.loadSuppliers({ pageNumber, pageSize, filters }));
+  loadSuppliers(pageNumber: number, pageSize: number, filters: any, supplierId: number | undefined): void {
+    this.store.dispatch(SuppliersActions.loadSuppliers({ pageNumber, pageSize, filters, supplierId}));
   }
 
   loadSupplier(id: number): Observable<CreateSupplierDto | null> {

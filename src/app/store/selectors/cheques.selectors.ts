@@ -27,3 +27,8 @@ export const selectChequeType = createSelector(
   selectChequesState,
   (state: ChequesState) => state.chequeType
 );
+
+export const selectchequesToEndorsement = createSelector(
+  selectChequesState,
+  (state: ChequesState) => state.chequesToEndorsement
+);

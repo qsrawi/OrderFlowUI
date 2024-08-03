@@ -5,18 +5,25 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as SupplierActions from '../actions/suppliers.actions';
 import { AdminHttpReqService } from '../../services/httpReq.service';
 import { Router } from '@angular/router';
+import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
 
 @Injectable()
 export class SuppliersEffects {
   loadSuppliers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SupplierActions.loadSuppliers),
-      mergeMap(action =>
-        this.adminHttpReqService.getSuppliers(action.pageNumber, action.pageSize, action.filters).pipe(
+      mergeMap(action => {
+        const { pageNumber, pageSize, filters, supplierId } = action;
+        
+        const serviceCall = supplierId !== undefined
+          ? this.supplierHttpReqService.getSuppliers(pageNumber, pageSize, filters, supplierId)
+          : this.adminHttpReqService.getSuppliers(pageNumber, pageSize, filters);
+
+        return serviceCall.pipe(
           map(response => SupplierActions.loadSuppliersSuccess({ suppliers: response.items, totalCount: response.totalCount })),
           catchError(error => of(SupplierActions.loadSuppliersFailure({ error: error.message })))
-        )
-      )
+        );
+      })
     )
   );
 
@@ -69,6 +76,7 @@ export class SuppliersEffects {
   constructor(
     private actions$: Actions,
     private adminHttpReqService: AdminHttpReqService,
+    private supplierHttpReqService: SupplierHttpReqService,
     private router: Router
   ) {}
 }

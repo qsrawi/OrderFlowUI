@@ -3,7 +3,7 @@ import { CreateSupplierDto, Supplier } from '../../models/supplier';
 
 export const loadSuppliers = createAction(
   '[Suppliers] Load Suppliers',
-  props<{ pageNumber: number, pageSize: number, filters: any }>()
+  props<{ pageNumber: number, pageSize: number, filters: any, supplierId: number | undefined }>()
 );
 
 export const loadSuppliersSuccess = createAction(

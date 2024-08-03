@@ -9,12 +9,28 @@ import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
+import { selectchequesToEndorsement } from '../../store/selectors/cheques.selectors';
+import * as ChequesActions from '../../store/actions/cheques.actions';
+import { ToastrService } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-suppliers-view',
   templateUrl: './suppliers-view.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, NumberRangePipe]
+  imports: [CommonModule, FormsModule, NumberRangePipe],
+  animations: [
+    trigger('flyInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)' }),
+        animate('300ms ease-in', style({ transform: 'translateX(0%)' }))
+      ]),
+      transition(':leave', [
+        animate('300ms ease-out', style({ transform: 'translateX(100%)' }))
+      ])
+    ])
+  ]
 })
 export class SuppliersViewComponent implements OnInit {
   suppliers$: Observable<Supplier[]>;
@@ -23,6 +39,7 @@ export class SuppliersViewComponent implements OnInit {
   error$: Observable<string | null>;
   userRole$: Observable<string| undefined>;
   userId$: Observable<number| undefined>;
+  chequesToEndorsement$: Observable<number[]>;
 
   filters: any = {
     name: '',
@@ -35,22 +52,30 @@ export class SuppliersViewComponent implements OnInit {
 
   pageNumber: number = 1;
   pageSize: number = 10;
+  userRole: string | undefined;
+  userId: number | undefined;
 
-  constructor(private suppliersService: SuppliersService, private router: Router, private store: Store) {
+  constructor(private suppliersService: SuppliersService, private router: Router, private store: Store, private toastr: ToastrService) {
     this.suppliers$ = this.suppliersService.getSuppliers();
     this.totalCount$ = this.suppliersService.getTotalCount();
     this.loading$ = this.suppliersService.getLoading();
     this.error$ = this.suppliersService.getError();
     this.userRole$ = this.store.select(selectUserRole).pipe(take(1));
     this.userId$ = this.store.select(selectUserId).pipe(take(1));
+    this.chequesToEndorsement$ = this.store.select(selectchequesToEndorsement).pipe(take(1));
   }
 
   ngOnInit(): void {
+    this.userRole$.subscribe(role => this.userRole = role);
+    this.userId$.subscribe(userId => this.userId = userId);
     this.loadSuppliers();
   }
   
   loadSuppliers(): void {
-    this.suppliersService.loadSuppliers(this.pageNumber, this.pageSize, this.filters);
+    if (this.userRole === 'Supplier') {
+      this.suppliersService.loadSuppliers(this.pageNumber, this.pageSize, this.filters, this.userId);
+    } else
+    this.suppliersService.loadSuppliers(this.pageNumber, this.pageSize, this.filters, undefined);
   }
 
   applyFilters(): void {
@@ -83,7 +108,15 @@ export class SuppliersViewComponent implements OnInit {
   }
 
   createEndorsementCheque(supplierId: number): void {
-    console.log(`Create Endorsement Cheque for supplierId: ${supplierId}`);
+    this.chequesToEndorsement$.subscribe(chequesToEndorsement => {
+      if (chequesToEndorsement.length === 0) {
+        alert('You have to go to the cheques field to select cheques for endorsement.');
+        return;
+      }
+    
+      this.store.dispatch(ChequesActions.endorsementCheque({ chequesIds: chequesToEndorsement, supplierId }));
+      this.store.dispatch(ChequesActions.clearChequesToEndorsement());
+    });
   }
 
   get totalPages(): Observable<number> {

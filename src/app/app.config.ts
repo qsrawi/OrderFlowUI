@@ -25,6 +25,8 @@ import { receiptReducer } from './store/reducers/receipt.reducer';
 import { ReceiptEffects } from './store/effects/receipt.effects';
 import { imageReducer } from './store/reducers/image.reducer';
 import { AuthInterceptor } from './services/auth-interceptor.service';
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,6 +53,13 @@ export const appConfig: ApplicationConfig = {
       ), 
       provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects]),
       provideStoreDevtools({ maxAge: 25, logOnly: false }),
+      provideAnimations(),
+      provideToastr({
+        positionClass: 'toast-bottom-right',
+        timeOut: 3000,
+        preventDuplicates: true,
+        closeButton: true,
+      }),
       NumberRangePipe
   ]
  };

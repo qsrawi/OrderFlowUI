@@ -64,6 +64,7 @@
     <table class="table table-striped mt-4">
       <thead>
         <tr>
+          <th>Select</th>
           <th>ID</th>
           <th>Receiver Name</th>
           <th>Holder Name</th>
@@ -79,6 +80,15 @@
       </thead>
       <tbody>
         <tr *ngFor="let cheque of cheques$ | async">
+          <td class="text-center">
+            <input
+              type="checkbox"
+              [checked]="selectedChequeIds.has(cheque.chequeId)"
+              (change)="toggleChequeSelection(cheque.chequeId)"
+              class="form-check-input"
+              style="transform: scale(1.5);"
+            />
+          </td>
           <td>{{ cheque.chequeId }}</td>
           <td>{{ cheque.chequeReceiverName }}</td>
           <td>{{ cheque.chequeHolderName }}</td>

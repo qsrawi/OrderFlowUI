@@ -8,6 +8,7 @@ export interface ChequesState {
   loading: boolean;
   error: string | null;
   chequeType: string;
+  chequesToEndorsement: number[];
 }
 
 export const initialState: ChequesState = {
@@ -15,7 +16,8 @@ export const initialState: ChequesState = {
   totalCount: 0,
   loading: false,
   error: null,
-  chequeType: 'Outgoing'
+  chequeType: 'Outgoing',
+  chequesToEndorsement: []
 };
 
 export const chequesReducer = createReducer(
@@ -35,5 +37,13 @@ export const chequesReducer = createReducer(
     ...state,
     error,
     loading: false
+  })),
+  on(ChequesActions.updateChequesToEndorsement, (state, { chequeIds }) => ({
+    ...state,
+    chequesToEndorsement: chequeIds
+  })),
+  on(ChequesActions.clearChequesToEndorsement, state => ({
+    ...state,
+    chequesToEndorsement: []
   }))
 );

@@ -5,6 +5,7 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as ChequesActions from '../actions/cheques.actions';
 import { AdminHttpReqService } from '../../services/httpReq.service';
 import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ChequesEffects {
@@ -79,9 +80,33 @@ export class ChequesEffects {
     )
   ));
 
+  endorsementCheque$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChequesActions.endorsementCheque),
+      mergeMap(action =>
+        this.supplierHttpReq.endorseCheques(action.chequesIds, action.supplierId).pipe(
+          map(() => ChequesActions.endorsementChequeSuccess()),
+          catchError(error => of(ChequesActions.endorsementChequeFailure({ error })))
+        )
+      )
+    )
+  );
+
+  endorsementChequeSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChequesActions.endorsementChequeSuccess),
+      tap(() => {
+        // Display success toast message
+        this.toastr.success('Cheques endorsed successfully!', 'Success');
+      }),
+      map(() => ChequesActions.clearChequesToEndorsement())
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private adminHttpReqService: AdminHttpReqService,
-    private supplierHttpReq: SupplierHttpReqService
+    private supplierHttpReq: SupplierHttpReqService,
+    private toastr: ToastrService
   ) {}
 }

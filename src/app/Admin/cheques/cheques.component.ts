@@ -26,6 +26,7 @@ export class ChequesComponent implements OnInit {
   transactions$: Observable<Transaction[]>;
   userRole$: Observable<string| undefined>;
   userId$: Observable<number| undefined>;
+  selectedChequeIds: Set<number> = new Set();
 
   filters: ChequeFilterParams = {
     Status: '',
@@ -63,6 +64,7 @@ export class ChequesComponent implements OnInit {
   ngOnInit(): void {
     this.userRole$.subscribe(role => this.userRole = role);
     this.loadCheques();
+    this.store.dispatch(ChequesActions.clearChequesToEndorsement());
   }
 
   loadCheques(): void {
@@ -142,6 +144,15 @@ export class ChequesComponent implements OnInit {
     const day = `0${d.getDate()}`.slice(-2);
     const year = d.getFullYear();
     return `${year}-${month}-${day}`;
+  }
+
+  toggleChequeSelection(customerId: number): void {
+    if (this.selectedChequeIds.has(customerId)) {
+      this.selectedChequeIds.delete(customerId);
+    } else {
+      this.selectedChequeIds.add(customerId);
+    }
+    this.store.dispatch(ChequesActions.updateChequesToEndorsement({ chequeIds: Array.from(this.selectedChequeIds) }));
   }
 
   viewTransactions(chequeId: number): void {

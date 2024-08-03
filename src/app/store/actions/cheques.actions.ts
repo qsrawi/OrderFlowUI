@@ -66,3 +66,26 @@ export const loadImageFailure = createAction(
   '[Cheques] Load Image Failure',
   props<{ itemId: number, error: any }>()
 );
+
+export const updateChequesToEndorsement = createAction(
+  '[Cheques] Update Cheques to Endorsement',
+  props<{ chequeIds: number[] }>()
+);
+
+export const clearChequesToEndorsement = createAction(
+  '[Cheques] Clear Cheques To Endorsement'
+);
+
+export const endorsementCheque = createAction(
+  '[Cheques] Endorsement Cheque',
+  props<{ chequesIds: number[], supplierId: number }>()
+);
+
+export const endorsementChequeSuccess = createAction(
+  '[Cheques] Endorsement Cheque Success'
+);
+
+export const endorsementChequeFailure = createAction(
+  '[Cheques] Endorsement Cheque Failure',
+  props<{ error: any }>()
+);

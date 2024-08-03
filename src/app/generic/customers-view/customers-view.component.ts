@@ -49,25 +49,6 @@ export class CustomersViewComponent implements OnInit {
   userId$: Observable<number| undefined>;
   transactions$: Observable<Transaction[]>;
 
- /* const tajawalFontBase64 = fontTajawalMedium; 
-
-pdfFonts.pdfMake.vfs['TajawalMedium.ttf'] = tajawalFontBase64;
-
-pdfMake.fonts = {
-  Roboto: {
-    normal: 'Roboto-Regular.ttf',
-    bold: 'Roboto-Medium.ttf',
-    italics: 'Roboto-Italic.ttf',
-    bolditalics: 'Roboto-MediumItalic.ttf'
-  },
-  Tajawal: {
-    normal: 'TajawalMedium.ttf',
-    bold: 'TajawalMedium.ttf',
-    italics: 'TajawalMedium.ttf',
-    bolditalics: 'TajawalMedium.ttf'
-  }
-};*/
-
   filters: any = {
     name: '',
     userName: '',
@@ -126,7 +107,7 @@ pdfMake.fonts = {
   }
 
   getDebtColor(debt: number): string {
-    return debt < 0 ? 'green-text' : 'red-text';
+    return debt > 0 ? 'green-text' : 'red-text';
   }
 
   editCustomer(id: number): void {
@@ -148,11 +129,10 @@ pdfMake.fonts = {
     this.store.dispatch(AuthActions.forCustomer({ customerId }));
   }
 
-
   generatePDF(): void {
     const content = [
       {
-        text: 'بيان الحساب',
+        text: ' الحساب  بيان',
         style: 'header',
         alignment: 'center',
         margin: [0, 0, 0, 20]
@@ -162,7 +142,7 @@ pdfMake.fonts = {
     this.transactions.forEach((transaction, index) => {
       content.push(
         { text: `Transaction ${index + 1}`, style: 'subheader', alignment: 'right', margin: [0, 0, 0, 5] },
-        { text: `Transaction: ${transaction.transactionId}`, style: 'normal', alignment: 'right', margin: [0, 0, 0, 2] },
+        { text: `Transaction ID: ${transaction.transactionId}`, style: 'normal', alignment: 'right', margin: [0, 0, 0, 2] },
         { text: `Invoice Number : ${transaction.invoiceNumber}`, style: 'normal', alignment: 'right', margin: [0, 0, 0, 2] },
         { text: `Transaction Date: ${transaction.transactionDate.toString()}`, style: 'normal', alignment: 'right', margin: [0, 0, 0, 2] },
         { text: `Amount: ${transaction.amount}`, style: 'normal', alignment: 'right', margin: [0, 0, 0, 2] },
