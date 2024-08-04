@@ -22,3 +22,8 @@ export const selectforSupplier = createSelector(
   selectAuthState,
   (state: AuthState) => state.forSupplier
 );
+
+export const  selectisAllItems = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.isAllItems
+);

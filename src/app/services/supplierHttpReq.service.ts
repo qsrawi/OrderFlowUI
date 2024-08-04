@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ChequeFilterParams, ChequesResponse } from '../models/cheques';
-import { OrderFilterParams, OrderResponse } from '../models/orders';
+import { CreateOrderDto, OrderFilterParams, OrderResponse } from '../models/orders';
 import { ItemFilterParams, ItemResponse } from '../models/item';
 import { CustomerBaseDto, CustomersResponse } from '../models/customer';
 import { CashDto } from '../models/cash';
@@ -136,6 +136,38 @@ export class SupplierHttpReqService {
     );
   }
 
+  getItemsForSupplier(
+    filters: ItemFilterParams
+  ): Observable<ItemResponse> {
+    let params = new HttpParams();
+    if (filters.ItemName) {
+      params = params.set('ItemName', filters.ItemName);
+    }
+    if (filters.MinPrice !== undefined && filters.MinPrice !== null) {
+      params = params.set('MinPrice', filters.MinPrice.toString());
+    }
+    if (filters.MaxPrice !== undefined && filters.MaxPrice !== null) {
+      params = params.set('MaxPrice', filters.MaxPrice.toString());
+    }
+    if (filters.CreatedDateFrom) {
+      params = params.set('CreatedDateFrom', filters.CreatedDateFrom.toISOString());
+    }
+    if (filters.CreatedDateTo) {
+      params = params.set('CreatedDateTo', filters.CreatedDateTo.toISOString());
+    }
+    if (filters.supplierId !== undefined && filters.supplierId !== null) {
+      params = params.set('SupplierId', filters.supplierId.toString());
+    }
+    params = params.set('PageNumber', filters.PageNumber.toString());
+    params = params.set('PageSize', filters.PageSize.toString());
+
+    const headers = this.getAuthHeaders();
+    return this.http.get<ItemResponse>(
+      `${this.supplierApiUrl}/GetItems`,
+      { headers, params }
+    );
+  }
+
   saveCustomer(id: number | undefined, customer: CustomerBaseDto): Observable<void> {
     const url = id ? `${this.supplierApiUrl}/SaveCustomer/${id}` : `${this.supplierApiUrl}/SaveCustomer`;
     const headers = this.getAuthHeaders();
@@ -143,8 +175,7 @@ export class SupplierHttpReqService {
   }
 
   addItem(item: FormData): Observable<void> {
-    const headers = this.getAuthHeaders();
-    return this.http.post<void>(`${this.supplierApiUrl}/AddItem`, item, { headers });
+    return this.http.post<void>(`${this.supplierApiUrl}/AddItem`, item);
   }
 
   getCashDetailsBySupplier(supplierId: number): Observable<CashDto[]> {
@@ -153,8 +184,7 @@ export class SupplierHttpReqService {
   }
 
   addReceipt(receipt: FormData): Observable<void> {
-    const headers = this.getAuthHeaders();
-    return this.http.post<void>(`${this.supplierApiUrl}/AddReceipt`, receipt, { headers });
+    return this.http.post<void>(`${this.supplierApiUrl}/AddReceipt`, receipt);
   }
 
   getTransactions(supplierId: number | undefined): Observable<Transaction[]> {
@@ -200,4 +230,11 @@ export class SupplierHttpReqService {
     const url = `${this.supplierApiUrl}/EndorsementCheque?supplierId=${supplierId}`;
     return this.http.put<void>(url, chequesIds, {headers});
   }
+
+  placeOrder(orderDto: CreateOrderDto): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.apiUrl}/Supplier/AddOrder`, orderDto, { headers });
+  }
+
+  
 }

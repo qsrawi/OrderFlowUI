@@ -15,4 +15,5 @@ export const loadUserFailure = createAction('[User] Load User Failure', props<{ 
 
 export const forCustomer = createAction('[Auth] For User', props<{customerId: number}>());
 export const forSupplier = createAction('[Auth] For User', props<{supplierId: number}>());
+export const allItems = createAction('[Auth] For User', props<{isAllItems: boolean}>());
 export const logout = createAction('[Auth] Logout');

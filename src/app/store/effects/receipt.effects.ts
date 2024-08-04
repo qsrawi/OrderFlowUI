@@ -12,7 +12,7 @@ export class ReceiptEffects {
       ofType(ReceiptActions.addReceipt),
       mergeMap((action) =>
         this.supplierHttpReqService.addReceipt(action.receipt).pipe(
-          map((receipt) => ReceiptActions.addReceiptSuccess()),
+          map(() => ReceiptActions.addReceiptSuccess()),
           catchError((error) => of(ReceiptActions.addReceiptFailure({ error: error.message })))
         )
       )

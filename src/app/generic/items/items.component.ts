@@ -8,9 +8,11 @@ import { FormsModule } from '@angular/forms';
 import { map, defaultIfEmpty, take } from 'rxjs/operators';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Item, ItemFilterParams } from '../../models/item';
-import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
+import { selectisAllItems, selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
 import { HttpClient } from '@angular/common/http';
 import { selectItemImage } from '../../store/selectors/image.selectors';
+import { addItemToCart } from '../../store/actions/cart.actions';
+import { selectSupplierId } from '../../store/selectors/cart.selectors';
 
 declare var bootstrap: any;
 
@@ -26,6 +28,8 @@ export class ItemsComponent implements OnInit {
   error$: Observable<string | null>;
   userRole$: Observable<string | undefined>;
   userId$: Observable<number| undefined>;
+  isAllItems$: Observable<boolean>;
+  currentSupplierId$: Observable<number>;
 
   filters: ItemFilterParams = {
     ItemName: '',
@@ -43,6 +47,7 @@ export class ItemsComponent implements OnInit {
   pageSize: number = 10;
   selectedImage: string | null = null;
   showModal: boolean = false;
+  isAllItems: boolean = false;
 
   constructor(private store: Store, private http: HttpClient) {
     this.items$ = this.store.select(selectAllItems);
@@ -50,17 +55,22 @@ export class ItemsComponent implements OnInit {
     this.error$ = this.store.select(selectError);
     this.userRole$ = this.store.select(selectUserRole).pipe(take(1));
     this.userId$ = this.store.select(selectUserId).pipe(take(1));
+    this.isAllItems$ = this.store.select(selectisAllItems);
+    this.currentSupplierId$ = this.store.select(selectSupplierId);
   }
 
   ngOnInit(): void {
     this.userRole$.subscribe(role => this.userRole = role);
-    this.items$.subscribe(role => console.log(role));
+    this.isAllItems$.subscribe(isAllItems => this.isAllItems = isAllItems);
     this.loadItems();
   }
 
   loadItems(): void {
     if (this.userRole === 'Supplier') {
-      this.loadItemsBySupplier();
+      if(!this.isAllItems)
+        this.loadItemsBySupplier();
+      else
+        this.loadItemsForSupplier();
     } else if (this.userRole === 'Customer'){
       this.loadItemsByCustomer();
     } else 
@@ -70,6 +80,12 @@ export class ItemsComponent implements OnInit {
   loadItemsBySupplier(): void {
     this.userId$.subscribe(id => this.supplierId = id);
     this.store.dispatch(ItemsActions.loadItemsBySupplier({ supplierId: this.supplierId,  filters: this.filters }));
+  }
+
+  loadItemsForSupplier(): void {
+    this.userId$.subscribe(id => this.supplierId = id);
+    this.filters = { ...this.filters, supplierId: this.supplierId };
+    this.store.dispatch(ItemsActions.loadItemsForSupplier({ filters: this.filters }));
   }
 
   loadItemsByCustomer(): void {
@@ -132,6 +148,33 @@ export class ItemsComponent implements OnInit {
       value = undefined;
     }
     this.filters = { ...this.filters, [field]: value };
+  }
+
+  editItem(itemId: number): void {
+    //this.router.navigate(['admin/update-supplier', supplierId]);
+  }
+
+  deleteItem(itemId: number): void {
+    //this.suppliersService.deleteSupplier(supplierId)
+  }
+
+  addToCart(itemId: number, itemName: string, itemPrice: number, supplierId: number) {
+    const quantityStr = window.prompt('Enter the quantity you want to add to the cart:', '1');
+    const quantity = Number(quantityStr);
+
+    if (isNaN(quantity) || quantity <= 0) {
+      alert('Please enter a valid quantity.');
+      return;
+    }
+
+    this.currentSupplierId$.pipe(take(1)).subscribe(currentSupplierId => {
+      if (currentSupplierId !== 0 && currentSupplierId !== supplierId) {
+        alert('Please complete your purchase for one supplier before adding items from another supplier.');
+        return;
+      }
+
+      this.store.dispatch(addItemToCart({ itemId, quantity, itemName, price: itemPrice, supplierId }));
+    });
   }
 
   formatDate(date: any): string {

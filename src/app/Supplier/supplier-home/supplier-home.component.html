@@ -3,7 +3,12 @@
     <nav>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link" routerLink="items" routerLinkActive="active">
+          <a class="nav-link" routerLink="items" routerLinkActive="active" (click)="onMyItemsClick()">
+            <i class="fas fa-users"></i> My Items
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="items" routerLinkActive="active" (click)="onAllItemsClick()">
             <i class="fas fa-users"></i> Items View
           </a>
         </li>
@@ -45,6 +50,11 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="account-statement" routerLinkActive="active">
             <i class="fas fa-file-alt"></i> Account Statement
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="cart" routerLinkActive="active">
+            <i class="fas fa-shopping-cart"></i> Cart
           </a>
         </li>
         <li class="nav-item">

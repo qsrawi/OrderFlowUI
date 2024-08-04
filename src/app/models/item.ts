@@ -4,6 +4,7 @@ export interface Item {
     price: number;
     createdDate: string;
     image: string;
+    supplierId: number;
   }
   
   export interface ItemFilterParams {
@@ -12,6 +13,7 @@ export interface Item {
     MaxPrice?: number;
     CreatedDateFrom?: Date;
     CreatedDateTo?: Date;
+    supplierId?: number,
     PageNumber: number;
     PageSize: number;
   }

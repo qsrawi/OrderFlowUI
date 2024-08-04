@@ -37,7 +37,8 @@
           <th>Item ID</th>
           <th>Item Name</th>
           <th>Price</th>
-          <th>Action</th>
+          <th>View Img</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -49,6 +50,23 @@
             <button class="btn btn-secondary btn-sm" (click)="viewImage(item.itemId)">
               <i class="fas fa-image"></i> View Img
             </button>
+          </td>
+          <td>
+            <ng-container *ngIf="userRole$ | async as userRole">
+                <ng-container *ngIf="userRole === 'Supplier' && (isAllItems$ | async) === false">
+                  <button class="btn btn-info btn-sm me-2" (click)="editItem(item.itemId)">
+                    <i class="fas fa-pencil"></i> Update
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteItem(item.itemId)">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="(isAllItems$ | async)">
+                  <button class="btn btn-success btn-sm" (click)="addToCart(item.itemId, item.name, item.price, item.supplierId)">
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                  </button>
+                </ng-container>
+              </ng-container>
           </td>
         </tr>
       </tbody>

@@ -34,6 +34,18 @@ export class ItemsEffects {
     )
   );
 
+  loadItemsForSupplier$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ItemsActions.loadItemsForSupplier),
+      mergeMap(action =>
+        this.supplierHttpReqService.getItemsForSupplier(action.filters).pipe(
+          map(response => ItemsActions.loadItemsSuccess({ response })),
+          catchError(error => of(ItemsActions.loadItemsFailure({ error })))
+        )
+      )
+    )
+  );
+
   loadItemsByCustomer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ItemsActions.loadItemsForCustomer),

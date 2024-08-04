@@ -38,3 +38,17 @@ export interface Order {
     pageSize: number;
   }
   
+  export interface CreateOrderDto {
+    customerId: number | null;
+    supplierId: number | null;
+    tradingSupplierId: number | null;
+    total: number;
+    orderDate: Date;
+    orderItems: OrderItemDto[];
+  }
+
+  export interface OrderItemDto {
+    itemId: number;
+    quantity: number;
+    price: number;
+  }

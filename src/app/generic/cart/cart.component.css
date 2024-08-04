@@ -1,0 +1,33 @@
+.container {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .input-group {
+    margin-top: 10px;
+  }
+  
+  .btn {
+    margin: 0 5px;
+  }
+  
+  .btn-block {
+    width: 100%;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  

@@ -1,0 +1,42 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Cart</h2>
+  
+    <div *ngIf="(cartItems$ | async)?.length === 0" class="alert alert-info mt-3 text-center">
+      Your cart is empty. Add items to the cart to see them here.
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6 col-lg-4 mb-3" *ngFor="let item of cartItems$ | async">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="card-title">{{ item.itemName }}</h5>
+              <p class="card-text">Price: {{ item.price | currency }}</p>
+              <p class="card-text">Total: {{ item.price * item.quantity | currency }}</p>
+            </div>
+            <div>
+              <div class="input-group mb-3">
+                <button class="btn btn-outline-secondary" type="button" (click)="decreaseQuantity(item.itemId)">-</button>
+                <input type="text" class="form-control text-center" [value]="item.quantity" readonly>
+                <button class="btn btn-outline-secondary" type="button" (click)="increaseQuantity(item.itemId)">+</button>
+              </div>
+              <button class="btn btn-danger btn-block" (click)="removeItem(item.itemId)">
+                <i class="fas fa-trash"></i> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="text-center mt-4">
+      <h4> Total Price: {{ totalPrice$ | async | currency }}</h4>
+    </div>
+
+    <div class="text-center mt-4">
+        <button class="btn btn-primary" [disabled]="(cartItems$ | async)?.length === 0" (click)="placeOrder()">
+            <i class="fas fa-check-circle"></i> Place Order
+        </button>
+      </div>
+  </div>
+  

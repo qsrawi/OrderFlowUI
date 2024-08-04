@@ -12,6 +12,11 @@ export const loadItemsBySupplier = createAction(
   props<{ supplierId: number | undefined, filters: ItemFilterParams }>()
 );
 
+export const loadItemsForSupplier = createAction(
+  '[Items] Load Items For Supplier',
+  props<{ filters: ItemFilterParams }>()
+);
+
 export const loadItemsForCustomer = createAction(
   '[Items] Load Items For Customer',
   props<{ customerId: number | undefined, filters: ItemFilterParams }>()

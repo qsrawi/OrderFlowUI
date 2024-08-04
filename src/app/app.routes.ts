@@ -5,9 +5,9 @@ import { AdminHomeComponent } from './Admin/admin-home/admin-home.component';
 import { CustomerHomeComponent } from './Customer/customer-home/customer-home.component';
 import { AuthGuard } from './auth.guard';
 import { SuppliersViewComponent } from './Admin/suppliers-view/suppliers-view.component';
-import { ChequesComponent } from './Admin/cheques/cheques.component';
+import { ChequesComponent } from './generic/cheques/cheques.component';
 import { AddSupplierComponent } from './Admin/add-supplier/add-supplier.component';
-import { ItemsComponent } from './Admin/items/items.component';
+import { ItemsComponent } from './generic/items/items.component';
 import { OrderComponent } from './Admin/orders/orders.component';
 import { UpdateSupplierComponent } from './Admin/update-supplier/update-supplier.component';
 import { EndorsementChequeComponent } from './Supplier/endorsement-cheque/endorsement-cheque.component';
@@ -16,7 +16,7 @@ import { CustomersViewComponent } from './generic/customers-view/customers-view.
 import { AddCustomerComponent } from './Supplier/add-customer/add-customer.component';
 import { AddItemComponent } from './Supplier/add-item/add-item.component';
 import { AccountStatementComponent } from './Supplier/account-statement/account-statement.component';
-import { CartComponent } from './Customer/cart/cart.component';
+import { CartComponent } from './generic/cart/cart.component';
 import { ReceiptComponent } from './Customer/receipt/receipt.component';
 import { LogoutComponent } from './generic/logout/logout.component';
 
@@ -33,6 +33,7 @@ export const routes: Routes = [
       { path: 'cheques', component: ChequesComponent },
       { path: 'suppliers-view', component: SuppliersViewComponent },
       { path: 'account-statement', component: AccountStatementComponent },
+      { path: 'cart', component: CartComponent },
       { path: 'logout', component: LogoutComponent }
     ]
   },

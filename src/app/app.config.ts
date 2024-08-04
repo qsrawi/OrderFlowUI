@@ -27,6 +27,8 @@ import { imageReducer } from './store/reducers/image.reducer';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { cartReducer } from './store/reducers/cart.reducer';
+import { CartEffects } from './store/effects/cart.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,10 +50,11 @@ export const appConfig: ApplicationConfig = {
           customers: customerReducer,
           cashs: cashReducer,
           receipt: receiptReducer,
-          images: imageReducer
+          images: imageReducer,
+          cart: cartReducer
         }
       ), 
-      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects]),
+      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects, CartEffects]),
       provideStoreDevtools({ maxAge: 25, logOnly: false }),
       provideAnimations(),
       provideToastr({

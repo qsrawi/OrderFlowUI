@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { Receipt } from '../../models/receipts';
 
 export const addReceipt = createAction(
   '[Receipt] Add Receipt',

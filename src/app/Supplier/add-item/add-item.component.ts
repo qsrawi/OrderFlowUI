@@ -39,7 +39,6 @@ export class AddItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId$.subscribe(role => this.supplierId = role);
-    console.log(this.supplierId)
   }
 
   onSubmit(): void {
