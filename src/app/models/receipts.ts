@@ -35,9 +35,33 @@ export interface Receipt {
 }
 
 export interface ReceiptState {
-    receipts: Receipt[];
+    receipts: ReceiptDto[];
     totalAmount: number;
     remainingDebt: number;
     loading: boolean;
     error: string | null;
 }
+
+export interface ReceiptDto {
+    receiptId: number;
+    issuer?: string;
+    reciver?: string;
+    receiptDate: Date;
+    cheques?: ReceiptChequesDto[];
+    cashDetailes?: ReceiptDetailsDto[];
+    totalAmount?: number;
+  }
+  
+  export interface ReceiptChequesDto {
+    invoiceNumber?: number;
+    amount: number;
+    currency?: string;
+    dueDate: Date;
+    bankName?: string;
+  }
+  
+  export interface ReceiptDetailsDto {
+    invoiceNumber?: number;
+    amount: number;
+    currency?: string;
+  }

@@ -43,7 +43,6 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.userRole$.subscribe(role => this.userRole = role);
     this.userId$.subscribe(userId => this.userId = userId);
-    this.cartItems$.subscribe(cartItems => console.log("cartItems", cartItems));
     this.currentSupplierId$.subscribe(currentSupplierId => this.supplierId = currentSupplierId);
   }
 

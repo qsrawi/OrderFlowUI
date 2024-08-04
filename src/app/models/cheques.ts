@@ -28,6 +28,7 @@ export interface ChequeFilterParams {
     AmountFrom?: number;
     AmountTo?: number;
     Currency?: string;
+    IsIncoming: boolean,
     ChequeHolderName?: string;
     BankName?: string;
     PageNumber: number;

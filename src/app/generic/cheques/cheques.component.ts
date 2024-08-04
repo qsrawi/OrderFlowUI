@@ -36,6 +36,7 @@ export class ChequesComponent implements OnInit {
     DueDateTo: undefined,
     AmountFrom: undefined,
     AmountTo: undefined,
+    IsIncoming: false,
     Currency: '',
     BankName: '',
     PageNumber: 1,
@@ -87,8 +88,13 @@ export class ChequesComponent implements OnInit {
   }
 
   viewImage(chequeId: number): void {
-    if (chequeId)
-      this.store.dispatch(ChequesActions.loadImage({ chequeId }));
+    if (chequeId){
+      if(this.userRole == "Supplier")
+        this.store.dispatch(ChequesActions.loadImage({ chequeId, role: "Supplier" }));
+      else
+      this.store.dispatch(ChequesActions.loadImage({ chequeId, role: "Admin" }));
+    }
+      
     this.store
       .select(state => selectItemImage(state, { itemId: chequeId }))
       .subscribe(image => {
@@ -117,8 +123,13 @@ export class ChequesComponent implements OnInit {
   }
 
   onTabChange(tab: string): void {
+    if(this.userRole == "Supplier"){
+      const isIncoming = tab === "Outgoing"? false : true;
+      this.filters = { ...this.filters,  IsIncoming: isIncoming, PageNumber: 1 };
+    } else{
+      this.filters = { ...this.filters,  PageNumber: 1 };
+    }
     this.selectedTab = tab;
-    this.filters = { ...this.filters, PageNumber: 1 };
     this.loadCheques();
   }
 

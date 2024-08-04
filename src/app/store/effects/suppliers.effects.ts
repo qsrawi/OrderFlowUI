@@ -7,6 +7,8 @@ import { AdminHttpReqService } from '../../services/httpReq.service';
 import { Router } from '@angular/router';
 import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
 import * as ChequesActions from '../actions/cheques.actions';
+import { loadReceipts, loadReceiptsFailure, loadReceiptsSuccess } from '../actions/receipt.actions';
+import { CustomerHttpReqService } from '../../services/customerHttpReq.service';
 
 @Injectable()
 export class SuppliersEffects {
@@ -65,6 +67,18 @@ export class SuppliersEffects {
     )
   );
 
+  loadReceipts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadReceipts),
+      mergeMap(action =>
+        this.customerHttpReqService.getReceiptsByCustomer(action.customerId).pipe(
+          map(receipts => loadReceiptsSuccess({ receipts })),
+          catchError(error => of(loadReceiptsFailure({ error })))
+        )
+      )
+    )
+  );
+
   deleteSupplier$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SupplierActions.deleteSupplier),
@@ -91,6 +105,7 @@ export class SuppliersEffects {
     private actions$: Actions,
     private adminHttpReqService: AdminHttpReqService,
     private supplierHttpReqService: SupplierHttpReqService,
+    private customerHttpReqService: CustomerHttpReqService,
     private router: Router
   ) {}
 }

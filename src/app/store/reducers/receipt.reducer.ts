@@ -1,4 +1,3 @@
-// receipt.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import * as ReceiptActions from '../actions/receipt.actions';
 import { ReceiptState } from '../../models/receipts';
@@ -27,14 +26,16 @@ export const receiptReducer = createReducer(
     loading: false,
     error
   })),
-  on(ReceiptActions.calculateTotal, (state) => ({
+  on(ReceiptActions.loadReceipts, state => ({ ...state, loading: true })),
+  on(ReceiptActions.loadReceiptsSuccess, (state, { receipts }) => ({
     ...state,
-    totalAmount: state.receipts.reduce(
-      (total, receipt) =>
-        total +
-        receipt.cheques.reduce((sum, cheque) => sum + cheque.amount, 0) +
-        receipt.cashDetails.reduce((sum, cash) => sum + cash.amount, 0),
-      0
-    )
+    receipts,
+    loading: false,
+    error: null,
+  })),
+  on(ReceiptActions.loadReceiptsFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
 );

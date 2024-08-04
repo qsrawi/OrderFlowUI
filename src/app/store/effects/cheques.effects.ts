@@ -72,8 +72,11 @@ export class ChequesEffects {
 
   loadImage$ = createEffect(() => this.actions$.pipe(
     ofType(ChequesActions.loadImage),
-    mergeMap(action =>
-      this.supplierHttpReq.getImage(action.chequeId, true).pipe(
+    mergeMap(action => {
+      const imgReq = action.role == "Supplier"
+      ? this.supplierHttpReq.getImage(action.chequeId, true)
+      : this.adminHttpReqService.getImage(action.chequeId, true)
+      return imgReq.pipe(
         map(response => {
           const reader = new FileReader();
           return new Promise<string>((resolve) => {
@@ -89,7 +92,7 @@ export class ChequesEffects {
         )),
         catchError(error => of(ChequesActions.loadImageFailure({ itemId: action.chequeId, error })))
       )
-    )
+    })
   ));
 
   endorsementCheque$ = createEffect(() =>

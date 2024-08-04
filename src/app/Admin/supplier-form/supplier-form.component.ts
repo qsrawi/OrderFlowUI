@@ -26,7 +26,6 @@ export class SupplierFormComponent {
       identity: ['', Validators.required],
       details: [''],
       address: ['', Validators.required],
-      image: ['']
     });
   }
 

@@ -6,7 +6,6 @@ import * as ItemsActions from '../../store/actions/items.actions';
 import { AdminHttpReqService } from '../../services/httpReq.service';
 import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
 import { CustomerHttpReqService } from '../../services/customerHttpReq.service';
-import { CustomerBaseDto } from '../../models/customer';
 
 @Injectable()
 export class ItemsEffects {
@@ -50,15 +49,8 @@ export class ItemsEffects {
     this.actions$.pipe(
       ofType(ItemsActions.loadItemsForCustomer),
       mergeMap(action =>
-        this.customerHttpReqService.loadCustomer(action.customerId).pipe(
-          mergeMap((customer: CustomerBaseDto) => {
-            const supplierId = customer.supplierId;
-
-            return this.customerHttpReqService.getItemsForCustomer(supplierId, action.filters).pipe(
-              map(response => ItemsActions.loadItemsSuccess({ response })),
-              catchError(error => of(ItemsActions.loadItemsFailure({ error })))
-            );
-          }),
+        this.customerHttpReqService.getItemsForCustomer(action.customerId, action.filters).pipe(
+          map(response => ItemsActions.loadItemsSuccess({ response })),
           catchError(error => of(ItemsActions.loadItemsFailure({ error })))
         )
       )

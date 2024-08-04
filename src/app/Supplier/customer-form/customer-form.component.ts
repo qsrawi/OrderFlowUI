@@ -33,7 +33,7 @@ export class CustomerFormComponent implements OnInit {
       balance: ['', Validators.required],
     });
   }
-
+  
   ngOnInit(): void {
     if (this.customer) {
       this.customerForm.patchValue(this.customer);

@@ -111,11 +111,11 @@ export class CustomersViewComponent implements OnInit {
   }
 
   editCustomer(id: number): void {
-    //this.router.navigate(['admin/update-supplier', id]);
+    this.router.navigate(['supplier/update-customer', id]);
   }
 
   deleteCustomer(id: number): void {
-    //this.suppliersService.deleteSupplier(id)
+    this.store.dispatch(CustomerActions.deleteCustomer({ id }));
   }
 
   get totalPages(): Observable<number> {
@@ -179,7 +179,7 @@ export class CustomersViewComponent implements OnInit {
   }
 
   accountStatement(customerId: number): void {
-    this.store.dispatch(CustomerActions.loadTransactions({ customerId }));
+    this.store.dispatch(CustomerActions.loadTransactions({ customerId, role: "Supplier" }));
     this.showModal = true;
   }
 

@@ -63,7 +63,7 @@ export const loadCustomersFailure = createAction(
 
 export const loadTransactions = createAction(
   '[Account Statement] Load Transactions For Customer',
-  props<{ customerId: number | undefined }>()
+  props<{ customerId: number | undefined, role: string }>()
 );
 
 export const loadTransactionsSuccess = createAction(
@@ -73,6 +73,21 @@ export const loadTransactionsSuccess = createAction(
 
 export const loadTransactionsFailure = createAction(
   '[Account Statement] Load Transactions Failure For Customer',
+  props<{ error: any }>()
+);
+
+export const deleteCustomer = createAction(
+  '[Customer] Delete Customer',
+  props<{ id: number }>()
+);
+
+export const deleteCustomerSuccess = createAction(
+  '[Customer] Delete Customer Success',
+  props<{ id: number }>()
+);
+
+export const deleteCustomerFailure = createAction(
+  '[Customer] Delete Customer Failure',
   props<{ error: any }>()
 );
 

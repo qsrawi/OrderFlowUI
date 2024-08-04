@@ -90,4 +90,13 @@ export const customerReducer = createReducer(
     loading: false,
     error
   })),
+  on(CustomerActions.deleteCustomerSuccess, (state, { id }) => ({
+    ...state,
+    customers: state.customers.filter(customer => customer.customerId !== id),
+    error: null
+  })),
+  on(CustomerActions.deleteCustomerFailure, (state, { error }) => ({
+    ...state,
+    error
+  })),
 );

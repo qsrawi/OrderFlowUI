@@ -59,7 +59,7 @@ export const loadTransactionsFailure = createAction(
 
 export const loadImage = createAction(
   '[Cheques] Load Image',
-  props<{ chequeId: number }>()
+  props<{ chequeId: number, role: string }>()
 );
 
 export const loadImageSuccess = createAction(

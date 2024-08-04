@@ -35,6 +35,7 @@ export class OrderComponent implements OnInit {
   };
 
   supplierId: number | undefined;
+  customerId: number | undefined;
   pageSize: number = 10;
   userRole: string | undefined;
   showModal: boolean = false;
@@ -55,13 +56,20 @@ export class OrderComponent implements OnInit {
   loadOrders(): void {
     if (this.userRole === 'Supplier') {
       this.loadOrdersBySupplier();
-    } else
+    } else if(this.userRole === "Customer")
+      this.loadOrdersByCustomer();
+    else
       this.store.dispatch(OrdersActions.loadOrders({ filters: this.filters }));
   }
 
   loadOrdersBySupplier(): void {
     this.userId$.subscribe(id => this.supplierId = id);
     this.store.dispatch(OrdersActions.loadOrdersBySupplier({ supplierId: this.supplierId, filters: this.filters }));
+  }
+
+  loadOrdersByCustomer(): void {
+    this.userId$.subscribe(id => this.customerId = id);
+    this.store.dispatch(OrdersActions.loadOrdersByCustomer({ customerId: this.customerId, filters: this.filters }));
   }
 
   applyFilters(): void {

@@ -5,12 +5,25 @@ import { of } from 'rxjs';
 import * as CustomerActions from '../actions/customer.actions';
 import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
 import { Router } from '@angular/router';
+import { CustomerHttpReqService } from '../../services/customerHttpReq.service';
 
 @Injectable()
 export class CustomerEffects {
   addCustomer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.addCustomer),
+      mergeMap(action =>
+        this.supplierHttpReqService.saveCustomer(action.id, action.customer).pipe(
+          map(() => CustomerActions.addCustomerSuccess()),
+          catchError(error => of(CustomerActions.addCustomerFailure({ error })))
+        )
+      )
+    )
+  );
+
+  updateCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.saveCustomer),
       mergeMap(action =>
         this.supplierHttpReqService.saveCustomer(action.id, action.customer).pipe(
           map(() => CustomerActions.addCustomerSuccess()),
@@ -36,10 +49,25 @@ export class CustomerEffects {
   loadTransactions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.loadTransactions),
-      mergeMap(action =>
-        this.supplierHttpReqService.getTransactionsForCustomer(action.customerId).pipe(
+      mergeMap(action => {
+        const role = action.role == "Supplier"
+        ? this.supplierHttpReqService.getTransactionsForCustomer(action.customerId)
+        : this.customerHttpReqService.getTransactionsForCustomer(action.customerId)
+        return role.pipe(
           map(transactions => CustomerActions.loadTransactionsSuccess({ transactions })),
           catchError(error => of(CustomerActions.loadTransactionsFailure({ error })))
+        )
+      })
+    )
+  );
+
+  deleteCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.deleteCustomer),
+      mergeMap(action =>
+        this.supplierHttpReqService.deleteCustomer(action.id).pipe(
+          map(() => CustomerActions.deleteCustomerSuccess({ id: action.id })),
+          catchError(error => of(CustomerActions.deleteCustomerFailure({ error })))
         )
       )
     )
@@ -58,6 +86,7 @@ export class CustomerEffects {
   constructor(
     private actions$: Actions,
     private supplierHttpReqService: SupplierHttpReqService,
+    private customerHttpReqService: CustomerHttpReqService,
     private router: Router
   ) {}
 }

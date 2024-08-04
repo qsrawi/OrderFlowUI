@@ -67,6 +67,7 @@ export class SupplierHttpReqService {
     if (filters.AmountTo) params = params.set('AmountTo', filters.AmountTo.toString());
     if (filters.Currency) params = params.set('Currency', filters.Currency);
     if (filters.BankName) params = params.set('BankName', filters.BankName);
+    if (filters.IsIncoming) params = params.set('IsIncoming', filters.IsIncoming);
 
     const headers = this.getAuthHeaders();
     return this.http.get<ChequesResponse>(
@@ -169,7 +170,7 @@ export class SupplierHttpReqService {
   }
 
   saveCustomer(id: number | undefined, customer: CustomerBaseDto): Observable<void> {
-    const url = id ? `${this.supplierApiUrl}/SaveCustomer/${id}` : `${this.supplierApiUrl}/SaveCustomer`;
+    const url = id ? `${this.supplierApiUrl}/SaveCustomer?id=${id}` : `${this.supplierApiUrl}/SaveCustomer`;
     const headers = this.getAuthHeaders();
     return this.http.post<void>(url, customer, { headers });
   }
@@ -244,5 +245,10 @@ export class SupplierHttpReqService {
   getChequeTransactions(chequeId: number): Observable<Transaction[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<Transaction[]>(`${this.supplierApiUrl}/GetChequeTransactions/${chequeId}`, { headers });
+  }
+
+  deleteCustomer(id: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.supplierApiUrl}/DeleteCustomer/${id}`, { headers });
   }
 }

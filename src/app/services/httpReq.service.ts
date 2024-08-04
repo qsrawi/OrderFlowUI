@@ -138,4 +138,9 @@ export class AdminHttpReqService {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.adminApiUrl}/DeleteSupplier/${id}`, { headers });
   }
+
+  getImage(chequeId: number, isFront: boolean): Observable<Blob> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.adminApiUrl}/GetChequeImage/${chequeId}/${isFront}`, { headers, responseType: 'blob' });
+  }
 }

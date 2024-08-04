@@ -1,1 +1,35 @@
-<p>receipt works!</p>
+<div class="container mt-3">
+    <div *ngIf="receipts$ | async as receipts">
+      <ul class="list-group">
+        <li *ngFor="let receipt of receipts" class="list-group-item mb-2">
+          <h5>Receipt #{{ receipt.receiptId }}</h5>
+          <p>
+            <strong>Issuer:</strong> {{ receipt.issuer }}<br>
+            <strong>Receiver:</strong> {{ receipt.reciver }}<br>
+            <strong>Date:</strong> {{ receipt.receiptDate | date }}<br>
+            <strong>Total Amount:</strong> {{ receipt.totalAmount | currency }}<br>
+          </p>
+          <div *ngIf="receipt.cheques?.length">
+            <h6>Cheques:</h6>
+            <ul>
+              <li *ngFor="let cheque of receipt.cheques">
+                Invoice #: {{ cheque.invoiceNumber }}<br>
+                Amount: {{ cheque.amount | currency:cheque.currency }}<br>
+                Due Date: {{ cheque.dueDate | date }}<br>
+                Bank: {{ cheque.bankName }}
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="receipt.cashDetailes?.length">
+            <h6>Cash Details:</h6>
+            <ul>
+              <li *ngFor="let cash of receipt.cashDetailes">
+                Invoice #: {{ cash.invoiceNumber }}<br>
+                Amount: {{ cash.amount | currency:cash.currency }}
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>

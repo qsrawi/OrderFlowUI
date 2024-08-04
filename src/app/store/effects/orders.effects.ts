@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import * as OrdersActions from '../actions/orders.actions';
 import { AdminHttpReqService } from '../../services/httpReq.service';
 import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
+import { CustomerHttpReqService } from '../../services/customerHttpReq.service';
 
 @Injectable()
 export class OrdersEffects {
@@ -32,9 +33,22 @@ export class OrdersEffects {
     )
   );
 
+  loadOrdersByCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OrdersActions.loadOrdersByCustomer),
+      mergeMap(action =>
+        this.customerHttpReqService.getOrdersByCustomer(action.customerId, action.filters).pipe(
+          map(response => OrdersActions.loadOrdersSuccess({ response })),
+          catchError(error => of(OrdersActions.loadOrdersFailure({ error })))
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private adminHttpReqService: AdminHttpReqService,
     private supplierHttpReqService: SupplierHttpReqService,
+    private customerHttpReqService: CustomerHttpReqService
   ) {}
 }

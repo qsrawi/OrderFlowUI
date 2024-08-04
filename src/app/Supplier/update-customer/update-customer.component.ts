@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import * as CustomerActions from '../../store/actions/customers.actions';
+import * as CustomerActions from '../../store/actions/customer.actions';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
