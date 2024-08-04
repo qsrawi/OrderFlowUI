@@ -7,5 +7,6 @@ export interface Transaction {
     issuerName: string;
     paymentMethod: string;
     currency?: string;
+    paymentStatus?: string;
     remainingDebt: number;
   } 

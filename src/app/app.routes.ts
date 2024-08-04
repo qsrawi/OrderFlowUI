@@ -4,13 +4,12 @@ import { SupplierHomeComponent } from './Supplier/supplier-home/supplier-home.co
 import { AdminHomeComponent } from './Admin/admin-home/admin-home.component';
 import { CustomerHomeComponent } from './Customer/customer-home/customer-home.component';
 import { AuthGuard } from './auth.guard';
-import { SuppliersViewComponent } from './Admin/suppliers-view/suppliers-view.component';
+import { SuppliersViewComponent } from './generic/suppliers-view/suppliers-view.component';
 import { ChequesComponent } from './generic/cheques/cheques.component';
 import { AddSupplierComponent } from './Admin/add-supplier/add-supplier.component';
 import { ItemsComponent } from './generic/items/items.component';
 import { OrderComponent } from './Admin/orders/orders.component';
 import { UpdateSupplierComponent } from './Admin/update-supplier/update-supplier.component';
-import { EndorsementChequeComponent } from './Supplier/endorsement-cheque/endorsement-cheque.component';
 import { AddReceiptComponent } from './Supplier/add-receipt/add-receipt.component';
 import { CustomersViewComponent } from './generic/customers-view/customers-view.component';
 import { AddCustomerComponent } from './Supplier/add-customer/add-customer.component';

@@ -6,6 +6,7 @@ import * as SupplierActions from '../actions/suppliers.actions';
 import { AdminHttpReqService } from '../../services/httpReq.service';
 import { Router } from '@angular/router';
 import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
+import * as ChequesActions from '../actions/cheques.actions';
 
 @Injectable()
 export class SuppliersEffects {
@@ -35,6 +36,18 @@ export class SuppliersEffects {
         this.adminHttpReqService.getSupplier(action.id).pipe(
           map(supplier => SupplierActions.loadSupplierSuccess({ supplier })),
           catchError(error => of(SupplierActions.loadSupplierFailure({ error })))
+        )
+      )
+    )
+  );
+
+  loadTransactions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SupplierActions.loadTransactions),
+      mergeMap(action =>
+        this.supplierHttpReqService.getTransactionsForSupplier(action.supplierId, action.tradingSupplierId).pipe(
+          map(transactions => ChequesActions.loadChequeTransactionsSuccess({ transactions })),
+          catchError(error => of(ChequesActions.loadTransactionsFailure({ error })))
         )
       )
     )

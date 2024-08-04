@@ -47,6 +47,8 @@
           <th>Address</th>
           <th>Identity</th>
           <th *ngIf="(userRole$ | async) === 'Supplier'">Create Endorsement Cheque</th>
+          <th *ngIf="(userRole$ | async) === 'Supplier'">Account Statement</th>
+          <th *ngIf="(userRole$ | async) === 'Supplier'">Recipt</th>
           <th *ngIf="(userRole$ | async) === 'Admin'">Actions</th>
         </tr>
       </thead>
@@ -64,7 +66,12 @@
           <td>{{ supplier.identity }}</td>
           <td *ngIf="(userRole$ | async) === 'Supplier'">
             <button class="btn btn-danger btn-sm" (click)="createEndorsementCheque(supplier.supplierId)">
-              <i class="fas fa-file-invoice"></i> Create Endorsement Cheque
+              <i class="fas fa-handshake"></i> Create Endorsement Cheque
+            </button>
+          </td>
+          <td *ngIf="(userRole$ | async) === 'Supplier'">
+            <button class="btn btn-success btn-sm" (click)="accountStatement(supplier.supplierId)">
+              <i class="fas fa-receipt"></i> Account Statement
             </button>
           </td>
           <td *ngIf="(userRole$ | async) === 'Admin'">
@@ -73,6 +80,15 @@
             </button>
             <button class="btn btn-danger btn-sm" (click)="deleteSupplier(supplier.supplierId)">
               <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+          <td *ngIf="(userRole$ | async) === 'Supplier'">
+            <button class="btn btn-success btn-sm" (click)="addReceipt(supplier.supplierId)">
+              <i class="fas fa-receipt"></i> Add Receipt
+            </button>
+            <br>
+            <button class="btn btn-success btn-sm  mt-2" (click)="addVoucher(supplier.supplierId)">
+              <i class="fas fa-receipt"></i> Add Voucher
             </button>
           </td>
           </ng-container>
@@ -98,5 +114,44 @@
         </li>
       </ul>
     </nav>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" [ngClass]="{ 'd-block': showModal }">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Account Statement</h5>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="transactions$ | async as transactions">
+            <div *ngFor="let transaction of transactions">
+              <p><strong>Transaction ID:</strong> {{ transaction.transactionId }}</p>
+              <p><strong>Invoice Number:</strong> {{ transaction.invoiceNumber }}</p>
+              <p><strong>Transaction Date:</strong> {{ transaction.transactionDate | date }}</p>
+              <p><strong>Amount:</strong> {{ transaction.amount }}</p>
+              <p><strong>Currency:</strong> {{ transaction.currency }}</p>
+              <p><strong>Receiver Name:</strong> {{ transaction.receiverName }}</p>
+              <p><strong>Issuer Name:</strong> {{ transaction.issuerName }}</p>
+              <p><strong>Payment Method:</strong> {{ transaction.paymentMethod }}</p>
+              <p>  <strong>Payment Status:</strong>
+                <span [ngClass]="getStatusDebtColor(formatPaymentStatus(transaction.remainingDebt, transaction.paymentStatus))">
+                  {{ formatPaymentStatus(transaction.remainingDebt, transaction.paymentStatus) }}
+                </span>
+              </p>
+              <p>  <strong>Remaining Debt:</strong>
+                <span [ngClass]="getStatusDebtColor(formatPaymentStatus(transaction.remainingDebt, transaction.paymentStatus))">
+                  {{ formatRemainingDebt(transaction.remainingDebt) }}
+                </span>
+              </p>
+              <hr>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="generatePDF()">Generate PDF</button>
+        </div>
+      </div>
+    </div>
   </div>
   

@@ -27,3 +27,8 @@ export const  selectisAllItems = createSelector(
   selectAuthState,
   (state: AuthState) => state.isAllItems
 );
+
+export const  selectIsRecipt = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.isRecipt
+);

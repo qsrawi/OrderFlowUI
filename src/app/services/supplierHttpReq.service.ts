@@ -189,7 +189,12 @@ export class SupplierHttpReqService {
 
   getTransactions(supplierId: number | undefined): Observable<Transaction[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<Transaction[]>(`${this.supplierApiUrl}/GetTransactions/${supplierId}`, { headers });
+    return this.http.get<Transaction[]>(`${this.supplierApiUrl}/GetAllTransactions/${supplierId}`, { headers });
+  }
+
+  getTransactionsForSupplier(supplierId: number | undefined, tradingSupplierId: number | undefined): Observable<Transaction[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Transaction[]>(`${this.supplierApiUrl}/GetTransactions/?supplierId=${supplierId}&tradingSupplierId=${tradingSupplierId}`, { headers });
   }
 
   getTransactionsForCustomer(customerId: number | undefined): Observable<Transaction[]> {
@@ -236,5 +241,8 @@ export class SupplierHttpReqService {
     return this.http.post(`${this.apiUrl}/Supplier/AddOrder`, orderDto, { headers });
   }
 
-  
+  getChequeTransactions(chequeId: number): Observable<Transaction[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Transaction[]>(`${this.supplierApiUrl}/GetChequeTransactions/${chequeId}`, { headers });
+  }
 }

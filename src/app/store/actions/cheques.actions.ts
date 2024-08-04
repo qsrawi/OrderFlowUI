@@ -27,6 +27,11 @@ export const loadChequeTransactions = createAction(
   props<{ chequeId: number }>()
 );
 
+export const loadChequeTransactionsForSupplier = createAction(
+  '[Cheques] Load Cheque Transactions For Supplier',
+  props<{ chequeId: number }>()
+);
+
 export const loadChequeTransactionsSuccess = createAction(
   '[Cheques] Load Cheque Transactions Success',
   props<{ transactions: Transaction[] }>()
@@ -88,4 +93,8 @@ export const endorsementChequeSuccess = createAction(
 export const endorsementChequeFailure = createAction(
   '[Cheques] Endorsement Cheque Failure',
   props<{ error: any }>()
+);
+
+export const CleanTransactions = createAction(
+  '[Account Statement] Clean Transactions'
 );

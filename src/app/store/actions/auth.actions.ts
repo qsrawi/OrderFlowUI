@@ -13,7 +13,8 @@ export const loadUser = createAction('[User] Load User');
 export const loadUserSuccess = createAction('[User] Load User Success', props<{ user: User }>());
 export const loadUserFailure = createAction('[User] Load User Failure', props<{ error: any }>());
 
-export const forCustomer = createAction('[Auth] For User', props<{customerId: number}>());
-export const forSupplier = createAction('[Auth] For User', props<{supplierId: number}>());
-export const allItems = createAction('[Auth] For User', props<{isAllItems: boolean}>());
+export const forCustomer = createAction('[Auth] For Customer', props<{customerId: number}>());
+export const forSupplier = createAction('[Auth] For Supplier', props<{supplierId: number}>());
+export const allItems = createAction('[Auth] Is All Items', props<{isAllItems: boolean}>());
+export const isRecipt = createAction('[Auth] Is Recipt', props<{isRecipt: boolean}>());
 export const logout = createAction('[Auth] Logout');

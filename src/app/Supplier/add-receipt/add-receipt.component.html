@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Add Receipt</h2>
+  <h2>Add {{isRecipt? "Receipt" : "Voucher"}}</h2>
 
   <form [formGroup]="receiptForm" (ngSubmit)="submit()">
     <h4>Cheques</h4>

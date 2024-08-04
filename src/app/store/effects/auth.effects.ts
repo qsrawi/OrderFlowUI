@@ -23,7 +23,6 @@ export class AuthEffects {
         this.adminHttpReqService.login(action.username, action.password).pipe(
           map((user: User) => {
             if (user && user.token) {
-              // Store the token in localStorage
               localStorage.setItem('authToken', user.token);
 
               switch (user.role) {

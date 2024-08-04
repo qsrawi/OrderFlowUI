@@ -156,7 +156,10 @@ export class ChequesComponent implements OnInit {
   }
 
   viewTransactions(chequeId: number): void {
-    this.store.dispatch(ChequesActions.loadChequeTransactions({ chequeId }));
+    if(this.isSupplier = this.userRole === 'Supplier')
+      this.store.dispatch(ChequesActions.loadChequeTransactionsForSupplier({ chequeId }));
+    else
+      this.store.dispatch(ChequesActions.loadChequeTransactions({ chequeId }));
     this.showModal = true;
   }
 

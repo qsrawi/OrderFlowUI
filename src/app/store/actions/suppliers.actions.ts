@@ -59,3 +59,12 @@ export const deleteSupplierFailure = createAction(
   '[Supplier] Delete Supplier Failure',
   props<{ error: any }>()
 );
+
+export const loadTransactions = createAction(
+  '[Account Statement] Load Transactions For Supplier',
+  props<{ supplierId: number | undefined, tradingSupplierId: number | undefined}>()
+);
+
+export const CleanTransactions = createAction(
+  '[Account Statement] Clean Transactions For Supplier'
+);

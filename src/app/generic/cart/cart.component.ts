@@ -65,19 +65,19 @@ export class CartComponent implements OnInit {
       map(cartItems => {
         const orderItems = cartItems.map(item => ({
           ...item,
-          totalPrice: item.price * item.quantity
+          price: item.price * item.quantity
         }
       )
     );
   
-    const totalPrice = orderItems.reduce((acc, item) => acc + item.totalPrice, 0);
+    const totalPrice = orderItems.reduce((acc, item) => acc + item.price, 0);
     this.store.dispatch(
       CartActions.placeOrder({
         orderItems,
         total: totalPrice,
-        supplierId: this.userRole === 'Customer'? this.supplierId : this.userId,
+        supplierId: this.supplierId,
         customerId: this.userRole === 'Customer'? this.userId : undefined,
-        tradingSupplierId: this.userRole === 'Supplier'? this.supplierId : undefined
+        tradingSupplierId: this.userRole === 'Supplier'? this.userId : undefined
         })
       );
     })

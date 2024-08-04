@@ -5,7 +5,7 @@ import { Observable, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Receipt, ReceiptState } from '../../models/receipts';
 import * as ReceiptActions from '../../store/actions/receipt.actions';
-import { selectforCustomer, selectforSupplier, selectUserId } from '../../store/selectors/auth.selectors';
+import { selectforCustomer, selectforSupplier, selectIsRecipt, selectUserId } from '../../store/selectors/auth.selectors';
 import { Router } from '@angular/router';
 
 @Component({
@@ -28,11 +28,13 @@ export class AddReceiptComponent implements OnInit {
   forCustomer$: Observable<number | undefined>;
   forSupplier$: Observable<number | undefined>;
   userId$: Observable<number| undefined>;
+  isRecipt$: Observable<boolean>;
 
   customerId: number | undefined = 0;
   TradingSupplierId: number | undefined = 0;
   userId: number | undefined = 0;
   selectedFile: File | null = null;
+  isRecipt: boolean = true;
 
   constructor(private fb: FormBuilder, private store: Store<{ receipt: ReceiptState }>, private router: Router) {
     this.receiptForm = this.fb.group({
@@ -46,6 +48,7 @@ export class AddReceiptComponent implements OnInit {
     this.forCustomer$ = this.store.select(selectforCustomer).pipe(take(1));
     this.forSupplier$ = this.store.select(selectforSupplier).pipe(take(1));
     this.userId$ = this.store.select(selectUserId).pipe(take(1));
+    this.isRecipt$ = this.store.select(selectIsRecipt).pipe(take(1));
   }
 
   ngOnInit(): void {
@@ -55,6 +58,7 @@ export class AddReceiptComponent implements OnInit {
     this.forCustomer$.subscribe(id => this.customerId = id);
     this.forSupplier$.subscribe(id => this.TradingSupplierId = id);
     this.userId$.subscribe(id => this.userId = id);
+    this.isRecipt$.subscribe(isRecipt => this.isRecipt = isRecipt);
   }
 
   get cheques(): FormArray {
@@ -163,86 +167,26 @@ export class AddReceiptComponent implements OnInit {
     });
 
     if (this.userId !== 0 && this.userId !== undefined) {
-      formData.append('supplierId', this.userId.toString());
 
-    if (this.customerId !== 0 && this.customerId !== undefined) {
-        formData.append('customerId', this.customerId.toString());
+      if (this.customerId !== 0 && this.customerId !== undefined) {
+          formData.append('customerId', this.customerId.toString());
+      }
+
+      if (this.TradingSupplierId !== 0 && this.TradingSupplierId !== undefined) {
+          if(this.isRecipt){
+            formData.append('supplierId', this.userId.toString());
+            formData.append('tradingSupplierId', this.TradingSupplierId.toString());
+          } else {
+            formData.append('tradingSupplierId', this.userId.toString());
+            formData.append('supplierId', this.TradingSupplierId.toString());
+          }
+      } else
+        formData.append('supplierId', this.userId.toString());
+
+      formData.append('isReceipt', this.isRecipt.toString());
+
+      this.store.dispatch(ReceiptActions.addReceipt({ receipt: formData }));
+      this.router.navigate(['/supplier/cheques']);
     }
-
-    if (this.TradingSupplierId !== 0 && this.TradingSupplierId !== undefined) {
-        formData.append('tradingSupplierId', this.TradingSupplierId.toString());
-    }
-
-    formData.append('isReceipt', 'true');
-
-    this.store.dispatch(ReceiptActions.addReceipt({ receipt: formData }));
-    this.router.navigate(['/supplier/cheques']);
   }
 }
-}
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { Store } from '@ngrx/store';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { RouterModule } from '@angular/router';
-// import { Observable } from 'rxjs';
-// import { CashDto } from '../../models/cash';
-// import * as CashActions from '../../store/actions/cash.actions';
-// import * as ReceiptActions from '../../store/actions/receipt.actions';
-// import { selectAllCashDetails, selectCashLoading, selectCashError } from '../../store/selectors/cash.selectors';
-// import { selectReceiptResponse } from '../../store/selectors/receipt.selectors';
-// import { CreateReceiptDto, ReceiptDto } from '../../models/receipts';
-
-// @Component({
-//   selector: 'app-add-receipt',
-//   templateUrl: './add-receipt.component.html',
-//   styleUrls: ['./add-receipt.component.css'],
-//   standalone: true,
-//   imports: [CommonModule, FormsModule, RouterModule]
-// })
-// export class AddReceiptComponent implements OnInit {
-//   selectedTab: string = 'Cash';
-//   selectedSubTab: string = 'CashReceipt';
-//   selectedCashDetail: CashDto | null = null;
-//   cashDetails$: Observable<CashDto[]> = this.store.select(selectAllCashDetails);
-//   loading$: Observable<boolean> = this.store.select(selectCashLoading);
-//   error$: Observable<any> = this.store.select(selectCashError);
-//   receiptResponse$: Observable<ReceiptDto | null> = this.store.select(selectReceiptResponse);
-
-//   constructor(private store: Store) {}
-
-//   ngOnInit(): void {
-//     if (this.selectedTab === 'Cash') {
-//       this.store.dispatch(CashActions.loadCashDetails({ supplierId: 4 }));
-//     }
-//   }
-
-//   selectTab(tab: string): void {
-//     this.selectedTab = tab;
-//     this.selectedSubTab = tab === 'Cash' ? 'CashReceipt' : 'ChequeReceipt';
-//     if (tab === 'Cash') {
-//       this.store.dispatch(CashActions.loadCashDetails({ supplierId: 4 }));
-//     }
-//   }
-
-//   selectSubTab(subTab: string): void {
-//     this.selectedSubTab = subTab;
-//   }
-
-//   onCashDetailSelect(cashDetail: CashDto): void {
-//     this.selectedCashDetail = cashDetail;
-//   }
-
-//   onSubmit(): void {
-//     if (this.selectedCashDetail) {
-//       const receipt: CreateReceiptDto = {
-//         cashId : this.selectedCashDetail.id,
-//         supplierId: this.selectedCashDetail.supplierId,
-//         customerId: this.selectedCashDetail.customerId
-//       };
-
-//       this.store.dispatch(ReceiptActions.addReceipt({ receipt }));
-//     }
-//   }

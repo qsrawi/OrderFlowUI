@@ -1,7 +1,6 @@
 export interface Order {
     orderId: number;
-    customerId: number;
-    supplierId: number;
+    purchaser: string;
     orderDate: string;
     orderType: string;
     status: string;

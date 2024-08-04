@@ -46,6 +46,18 @@ export class ChequesEffects {
     )
   );
 
+  loadChequeTransactionsForSupplier$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChequesActions.loadChequeTransactionsForSupplier),
+      mergeMap(action =>
+        this.supplierHttpReq.getChequeTransactions(action.chequeId).pipe(
+          map(transactions => ChequesActions.loadChequeTransactionsSuccess({ transactions })),
+          catchError(error => of(ChequesActions.loadChequeTransactionsFailure({ error })))
+        )
+      )
+    )
+  );
+
   loadTransactions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChequesActions.loadTransactions),

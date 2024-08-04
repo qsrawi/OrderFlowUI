@@ -7,6 +7,7 @@ export interface AuthState {
   forCustomer: number | undefined;
   forSupplier: number | undefined;
   isAllItems: boolean;
+  isRecipt: boolean;
   loggedIn: boolean;
   error: string | null;
 }
@@ -16,6 +17,7 @@ export const initialState: AuthState = {
   forCustomer: 0,
   forSupplier: 0,
   isAllItems: false,
+  isRecipt: false,
   loggedIn: false,
   error: null
 };
@@ -27,6 +29,7 @@ export const authReducer = createReducer(
   on(AuthActions.forCustomer, (state, { customerId }) => ({ ...state, forCustomer:  customerId})),
   on(AuthActions.forSupplier, (state, { supplierId }) => ({ ...state, forSupplier:  supplierId})),
   on(AuthActions.allItems, (state, { isAllItems }) => ({ ...state, isAllItems:  isAllItems})),
+  on(AuthActions.isRecipt, (state, { isRecipt }) => ({ ...state, isRecipt:  isRecipt})),
   on(AuthActions.logout, state => ({
     ...state,
     user: null,
