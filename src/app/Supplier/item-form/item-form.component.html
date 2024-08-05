@@ -1,0 +1,63 @@
+<form [formGroup]="itemForm" (ngSubmit)="onSubmit($event)" class="p-4 border rounded shadow-sm bg-light">
+  <div class="form-group mb-3">
+    <label for="name" class="form-label fw-bold">Name</label>
+    <input
+      id="name"
+      formControlName="name"
+      class="form-control"
+      placeholder="Enter item name"
+    />
+    <div
+      *ngIf="itemForm.get('name')?.touched && itemForm.get('name')?.invalid"
+    >
+      <small class="text-danger">Name is required</small>
+    </div>
+  </div>
+
+  <div class="form-group mb-3">
+    <label for="price" class="form-label fw-bold">Price</label>
+    <input
+      id="price"
+      formControlName="price"
+      type="number"
+      class="form-control"
+      placeholder="Enter price"
+    />
+    <div
+      *ngIf="itemForm.get('price')?.touched && itemForm.get('price')?.invalid"
+    >
+      <small class="text-danger">Price is required</small>
+    </div>
+  </div>
+
+  <div class="form-group mb-3">
+    <label for="description" class="form-label fw-bold">Description</label>
+    <textarea
+      id="description"
+      formControlName="description"
+      class="form-control"
+      rows="3"
+      placeholder="Enter description"
+    ></textarea>
+  </div>
+
+  <div class="form-group mb-4">
+    <label for="image" class="form-label fw-bold">Images</label>
+    <input
+      id="image"
+      type="file"
+      formControlName="image"
+      (change)="onFileChange($event)"
+      class="form-control"
+    />
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <button type="submit" class="btn btn-primary">
+      {{ isUpdateMode ? 'Update' : 'Submit' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      Cancel
+    </button>
+  </div>
+</form>

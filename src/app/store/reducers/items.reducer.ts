@@ -35,5 +35,14 @@ export const itemsReducer = createReducer(
     pageNumber: 1,
     pageSize: 10,
     error,
-  }))
+  })),
+  on(ItemsActions.deleteItemSuccess, (state, { id }) => ({
+    ...state,
+    items: state.items.filter(item => item.itemId !== id),
+    error: null
+  })),
+  on(ItemsActions.deleteItemFailure, (state, { error }) => ({
+    ...state,
+    error
+  })),
 );

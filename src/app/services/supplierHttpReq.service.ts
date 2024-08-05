@@ -175,8 +175,9 @@ export class SupplierHttpReqService {
     return this.http.post<void>(url, customer, { headers });
   }
 
-  addItem(item: FormData): Observable<void> {
-    return this.http.post<void>(`${this.supplierApiUrl}/AddItem`, item);
+  saveItem(id: number | undefined, item: FormData): Observable<void> {
+    const url = id ? `${this.supplierApiUrl}/SaveItem?id=${id}` : `${this.supplierApiUrl}/SaveItem`;
+    return this.http.post<void>(url, item);
   }
 
   getCashDetailsBySupplier(supplierId: number): Observable<CashDto[]> {
@@ -250,5 +251,10 @@ export class SupplierHttpReqService {
   deleteCustomer(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.supplierApiUrl}/DeleteCustomer/${id}`, { headers });
+  }
+
+  deleteItem(id: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.supplierApiUrl}/DeleteItem/${id}`, { headers });
   }
 }

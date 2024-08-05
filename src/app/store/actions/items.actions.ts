@@ -32,17 +32,17 @@ export const loadItemsFailure = createAction(
   props<{ error: any }>()
 );
 
-export const addItem = createAction(
-  '[Item] Add Item',
-  props<{ item: FormData  }>()
+export const saveItem = createAction(
+  '[Item] Save Item',
+  props<{ id?: number | undefined, item: FormData  }>()
 );
 
-export const addItemSuccess = createAction(
-  '[Item] Add Item Success'
+export const saveItemSuccess = createAction(
+  '[Item] Save Item Success'
 );
 
-export const addItemFailure = createAction(
-  '[Item] Add Item Failure',
+export const saveItemFailure = createAction(
+  '[Item] Save Item Failure',
   props<{ error: any }>()
 );
 
@@ -59,4 +59,19 @@ export const loadItemImageSuccess = createAction(
 export const loadItemImageFailure = createAction(
   '[Item Image] Load Item Image Failure',
   props<{ itemId: number, error: any }>()
+);
+
+export const deleteItem = createAction(
+  '[Item ] Delete Item ',
+  props<{ id: number }>()
+);
+
+export const deleteItemSuccess = createAction(
+  '[Item ] Delete Item  Success',
+  props<{ id: number }>()
+);
+
+export const deleteItemFailure = createAction(
+  '[Item ] Delete Item  Failure',
+  props<{ error: any }>()
 );

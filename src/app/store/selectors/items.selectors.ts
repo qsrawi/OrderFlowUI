@@ -27,3 +27,8 @@ export const selectError = createSelector(
   selectItemsState,
   (state: fromItems.State) => state.error
 );
+
+export const selectItemById = (itemId: number) => createSelector(
+  selectAllItems,
+  (items) => items.find(item => item.itemId === itemId)
+);

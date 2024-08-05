@@ -4,6 +4,7 @@ export interface Item {
     price: number;
     createdDate: string;
     image: string;
+    description: string;
     supplierId: number;
   }
   

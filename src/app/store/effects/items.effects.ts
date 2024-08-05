@@ -81,15 +81,28 @@ export class ItemsEffects {
 
   addItem$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ItemsActions.addItem),
+      ofType(ItemsActions.saveItem),
       mergeMap(action =>
-        this.supplierHttpReqService.addItem(action.item).pipe(
-          map(item => ItemsActions.addItemSuccess()),
-          catchError(error => of(ItemsActions.addItemFailure({ error })))
+        this.supplierHttpReqService.saveItem(action.id, action.item).pipe(
+          map(item => ItemsActions.saveItemSuccess()),
+          catchError(error => of(ItemsActions.saveItemFailure({ error })))
         )
       )
     )
   );
+
+  deleteCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ItemsActions.deleteItem),
+      mergeMap(action =>
+        this.supplierHttpReqService.deleteItem(action.id).pipe(
+          map(() => ItemsActions.deleteItemSuccess({ id: action.id })),
+          catchError(error => of(ItemsActions.deleteItemFailure({ error })))
+        )
+      )
+    )
+  );
+
 
   constructor(
     private actions$: Actions,

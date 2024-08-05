@@ -5,14 +5,14 @@ import * as ItemsActions from '../../store/actions/items.actions';
 import { selectAllItems, selectTotalCount, selectError } from '../../store/selectors/items.selectors';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { map, defaultIfEmpty, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
 import { Item, ItemFilterParams } from '../../models/item';
 import { selectisAllItems, selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
-import { HttpClient } from '@angular/common/http';
 import { selectItemImage } from '../../store/selectors/image.selectors';
 import { addItemToCart } from '../../store/actions/cart.actions';
 import { selectSupplierId } from '../../store/selectors/cart.selectors';
+import { Router } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -49,7 +49,7 @@ export class ItemsComponent implements OnInit {
   showModal: boolean = false;
   isAllItems: boolean = false;
 
-  constructor(private store: Store, private http: HttpClient) {
+  constructor(private store: Store, private router: Router) {
     this.items$ = this.store.select(selectAllItems);
     this.totalCount$ = this.store.select(selectTotalCount);
     this.error$ = this.store.select(selectError);
@@ -151,11 +151,11 @@ export class ItemsComponent implements OnInit {
   }
 
   editItem(itemId: number): void {
-    //this.router.navigate(['admin/update-supplier', supplierId]);
+    this.router.navigate(['supplier/update-Item', itemId]);
   }
 
   deleteItem(itemId: number): void {
-    //this.suppliersService.deleteSupplier(supplierId)
+    this.store.dispatch(ItemsActions.deleteItem({ id: itemId }));
   }
 
   addToCart(itemId: number, itemName: string, itemPrice: number, supplierId: number) {

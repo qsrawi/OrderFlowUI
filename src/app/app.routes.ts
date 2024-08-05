@@ -19,6 +19,7 @@ import { ReceiptComponent } from './Customer/receipt/receipt.component';
 import { LogoutComponent } from './generic/logout/logout.component';
 import { AccountStatementComponent } from './generic/account-statement/account-statement.component';
 import { UpdateCustomerComponent } from './Supplier/update-customer/update-customer.component';
+import { UpdateItemComponent } from './Supplier/update-item/update-item.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -27,6 +28,7 @@ export const routes: Routes = [
       { path: 'items', component: ItemsComponent },
       { path: 'items-view', component: ItemsComponent },
       { path: 'add-item', component: AddItemComponent },
+      { path: 'update-Item/:id', component: UpdateItemComponent },
       { path: 'customers-view', component: CustomersViewComponent },
       { path: 'add-customer', component: AddCustomerComponent },
       { path: 'update-customer/:id', component: UpdateCustomerComponent },
