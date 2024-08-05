@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import * as ItemsActions from '../../store/actions/items.actions';
 import { selectAllItems, selectTotalCount, selectError } from '../../store/selectors/items.selectors';
 import { CommonModule } from '@angular/common';
@@ -13,6 +13,8 @@ import { selectItemImage } from '../../store/selectors/image.selectors';
 import { addItemToCart } from '../../store/actions/cart.actions';
 import { selectSupplierId } from '../../store/selectors/cart.selectors';
 import { Router } from '@angular/router';
+import { loadImages, loadImagesForAdmin, loadImagesForCustomer } from '../../store/actions/image.actions';
+import { selectImagesByItemId } from '../../store/selectors/itemImage.selectors';
 
 declare var bootstrap: any;
 
@@ -30,6 +32,8 @@ export class ItemsComponent implements OnInit {
   userId$: Observable<number| undefined>;
   isAllItems$: Observable<boolean>;
   currentSupplierId$: Observable<number>;
+  selectedImages$: Observable<string[]> = of([]);
+  currentImageIndex: number = 0;
 
   filters: ItemFilterParams = {
     ItemName: '',
@@ -38,17 +42,18 @@ export class ItemsComponent implements OnInit {
     CreatedDateFrom: undefined,
     CreatedDateTo: undefined,
     PageNumber: 1,
-    PageSize: 10
+    PageSize: 5
   };
 
   supplierId: number | undefined;
   customerId: number | undefined;
   userRole: string | undefined;
-  pageSize: number = 10;
+  pageSize: number = 5;
   selectedImage: string | null = null;
   showModal: boolean = false;
   isAllItems: boolean = false;
   showDescriptionIndex: number | null = null;
+  selectedImages: string[] = [];
 
   constructor(private store: Store, private router: Router) {
     this.items$ = this.store.select(selectAllItems);
@@ -94,28 +99,34 @@ export class ItemsComponent implements OnInit {
     this.store.dispatch(ItemsActions.loadItemsForCustomer({ customerId: this.customerId,  filters: this.filters }));
   }
 
-  viewImage(itemId: number): void {
-    this.store.dispatch(ItemsActions.loadItemImage({ itemId }));
-    this.store
-      .select(state => selectItemImage(state,{ itemId, isFront: true }))
-      .subscribe(image => {
-        if (image) {
-          this.selectedImage = image;
-          this.showModal = true;
-        }
-      });
+  viewImages(itemId: number): void {
+    if(this.userRole == "Supplier")
+      this.store.dispatch(loadImages({ itemId }));
+    else if(this.userRole == "Admin")
+      this.store.dispatch(loadImagesForAdmin({ itemId }));
+    else 
+      this.store.dispatch(loadImagesForCustomer({ itemId }));
+    this.selectedImages$ = this.store.select(selectImagesByItemId, { itemId });
+    this.currentImageIndex = 0;
+    this.showModal = true;
   }
 
   closeModal(): void {
     this.showModal = false;
-    this.selectedImage = null;
+    this.currentImageIndex = 0;
   }
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = URL.createObjectURL(file);
-      this.showModal = true;
+  nextImage(): void {
+    this.selectedImages$.subscribe(images => {
+      if (this.currentImageIndex < images.length - 1) {
+        this.currentImageIndex++;
+      }
+    });
+  }
+
+  previousImage(): void {
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
     }
   }
 

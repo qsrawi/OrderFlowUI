@@ -29,6 +29,8 @@ import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { cartReducer } from './store/reducers/cart.reducer';
 import { CartEffects } from './store/effects/cart.effects';
+import { itemImageReducer } from './store/reducers/iitemIage.reducer';
+import { ImageEffects } from './store/effects/image.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,10 +53,11 @@ export const appConfig: ApplicationConfig = {
           cashs: cashReducer,
           receipt: receiptReducer,
           images: imageReducer,
-          cart: cartReducer
+          cart: cartReducer,
+          itemImages: itemImageReducer
         }
       ), 
-      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects, CartEffects]),
+      provideEffects([AuthEffects, SuppliersEffects, ChequesEffects, OrdersEffects, ItemsEffects, CustomerEffects, CashEffects, ReceiptEffects, CartEffects, ImageEffects]),
       provideStoreDevtools({ maxAge: 25, logOnly: false }),
       provideAnimations(),
       provideToastr({

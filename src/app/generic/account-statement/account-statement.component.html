@@ -3,7 +3,7 @@
   <div *ngIf="error$ | async as error" class="alert alert-danger">{{ error }}</div>
 
   <div *ngIf="transactions$ | async as transactions" class="mb-3">
-    <div class="alert text-center" [ngClass]="getDebtStatusColor(getFirstRemainingDebt(transactions))">
+    <div *ngIf="userRole === 'Customer'" class="alert text-center" [ngClass]="getDebtStatusColor(getFirstRemainingDebt(transactions))">
       <strong>Total Remaining {{ getDebtLabel(getFirstRemainingDebt(transactions)) }}:</strong>
       {{ getFormattedDebt(getFirstRemainingDebt(transactions)) }}
     </div>

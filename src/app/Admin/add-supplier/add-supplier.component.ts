@@ -9,8 +9,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-supplier',
-  template: `<app-supplier-form (submitForm)="onSubmit($event)"></app-supplier-form>`,
-  styleUrls: ['./add-supplier.component.css'],
+  template: `<app-supplier-form [isUpdateMode]="false" (submitForm)="onSubmit($event)"></app-supplier-form>`,
   standalone: true,
   imports: [SupplierFormComponent, CommonModule, FormsModule]
 })

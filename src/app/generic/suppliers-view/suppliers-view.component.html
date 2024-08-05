@@ -43,7 +43,7 @@
           <th>Name</th>
           <th>Email</th>
           <th>Phone</th>
-          <th>Name</th>
+          <th>Balance</th>
           <th>Address</th>
           <th>Identity</th>
           <th *ngIf="(userRole$ | async) === 'Supplier'">Create Endorsement Cheque</th>
@@ -62,7 +62,7 @@
           <td>{{ supplier.name }}</td>
           <td>{{ supplier.email }}</td>
           <td>{{ supplier.phone }}</td>
-          <td>{{ supplier.name }}</td>
+          <td>{{ supplier.supplierBalance }}</td>
           <td>{{ supplier.address }}</td>
           <td>{{ supplier.identity }}</td>
           <td *ngIf="(userRole$ | async) === 'Supplier'">
@@ -139,7 +139,7 @@
               <p><strong>Receiver Name:</strong> {{ transaction.receiverName }}</p>
               <p><strong>Issuer Name:</strong> {{ transaction.issuerName }}</p>
               <p><strong>Payment Method:</strong> {{ transaction.paymentMethod }}</p>
-              <p>  <strong>Payment Status:</strong>
+              <p><strong>Payment Status:</strong>
                 <span [ngClass]="getStatusDebtColor(formatPaymentStatus(transaction.remainingDebt, transaction.paymentStatus))">
                   {{ formatPaymentStatus(transaction.remainingDebt, transaction.paymentStatus) }}
                 </span>

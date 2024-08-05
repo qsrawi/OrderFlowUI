@@ -31,12 +31,12 @@ export class OrderComponent implements OnInit {
     MaxTotalAmount: undefined,
     Status: '',
     PageNumber: 1,
-    PageSize: 10
+    PageSize: 5
   };
 
   supplierId: number | undefined;
   customerId: number | undefined;
-  pageSize: number = 10;
+  pageSize: number = 5;
   userRole: string | undefined;
   showModal: boolean = false;
 

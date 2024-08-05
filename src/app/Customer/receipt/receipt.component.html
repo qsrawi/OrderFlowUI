@@ -7,7 +7,7 @@
             <strong>Issuer:</strong> {{ receipt.issuer }}<br>
             <strong>Receiver:</strong> {{ receipt.reciver }}<br>
             <strong>Date:</strong> {{ receipt.receiptDate | date }}<br>
-            <strong>Total Amount:</strong> {{ receipt.totalAmount | currency }}<br>
+            <strong>Total Amount:</strong> {{ getTotalAmount(receipt) | currency }}<br>
           </p>
           <div *ngIf="receipt.cheques?.length">
             <h6>Cheques:</h6>

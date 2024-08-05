@@ -40,7 +40,7 @@ export class ChequesComponent implements OnInit {
     Currency: '',
     BankName: '',
     PageNumber: 1,
-    PageSize: 10
+    PageSize: 5
   };
 
   selectedTab: string = 'Outgoing';
@@ -48,7 +48,7 @@ export class ChequesComponent implements OnInit {
   isSupplier: boolean = false;
   supplierId: number | undefined;
   userRole: string | undefined;
-  pageSize: number = 10;
+  pageSize: number = 5;
   selectedImage: string | null = null;
   showImgModal: boolean = false;
 
@@ -96,7 +96,6 @@ export class ChequesComponent implements OnInit {
     }
   
     this.store.select(state => selectItemImage(state, { itemId: chequeId, isFront })).subscribe(image => {
-      debugger
       if (image) {
         this.selectedImage = image;
         this.showImgModal = true;

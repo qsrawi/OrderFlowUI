@@ -14,7 +14,7 @@ export const initialState: State = {
   items: [],
   totalCount: 0,
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 5,
   error: null,
 };
 

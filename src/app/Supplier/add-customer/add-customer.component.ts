@@ -11,8 +11,7 @@ import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-add-customer',
-  template: `<app-customer-form (submitForm)="onSubmit($event)"></app-customer-form>`,
-  styleUrls: ['./add-customer.component.css'],
+  template: `<app-customer-form [isUpdateMode]="false" (submitForm)="onSubmit($event)"></app-customer-form>`,
   standalone: true,
   imports: [CustomerFormComponent, CommonModule, FormsModule]
 })

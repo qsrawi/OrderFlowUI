@@ -257,4 +257,10 @@ export class SupplierHttpReqService {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.supplierApiUrl}/DeleteItem/${id}`, { headers });
   }
+
+  getImages(itemId: number): Observable<string[]> {
+    return this.http.get<string[]>(`${this.supplierApiUrl}/GetItemImages/${itemId}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

@@ -43,3 +43,7 @@ export const selectSupplier = createSelector(
   (state: SuppliersState) => state.supplier
 );
 
+export const selectSupplierById = (id: number) => createSelector(
+  selectAllSuppliers,
+  (suppliers) => suppliers.find(supplier => supplier.supplierId === id)
+);

@@ -18,7 +18,7 @@ export const initialState: SuppliersState = {
   supplier: null,
   totalCount: 0,
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 5,
   filters: {},
   loading: false,
   error: null

@@ -17,16 +17,16 @@ import { CustomerService } from '../../services/customer.service';
       Loading...
     </div>
     <ng-template #loaded>
-      <app-customer-form [customer]="customer$ | async" (submitForm)="onSubmit($event)"></app-customer-form>
+      <app-customer-form [customerId]="customerId" [isUpdateMode]="true" [customer]="customer$ | async" (submitForm)="onSubmit($event)"></app-customer-form>
     </ng-template>
   `,
-  styleUrls: ['./update-customer.component.css'],
   standalone: true,
   imports: [CustomerFormComponent, CommonModule, FormsModule]
 })
 export class UpdateCustomerComponent implements OnInit {
   customer$: Observable<CustomerBaseDto | null> = of(null);
   loading$: Observable<boolean> = of(false);
+  customerId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,20 +34,15 @@ export class UpdateCustomerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.customer$ = this.route.paramMap.pipe(
-      switchMap(params => {
-        const customerId = Number(params.get('id'));
-        return this.customerService.loadCustomer(customerId);
-      })
-    );
+    const customerIdParam = this.route.snapshot.paramMap.get('id');
+    if(customerIdParam)
+      this.customerId = Number(customerIdParam);
+    if(this.customerId)
+      this.customer$ = this.customerService.loadCustomer(this.customerId);
   }
 
   onSubmit(customer: CustomerBaseDto): void {
-    this.route.paramMap.pipe(
-      map(params => {
-        const customerId = Number(params.get('id'));
-        this.customerService.saveCustomerWithDispatch(customerId, customer);
-      })
-    ).subscribe();
+    if(this.customerId)
+      this.customerService.saveCustomerWithDispatch(this.customerId, customer);
   }
 }

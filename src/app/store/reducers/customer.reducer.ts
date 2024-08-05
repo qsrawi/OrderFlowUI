@@ -20,7 +20,7 @@ export const initialState: CustomerState = {
   customer: null,
   totalCount: 0,
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 5,
   filters: {},
   loading: false,
   error: null

@@ -60,7 +60,7 @@ export class CustomersViewComponent implements OnInit {
   };
 
   pageNumber: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 5;
   supplierId: number | undefined;
   showModal: boolean = false;
   transactions: Transaction[] = []; 

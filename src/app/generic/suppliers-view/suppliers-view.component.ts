@@ -78,7 +78,7 @@ export class SuppliersViewComponent implements OnInit {
   };
 
   pageNumber: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 5;
   userRole: string | undefined;
   userId: number | undefined;
   showModal: boolean = false;

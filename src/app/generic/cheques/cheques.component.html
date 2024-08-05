@@ -51,7 +51,19 @@
           </div>
           <div class="col-md-4 mb-3">
             <label for="bankName">Bank Name</label>
-            <input type="text" id="bankName" class="form-control" [(ngModel)]="filters.BankName" (ngModelChange)="updateFilter('BankName', $event)" name="bankName">
+            <select 
+              id="bankName" 
+              class="form-control" 
+              [(ngModel)]="filters.BankName" 
+              (ngModelChange)="updateFilter('BankName', $event)" 
+              name="bankName"
+            >
+              <option value="" disabled>Select Bank</option>
+              <option value="AlArabi">AlArabi Bank</option>
+              <option value="Palestine">Palestine Bank</option>
+              <option value="Amman">Amman Bank</option>
+              <option value="">Empty</option>
+            </select>
           </div>
         </div>
         <div class="row">

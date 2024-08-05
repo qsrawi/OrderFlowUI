@@ -14,7 +14,6 @@ export class ChequesEffects {
       ofType(ChequesActions.loadCheques),
       mergeMap(action =>
         this.adminHttpReqService.getCheques(action.chequeType, action.filters).pipe(
-            tap(x => console.log(x)),
           map(response => ChequesActions.loadChequesSuccess({ cheques: response.items, totalCount: response.totalCount })),
           catchError(error => of(ChequesActions.loadChequesFailure({ error: error.message })))
         )
@@ -114,7 +113,6 @@ export class ChequesEffects {
     this.actions$.pipe(
       ofType(ChequesActions.endorsementChequeSuccess),
       tap(() => {
-        // Display success toast message
         this.toastr.success('Cheques endorsed successfully!', 'Success');
       }),
       map(() => ChequesActions.clearChequesToEndorsement())

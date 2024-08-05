@@ -38,7 +38,7 @@
           <th>Item Name</th>
           <th>Price</th>
           <th>Description</th>
-          <th>View Img</th>
+          <th>View Imgs</th>
           <th *ngIf="userRole === 'Supplier'">Actions</th>
         </tr>
       </thead>
@@ -62,8 +62,8 @@
             </div>
           </td>
           <td>
-            <button class="btn btn-secondary btn-sm" (click)="viewImage(item.itemId)">
-              <i class="fas fa-image"></i> View Img
+            <button class="btn btn-secondary btn-sm" (click)="viewImages(item.itemId)">
+              <i class="fas fa-image"></i> View Imgs
             </button>
           </td>
           <td>
@@ -128,20 +128,60 @@
       </ul>
     </nav>
 
-    <div class="modal fade" [ngClass]="{'show d-block': showModal}" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="!showModal" [attr.aria-hidden]="!showModal">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="imageModalLabel">Item Image</h5>
-            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center">
-            <img [src]="selectedImage" class="img-fluid" alt="Item Image">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-          </div>
-        </div>
+    <!-- Image Modal -->
+    <div
+  class="modal fade"
+  [ngClass]="{ 'show d-block': showModal }"
+  tabindex="-1"
+  aria-labelledby="imageModalLabel"
+  [attr.aria-hidden]="!showModal"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Item Images</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body text-center">
+        <ng-container *ngIf="selectedImages$ | async as selectedImages">
+          <img
+            [src]="'data:image/jpeg;base64,' + selectedImages[currentImageIndex]"
+            class="img-fluid"
+            alt="Item Image"
+            style="max-width: 100%; max-height: 400px; margin: auto;"
+          />
+        </ng-container>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="previousImage()"
+          [disabled]="currentImageIndex === 0"
+        >
+          Previous
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          Close
+        </button>
+        <ng-container *ngIf="selectedImages$ | async as selectedImages">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="nextImage()"
+            [disabled]="currentImageIndex === selectedImages.length - 1"
+          >
+            Next
+          </button>
+        </ng-container>
       </div>
     </div>
+  </div>
+</div>
+
 </div>

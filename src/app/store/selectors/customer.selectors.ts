@@ -33,3 +33,7 @@ export const selectFilters = createSelector(
   (state: CustomerState) => state.filters
 );
 
+export const selectCustomerById = (id: number) => createSelector(
+  selectAllCustomers,
+  (customers) => customers.find(customer => customer.customerId === id)
+);

@@ -108,4 +108,10 @@ export class CustomerHttpReqService {
     const headers = this.getAuthHeaders();
     return this.http.get<ReceiptDto[]>(`${this.customerApiUrl}/GetReceiptsByCustomer/${customerId}`, { headers });
   }
+
+  getImages(itemId: number): Observable<string[]> {
+    return this.http.get<string[]>(`${this.customerApiUrl}/GetItemImages/${itemId}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

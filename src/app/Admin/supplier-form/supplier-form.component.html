@@ -1,58 +1,84 @@
-<form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="userName">Username</label>
-      <input id="userName" formControlName="userName" class="form-control" />
-      <div *ngIf="supplierForm.get('userName')!.invalid && supplierForm.get('userName')!.touched" class="text-danger">
+<form [formGroup]="supplierForm" (ngSubmit)="onSubmit()" class="p-4 border rounded bg-light shadow-sm">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="userName" class="form-label">Username</label>
+      <input id="userName" formControlName="userName" class="form-control" placeholder="Enter username" />
+      <div *ngIf="supplierForm.get('userName')!.invalid && supplierForm.get('userName')!.touched" class="text-danger mt-1">
         Username is required.
       </div>
     </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input id="password" formControlName="password" type="password" class="form-control" />
-      <div *ngIf="supplierForm.get('password')!.invalid && supplierForm.get('password')!.touched" class="text-danger">
+
+    <div class="col-md-6 mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input id="password" formControlName="password" type="password" class="form-control" placeholder="Enter password" />
+      <div *ngIf="supplierForm.get('password')!.invalid && supplierForm.get('password')!.touched" class="text-danger mt-1">
         Password is required.
       </div>
     </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" formControlName="email" class="form-control" />
-      <div *ngIf="supplierForm.get('email')!.invalid && supplierForm.get('email')!.touched" class="text-danger">
+
+    <div class="col-md-6 mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input id="email" formControlName="email" type="email" class="form-control" placeholder="Enter email" />
+      <div *ngIf="supplierForm.get('email')!.invalid && supplierForm.get('email')!.touched" class="text-danger mt-1">
         Enter a valid email.
       </div>
     </div>
-    <div class="form-group">
-      <label for="phone">Phone</label>
-      <input id="phone" formControlName="phone" class="form-control" />
-      <div *ngIf="supplierForm.get('phone')!.invalid && supplierForm.get('phone')!.touched" class="text-danger">
-        Phone is required.
+
+    <div class="col-md-6 mb-3">
+      <label for="phone" class="form-label">Phone</label>
+      <input 
+        id="phone" 
+        formControlName="phone" 
+        type="text" 
+        class="form-control" 
+        placeholder="Enter phone number" 
+        pattern="[0-9]*" 
+        inputmode="numeric"
+      />
+      <div *ngIf="supplierForm.get('phone')!.invalid && supplierForm.get('phone')!.touched" class="text-danger mt-1">
+        Phone is required and must contain only numbers.
       </div>
     </div>
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input id="name" formControlName="name" class="form-control" />
-      <div *ngIf="supplierForm.get('name')!.invalid && supplierForm.get('name')!.touched" class="text-danger">
+
+    <div class="col-md-6 mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input id="name" formControlName="name" class="form-control" placeholder="Enter full name" />
+      <div *ngIf="supplierForm.get('name')!.invalid && supplierForm.get('name')!.touched" class="text-danger mt-1">
         Name is required.
       </div>
     </div>
-    <div class="form-group">
-      <label for="identity">Identity</label>
-      <input id="identity" formControlName="identity" class="form-control" />
-      <div *ngIf="supplierForm.get('identity')!.invalid && supplierForm.get('identity')!.touched" class="text-danger">
-        Identity is required.
+
+    <div class="col-md-6 mb-3">
+      <label for="identity" class="form-label">Identity</label>
+      <input id="identity" formControlName="identity" class="form-control" placeholder="Enter identity number" type="text" pattern="[0-9]*" inputmode="numeric"/>
+      <div *ngIf="supplierForm.get('identity')!.invalid && supplierForm.get('identity')!.touched" class="text-danger mt-1">
+        Identity is required and must contain only numbers.
       </div>
     </div>
-    <div class="form-group">
-      <label for="details">Details</label>
-      <input id="details" formControlName="details" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label for="address">Address</label>
-      <input id="address" formControlName="address" class="form-control" />
-      <div *ngIf="supplierForm.get('address')!.invalid && supplierForm.get('address')!.touched" class="text-danger">
+
+    <div class="col-md-6 mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input id="address" formControlName="address" class="form-control" placeholder="Enter address" />
+      <div *ngIf="supplierForm.get('address')!.invalid && supplierForm.get('address')!.touched" class="text-danger mt-1">
         Address is required.
       </div>
     </div>
-    <br>
-    <button type="submit" class="btn btn-primary">Save Supplier</button>
-  </form>
-  
+
+    <div class="col-md-6 mb-3">
+      <label for="balance" class="form-label">Balance</label>
+      <input id="balance" formControlName="supplierBalance" class="form-control" type="text" placeholder="Enter balance" pattern="[0-9]*" inputmode="numeric"/>
+      <div *ngIf="supplierForm.get('supplierBalance')!.invalid && supplierForm.get('supplierBalance')!.touched" class="text-danger mt-1">
+        Balance is required and must contain only numbers.
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-3">
+      <label for="details" class="form-label">Details</label>
+      <textarea id="details" formControlName="details" class="form-control" rows="3" placeholder="Enter additional details"></textarea>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end mt-4">
+    <button type="submit" class="btn btn-primary px-4">Save Supplier</button>
+  </div>
+</form>

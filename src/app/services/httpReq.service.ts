@@ -168,4 +168,10 @@ export class AdminHttpReqService {
       { headers, params }
     );
   }
+
+  getImages(itemId: number): Observable<string[]> {
+    return this.http.get<string[]>(`${this.adminApiUrl}/GetItemImages/${itemId}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

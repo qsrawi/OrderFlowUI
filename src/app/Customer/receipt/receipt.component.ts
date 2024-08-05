@@ -34,4 +34,10 @@ export class ReceiptComponent implements OnInit {
     this.store.dispatch(loadReceipts({ customerId }))
    )
   }
+
+  getTotalAmount(receipt: ReceiptDto): number {
+    const chequeTotal = (receipt.cheques || []).reduce((sum, cheque) => sum + cheque.amount, 0);
+    const cashTotal = (receipt.cashDetailes || []).reduce((sum, cash) => sum + cash.amount, 0);
+    return chequeTotal + cashTotal;
+  }
 }

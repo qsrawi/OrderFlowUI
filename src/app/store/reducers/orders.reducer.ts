@@ -14,7 +14,7 @@ export const initialState: State = {
   orders: [],
   totalCount: 0,
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 5,
   error: null,
 };
 
@@ -33,7 +33,7 @@ export const ordersReducer = createReducer(
     orders: [],
     totalCount: 0,
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 5,
     error,
   }))
 );

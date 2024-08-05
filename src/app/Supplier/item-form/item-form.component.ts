@@ -23,7 +23,7 @@ export class ItemFormComponent implements OnInit {
   itemForm: FormGroup;
   userId$: Observable<number | undefined>;
   supplierId: number | undefined;
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -34,8 +34,8 @@ export class ItemFormComponent implements OnInit {
       name: ['', Validators.required],
       price: ['', Validators.required],
       description: [''],
-      image: [null, Validators.required],
-      supplierId: [2] // Default supplier ID, change as needed
+      images: [null],
+      supplierId: [2]
     });
     this.userId$ = this.store.select(selectUserId).pipe(take(1));
   }
@@ -79,9 +79,10 @@ export class ItemFormComponent implements OnInit {
     if (this.itemForm.get('description')?.value) {
       formData.append('description', this.itemForm.get('description')?.value);
     }
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile);
-    }
+
+    this.selectedFiles.forEach((file, index) => {
+      formData.append('images', file);
+    })
     if (this.supplierId) {
       formData.append('supplierId', this.supplierId.toString());
     }
@@ -89,14 +90,14 @@ export class ItemFormComponent implements OnInit {
   }
 
   onFileChange(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.itemForm.patchValue({
-        image: file
-      });
-      this.itemForm.get('image')?.updateValueAndValidity();
+    const files = event.target.files;
+    if (files) {
+      Array.from(files).forEach(file => this.selectedFiles.push(file as File));
     }
+  }
+
+  removeFile(index: number): void {
+    this.selectedFiles.splice(index, 1);
   }
 
   onCancel() {

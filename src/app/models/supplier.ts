@@ -8,7 +8,7 @@ export interface Supplier {
     identity: string;
     details: string;
     address: string;
-    image: string;
+    supplierBalance: number;    
   }
 
 export interface SuppliersResponse {
