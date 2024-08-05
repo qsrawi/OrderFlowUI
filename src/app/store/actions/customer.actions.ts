@@ -51,6 +51,11 @@ export const loadCustomers = createAction(
   props<{ id: number| undefined, pageNumber: number, pageSize: number, filters: any }>()
 );
 
+export const loadCustomersForAdmin = createAction(
+  '[Customer] Load Customers For Admin',
+  props<{ id: number| undefined, pageNumber: number, pageSize: number, filters: any }>()
+);
+
 export const loadCustomersSuccess = createAction(
   '[Customer] Load Customers Success',
   props<{ customers: CustomerBaseDto[], totalCount: number }>()

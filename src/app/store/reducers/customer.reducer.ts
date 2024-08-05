@@ -28,7 +28,7 @@ export const initialState: CustomerState = {
 
 export const customerReducer = createReducer(
   initialState,
-  on(CustomerActions.loadCustomers, (state, { pageNumber, pageSize, filters }) => ({
+  on(CustomerActions.loadCustomers, CustomerActions.loadCustomersForAdmin, (state, { pageNumber, pageSize, filters }) => ({
     ...state,
     pageNumber,
     pageSize,

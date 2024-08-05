@@ -6,6 +6,7 @@ import * as CustomerActions from '../actions/customer.actions';
 import { SupplierHttpReqService } from '../../services/supplierHttpReq.service';
 import { Router } from '@angular/router';
 import { CustomerHttpReqService } from '../../services/customerHttpReq.service';
+import { AdminHttpReqService } from '../../services/httpReq.service';
 
 @Injectable()
 export class CustomerEffects {
@@ -38,7 +39,18 @@ export class CustomerEffects {
       ofType(CustomerActions.loadCustomers),
       mergeMap(action =>
         this.supplierHttpReqService.getCustomersBySupplier(action.id, action.pageNumber, action.pageSize, action.filters).pipe(
-          tap(x => console.log('customers', x)),
+          map(response => CustomerActions.loadCustomersSuccess({ customers: response.items, totalCount: response.totalCount })),
+          catchError(error => of(CustomerActions.loadCustomersFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+
+  loadCustomersForAdmin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.loadCustomersForAdmin),
+      mergeMap(action =>
+        this.adminHttpReqService.getCustomersForAdmin(action.id, action.pageNumber, action.pageSize, action.filters).pipe(
           map(response => CustomerActions.loadCustomersSuccess({ customers: response.items, totalCount: response.totalCount })),
           catchError(error => of(CustomerActions.loadCustomersFailure({ error: error.message })))
         )
@@ -85,6 +97,7 @@ export class CustomerEffects {
 
   constructor(
     private actions$: Actions,
+    private adminHttpReqService: AdminHttpReqService,
     private supplierHttpReqService: SupplierHttpReqService,
     private customerHttpReqService: CustomerHttpReqService,
     private router: Router

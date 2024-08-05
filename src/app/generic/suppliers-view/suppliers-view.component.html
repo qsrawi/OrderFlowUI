@@ -50,6 +50,7 @@
           <th *ngIf="(userRole$ | async) === 'Supplier'">Account Statement</th>
           <th *ngIf="(userRole$ | async) === 'Supplier'">Recipt</th>
           <th *ngIf="(userRole$ | async) === 'Admin'">Actions</th>
+          <th *ngIf="(userRole$ | async) === 'Admin'">View Customer</th>
         </tr>
       </thead>
       <tbody>
@@ -89,6 +90,11 @@
             <br>
             <button class="btn btn-success btn-sm  mt-2" (click)="addVoucher(supplier.supplierId)">
               <i class="fas fa-receipt"></i> Add Voucher
+            </button>
+          </td>
+          <td *ngIf="(userRole$ | async) === 'Admin'">
+            <button class="btn btn-success btn-sm" (click)="viewCustomers(supplier.supplierId)">
+              <i class="fas fa-user"></i> View Customer
             </button>
           </td>
           </ng-container>

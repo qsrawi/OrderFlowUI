@@ -3,22 +3,30 @@ import * as ItemImageActions from '../../store/actions/items.actions';
 import * as ImageActions from '../../store/actions/cheques.actions';
 
 export interface ImageState {
-  images: { [key: number]: string };
+  images: {
+    front: { [key: number]: string };
+    back: { [key: number]: string };
+  };
   error: any;
 }
 
 export const initialState: ImageState = {
-  images: {},
+  images: {front: {}, back: {}},
   error: null,
 };
 
 export const imageReducer = createReducer(
   initialState,
-  on(ItemImageActions.loadItemImageSuccess, ImageActions.loadImageSuccess, (state, { itemId, image }) => ({
+  on(ItemImageActions.loadItemImageSuccess, ImageActions.loadImageSuccess, (state, { itemId, image, isFront }) => ({
     ...state,
     images: {
       ...state.images,
-      [itemId]: image,
+      front: isFront
+        ? { ...state.images.front, [itemId]: image }
+        : state.images.front,
+      back: !isFront
+        ? { ...state.images.back, [itemId]: image }
+        : state.images.back,
     },
     error: null,
   })),

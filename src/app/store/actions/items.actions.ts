@@ -53,7 +53,7 @@ export const loadItemImage = createAction(
 
 export const loadItemImageSuccess = createAction(
   '[Item Image] Load Item Image Success',
-  props<{ itemId: number, image: string }>()
+  props<{ itemId: number, image: string; isFront: boolean }>()
 );
 
 export const loadItemImageFailure = createAction(

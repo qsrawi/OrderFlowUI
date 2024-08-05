@@ -48,6 +48,7 @@ export class ItemsComponent implements OnInit {
   selectedImage: string | null = null;
   showModal: boolean = false;
   isAllItems: boolean = false;
+  showDescriptionIndex: number | null = null;
 
   constructor(private store: Store, private router: Router) {
     this.items$ = this.store.select(selectAllItems);
@@ -96,7 +97,7 @@ export class ItemsComponent implements OnInit {
   viewImage(itemId: number): void {
     this.store.dispatch(ItemsActions.loadItemImage({ itemId }));
     this.store
-      .select(state => selectItemImage(state, { itemId }))
+      .select(state => selectItemImage(state,{ itemId, isFront: true }))
       .subscribe(image => {
         if (image) {
           this.selectedImage = image;
@@ -175,6 +176,11 @@ export class ItemsComponent implements OnInit {
 
       this.store.dispatch(addItemToCart({ itemId, quantity, itemName, price: itemPrice, supplierId }));
     });
+  }
+
+  toggleDescription(index: number) {
+    this.showDescriptionIndex =
+      this.showDescriptionIndex === index ? null : index;
   }
 
   formatDate(date: any): string {

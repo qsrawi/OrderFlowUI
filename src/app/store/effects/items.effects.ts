@@ -71,7 +71,7 @@ export class ItemsEffects {
           });
         }),
         mergeMap(imagePromise => imagePromise.then(
-          image => ItemsActions.loadItemImageSuccess({ itemId: action.itemId, image }),
+          image => ItemsActions.loadItemImageSuccess({ itemId: action.itemId, image, isFront: true }),
           error => ItemsActions.loadItemImageFailure({ itemId: action.itemId, error })
         )),
         catchError(error => of(ItemsActions.loadItemImageFailure({ itemId: action.itemId, error })))

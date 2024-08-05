@@ -58,6 +58,7 @@ export const routes: Routes = [
       { path: 'cheques', component: ChequesComponent },
       { path: 'orders', component: OrderComponent },
       { path: 'items', component: ItemsComponent },
+      { path: 'customers-view/:id', component: CustomersViewComponent },
       { path: 'add-supplier', component: AddSupplierComponent },
       { path: 'update-supplier/:id', component: UpdateSupplierComponent },
       { path: 'logout', component: LogoutComponent }

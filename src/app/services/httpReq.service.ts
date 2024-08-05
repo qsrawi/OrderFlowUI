@@ -8,6 +8,7 @@ import { CreateSupplierDto, SuppliersResponse } from '../models/supplier';
 import { Transaction } from '../models/cheque_transaction';
 import { OrderFilterParams, OrderResponse } from '../models/orders';
 import { ItemFilterParams, ItemResponse } from '../models/item';
+import { CustomersResponse } from '../models/customer';
 
 @Injectable({
   providedIn: 'root'
@@ -142,5 +143,29 @@ export class AdminHttpReqService {
   getImage(chequeId: number, isFront: boolean): Observable<Blob> {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.adminApiUrl}/GetChequeImage/${chequeId}/${isFront}`, { headers, responseType: 'blob' });
+  }
+
+  getCustomersForAdmin(
+    supplierId: number | undefined,
+    pageNumber: number,
+    pageSize: number,
+    filters: any
+  ): Observable<CustomersResponse> {
+    let params = new HttpParams()
+      .set('PageNumber', pageNumber.toString())
+      .set('PageSize', pageSize.toString());
+
+    if (filters.name) params = params.set('Name', filters.name);
+    if (filters.userName) params = params.set('UserName', filters.userName);
+    if (filters.email) params = params.set('Email', filters.email);
+    if (filters.phone) params = params.set('Phone', filters.phone);
+    if (filters.address) params = params.set('Address', filters.address);
+    if (filters.identity) params = params.set('Identity', filters.identity);
+
+    const headers = this.getAuthHeaders();
+    return this.http.get<CustomersResponse>(
+      `${this.adminApiUrl}/GetCustomersBySupplier/${supplierId}`,
+      { headers, params }
+    );
   }
 }

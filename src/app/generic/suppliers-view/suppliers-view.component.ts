@@ -243,6 +243,10 @@ export class SuppliersViewComponent implements OnInit {
     this.store.dispatch(ChequesActions.CleanTransactions())
   }
 
+  viewCustomers(id: number): void {
+    this.router.navigate(['/admin/customers-view', id]);
+  }
+
   get totalPages(): Observable<number> {
     return this.totalCount$.pipe(
       map(totalCount => Math.ceil(totalCount / this.pageSize))

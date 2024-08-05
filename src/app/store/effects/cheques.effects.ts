@@ -70,30 +70,33 @@ export class ChequesEffects {
     )
   );
 
-  loadImage$ = createEffect(() => this.actions$.pipe(
-    ofType(ChequesActions.loadImage),
-    mergeMap(action => {
-      const imgReq = action.role == "Supplier"
-      ? this.supplierHttpReq.getImage(action.chequeId, true)
-      : this.adminHttpReqService.getImage(action.chequeId, true)
-      return imgReq.pipe(
-        map(response => {
-          const reader = new FileReader();
-          return new Promise<string>((resolve) => {
-            reader.onloadend = () => {
-              resolve(reader.result as string);
-            };
-            reader.readAsDataURL(response);
-          });
-        }),
-        mergeMap(imagePromise => imagePromise.then(
-          image => ChequesActions.loadImageSuccess({ itemId: action.chequeId, image }),
-          error => ChequesActions.loadImageFailure({ itemId: action.chequeId, error })
-        )),
-        catchError(error => of(ChequesActions.loadImageFailure({ itemId: action.chequeId, error })))
-      )
-    })
-  ));
+  loadImage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChequesActions.loadImage),
+      mergeMap(action => {
+        const imgReq = action.role === 'Supplier'
+          ? this.supplierHttpReq.getImage(action.chequeId, action.isFront)
+          : this.adminHttpReqService.getImage(action.chequeId, action.isFront);
+
+        return imgReq.pipe(
+          mergeMap(response => {
+            const reader = new FileReader();
+            return new Promise<string>((resolve, reject) => {
+              reader.onloadend = () => resolve(reader.result as string);
+              reader.onerror = () => reject('Failed to read file as data URL');
+              reader.readAsDataURL(response);
+            }).then(
+              image => ChequesActions.loadImageSuccess({ itemId: action.chequeId, image, isFront: action.isFront }),
+              error => ChequesActions.loadImageFailure({ itemId: action.chequeId, error })
+            );
+          }),
+          catchError(error =>
+            of(ChequesActions.loadImageFailure({ itemId: action.chequeId, error }))
+          )
+        );
+      })
+    )
+  );
 
   endorsementCheque$ = createEffect(() =>
     this.actions$.pipe(

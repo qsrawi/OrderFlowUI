@@ -4,10 +4,10 @@ import { map, take } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NumberRangePipe } from '../../helpers/number-range.pipe';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerBaseDto } from '../../models/customer';
 import { CustomerService } from '../../services/customer.service';
-import { selectUserId } from '../../store/selectors/auth.selectors';
+import { selectUserId, selectUserRole } from '../../store/selectors/auth.selectors';
 import * as AuthActions from '../../store/actions/auth.actions';
 import * as CustomerActions from '../../store/actions/customer.actions';
 import { Store } from '@ngrx/store';
@@ -47,6 +47,7 @@ export class CustomersViewComponent implements OnInit {
   customers$: Observable<CustomerBaseDto[]>;
   totalCount$: Observable<number>;
   userId$: Observable<number| undefined>;
+  userRole$: Observable<string| undefined>;
   transactions$: Observable<Transaction[]>;
 
   filters: any = {
@@ -63,26 +64,37 @@ export class CustomersViewComponent implements OnInit {
   supplierId: number | undefined;
   showModal: boolean = false;
   transactions: Transaction[] = []; 
+  userRole: string | undefined;
 
-  constructor(private customerService: CustomerService, private store: Store, private router: Router) {
+  constructor(private customerService: CustomerService, private store: Store, private router: Router, private route: ActivatedRoute) {
     this.customers$ = this.customerService.getCustomers();
     this.totalCount$ = this.customerService.getTotalCount();
     this.transactions$ = this.store.select(selectTransactions);
     this.userId$ = this.store.select(selectUserId).pipe(take(1));
+    this.userRole$ = this.store.select(selectUserRole).pipe(take(1));
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
   }
 
   ngOnInit(): void {
-    this.loadCustomers();
+    this.userId$.subscribe(id => this.supplierId = id);
+    this.userRole$.subscribe(userRole => this.userRole = userRole);
     this.transactions$.subscribe(transactions => {
       this.transactions = transactions;
     });
+    const itemIdParam = this.route.snapshot.paramMap.get('id');
+    if (itemIdParam) {
+      this.supplierId = Number(itemIdParam);
+    }
+    this.loadCustomers();
+
   }
 
   loadCustomers(): void {
-    this.userId$.subscribe(id => this.supplierId = id);
-    this.customerService.loadCustomers(this.supplierId, this.pageNumber, this.pageSize, this.filters);
+    if(this.userRole == "Supplier")
+      this.customerService.loadCustomers(this.supplierId, this.pageNumber, this.pageSize, this.filters);
+    else
+      this.customerService.loadCustomersForAdmin(this.supplierId, this.pageNumber, this.pageSize, this.filters);
   }
 
   applyFilters(): void {

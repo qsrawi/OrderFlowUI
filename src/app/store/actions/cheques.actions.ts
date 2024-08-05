@@ -58,13 +58,13 @@ export const loadTransactionsFailure = createAction(
 );
 
 export const loadImage = createAction(
-  '[Cheques] Load Image',
-  props<{ chequeId: number, role: string }>()
+  '[Cheque] Load Image',
+  props<{ chequeId: number; role: string; isFront: boolean }>()
 );
 
 export const loadImageSuccess = createAction(
   '[Cheques] Load Image Success',
-  props<{ itemId: number, image: string }>()
+  props<{ itemId: number, image: string; isFront: boolean }>()
 );
 
 export const loadImageFailure = createAction(

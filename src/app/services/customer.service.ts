@@ -22,6 +22,10 @@ export class CustomerService {
     this.store.dispatch(CustomerActions.loadCustomers({id, pageNumber, pageSize, filters }));
   }
 
+  loadCustomersForAdmin(id: number | undefined, pageNumber: number, pageSize: number, filters: any): void {
+    this.store.dispatch(CustomerActions.loadCustomersForAdmin({id, pageNumber, pageSize, filters }));
+  }
+
   saveCustomerWithDispatch(id: number | undefined, customer: CustomerBaseDto): void {
     this.store.dispatch(CustomerActions.saveCustomer({ id, customer }));
   }

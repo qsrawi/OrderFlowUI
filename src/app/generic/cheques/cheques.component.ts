@@ -87,22 +87,21 @@ export class ChequesComponent implements OnInit {
     this.loadCheques();
   }
 
-  viewImage(chequeId: number): void {
-    if (chequeId){
-      if(this.userRole == "Supplier")
-        this.store.dispatch(ChequesActions.loadImage({ chequeId, role: "Supplier" }));
-      else
-      this.store.dispatch(ChequesActions.loadImage({ chequeId, role: "Admin" }));
+  viewImage(chequeId: number, isFront: boolean): void {
+    if (chequeId) {
+      const role = this.userRole === 'Supplier' ? 'Supplier' : 'Admin';
+      this.store.dispatch(
+        ChequesActions.loadImage({ chequeId, role, isFront })
+      );
     }
-      
-    this.store
-      .select(state => selectItemImage(state, { itemId: chequeId }))
-      .subscribe(image => {
-        if (image) {
-          this.selectedImage = image;
-          this.showImgModal = true;
-        }
-      });
+  
+    this.store.select(state => selectItemImage(state, { itemId: chequeId, isFront })).subscribe(image => {
+      debugger
+      if (image) {
+        this.selectedImage = image;
+        this.showImgModal = true;
+      }
+    });
   }
 
   closeImgModal(): void {
