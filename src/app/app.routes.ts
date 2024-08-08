@@ -53,7 +53,6 @@ export const routes: Routes = [
   },
   { path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuard], data: { role: 'Admin' },
     children: [
-      { path: 'add-supplier', component: AddSupplierComponent },
       { path: 'suppliers-view', component: SuppliersViewComponent },
       { path: 'cheques', component: ChequesComponent },
       { path: 'orders', component: OrderComponent },

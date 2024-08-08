@@ -15,14 +15,6 @@
           <label for="maxPrice">Max Price</label>
           <input type="number" id="maxPrice" class="form-control" [(ngModel)]="filters.MaxPrice" (ngModelChange)="updateFilter('MaxPrice', $event)" name="maxPrice">
         </div>
-        <div class="col-md-4 mb-3">
-          <label for="createdDateFrom">Created Date From</label>
-          <input type="date" id="createdDateFrom" class="form-control" [ngModel]="formatDate(filters.CreatedDateFrom)" (ngModelChange)="updateFilter('CreatedDateFrom', $event)" name="createdDateFrom">
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="createdDateTo">Created Date To</label>
-          <input type="date" id="createdDateTo" class="form-control" [ngModel]="formatDate(filters.CreatedDateTo)" (ngModelChange)="updateFilter('CreatedDateTo', $event)" name="createdDateTo">
-        </div>
       </div>
       <div class="row">
         <div class="col-12 text-center">

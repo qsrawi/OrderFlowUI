@@ -168,10 +168,6 @@ export class AddReceiptComponent implements OnInit {
 
     if (this.userId !== 0 && this.userId !== undefined) {
 
-      if (this.customerId !== 0 && this.customerId !== undefined) {
-          formData.append('customerId', this.customerId.toString());
-      }
-
       if (this.TradingSupplierId !== 0 && this.TradingSupplierId !== undefined) {
           if(this.isRecipt){
             formData.append('supplierId', this.userId.toString());
@@ -180,13 +176,16 @@ export class AddReceiptComponent implements OnInit {
             formData.append('tradingSupplierId', this.userId.toString());
             formData.append('supplierId', this.TradingSupplierId.toString());
           }
-      } else
+      } else{
+        if (this.customerId !== 0 && this.customerId !== undefined)
+          formData.append('customerId', this.customerId.toString());
         formData.append('supplierId', this.userId.toString());
+      }
 
       formData.append('isReceipt', this.isRecipt.toString());
 
       this.store.dispatch(ReceiptActions.addReceipt({ receipt: formData }));
-      this.router.navigate(['/supplier/cheques']);
+      this.router.navigate(['/supplier/customers-view']);
     }
   }
 }

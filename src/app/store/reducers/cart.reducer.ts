@@ -56,7 +56,7 @@ export const cartReducer = createReducer(
     ...state,
     items: state.items.map(item =>
       item.itemId === itemId && item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1, price: item.price - item.price / item.quantity }
+        ? { ...item, quantity: item.quantity - 1 }
         : item
     ),
   })),
@@ -64,7 +64,7 @@ export const cartReducer = createReducer(
     ...state,
     items: state.items.map(item =>
       item.itemId === itemId
-        ? { ...item, quantity: item.quantity + 1, price: item.price + item.price / item.quantity }
+        ? { ...item, quantity: item.quantity + 1 }
         : item
     ),
   })),
